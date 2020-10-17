@@ -39,20 +39,6 @@ That is approximately 70,000 new cases every day. So all these people will be ou
     * Does this application exist in another form? If so, how does your differ and provide value to the users?
     * How does this align with your partner's organization's values/mission/mandate?
 
-    Our app will give cancer patients an easy to use, intuitive platform to find and connect with other people who are going
-    through the same experience as them. Therefore it will make them feel less anxious, distressed, depressed or lonely. It will
-    be inclusive regardless of users race, sex, religion, or sexual preference. Additionally, it will notify users of any new
-    and upcoming clinical trials of which they are not aware. 
-
-    Currently, MaleCancer already has a website that they are using called cancermatch.com. But, the old website had many
-    problems including but not limited to: hard to navigate user interface and the non functional user sign up process. 
-    Our web app will allow our users to save time (in days) and the effort it takes to call MaleCancer for manual registration 
-    by making the signup/signin screen functional. Our web app allows users to become mentors, so they can share their 
-    experiences and wisdom with other users. We will provide users with specifically selected profiles of other users based on
-    location, their common experiences, treatments, diagnoses. This will help users to connect efficiently with mentors or a 
-    date or both. Our app will help our partner’s organization’s mission of helping cancer patients of any race, gender over the
-    world by connecting them to each other and notifying them about helpful resources.
-
 #### Q4: How will you build it?
 
 > Short (1-2 min' read max)
@@ -62,83 +48,12 @@ That is approximately 70,000 new cases every day. So all these people will be ou
  * Will you be using third party applications or APIs? If so, what are they?
  * What is your testing strategy?
 
-Our technology stack for our web application is:
-* Languages: HTML, CSS, Javascript, SQL;
-* Frameworks: 
-    * Frontend: ReactJS
-    * Backend: NodeJS + ExpressJS
-    * General: Jest
-* Libraries:
-    * Frontend: Bootstrap, Material-UI, Redux
-    * Backend: Socket.io
-* Database: SQL database
-* PaaS: AWS
-* Other tools: Let's Encrypt, Liquibase, circleCI
-
-We plan to deploy our web application using AWS since our partner has an AWS account. We are planning that both the web application and the SQL database will be hosted on AWS.
-We will follow a basic web application architecture: 
-
-![Architecture](https://i.ibb.co/Bz6wDnc/yeett.png)
-
-We are planning to use third party APIs for our app. Our application will likely use Google API. Specifically, our application will use Google OAuth, so users of the app can sign in using their Google accounts.
-
-We will do Behaviour Driven Development. That is, all team members would write a few tests (e.g. Jest tests) for their daily commited code based on the user stories that we need to implement. On the weekends, we will write more comprehensive tests for our code and conduct code reviews before merging our code to a master branch, so our master branch only contains tested and working code. Moreover, we are planning to setup CI pipeline using circleCI, so we can conduct integration tests on our code.
-
 #### Q5: What are the user stories that make up the MVP?
 
  * At least 5 user stories concerning the main features of the application - note that this can broken down further
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
  * If you have a partner, these must be reviewed and accepted by them
  * The user stories should be written in Github and each one must have clear acceptance criteria.
- 
-**User Story:** As a cancer patient or survivor, I want to connect with other patients or survivors in order to mentor them or be mentored by them.
-
-**Acceptance criteria:** 
-* Show profiles of mentors to user
-* Show users as  mentors/mentees to others seeking mentors/mentees.
-* Allow users to match with mentors/mentees.
-* Allow users to chat with matched mentors/mentees.
-
-**User Story:** As a cancer patient or survivor, I want to be able to get notified of the most recent clinical trials and treatments near me in order to help improve my recovery process.
-
-**Acceptance criteria:**
-* User should receive notifications by email 
-* User should receive information about clinical trials and treatments that are relevant to the user’s condition and location
-
-**User Story:** As a cancer patient or survivor, I want to connect with other patients or survivors in order to find a significant other who went through the same processes as me and understands how I am feeling.
-
-**Acceptance criteria:**
-* Show potential matches in order of matching percentages.
-* Allow users to chat with matched survivors/patients
-* Allow users to exchange contact information with each other.
-
-**User Story:** As a cancer patient or survivor, I want to connect with other patients or survivors in order to hookup or have casual relationships with them without being judged.
-
-**Acceptance criteria:**
-* Have extensive matching criteria that are not exclusive to traditional dating to get into a relationship.
-* Allow users to chat with matched survivors/patients
-* Allow users to unmatch at any given time and have their chats deleted
-
-**User Story:** As a cancer patient or survivor, I want to see other patients or survivors in order to not feel alone in my journey.
-
-**Acceptance criteria:**
-* Allow users to filter matches by their location.
-* Allow users to chat with matched survivors/patients
-
-Profile information: Name, email, location, optional phone number, social media handles
-
-User stories:
-* Login and create profile
-* Find others
-* Looking at others' requests
-* Switching between dating & mentorship portions
-* Update profile
-
-Views/pages:
-* Login
-* Tutorial
-* Page with mentorship and dating "tabs"
-* Update profile
 
 ----
 
@@ -154,16 +69,41 @@ List each team member and:
  * 3 technical strengths and weaknesses each (e.g. languages, frameworks, libraries, development methodologies, etc.)
 
 #### Q7: What operational events will you have as a team?
+  
+As a team we will meet once per week online on Zoom at Tuesdays 6-7pm Toronto time. For the first few team meetings, we will be doing overall planning for the app (UI, user stories, setting up frameworks, etc) and distributing tasks. As we begin working on code, at our meetings we will share updates on each member’s progress, any outstanding bugs, and details about integrating different components together, along with any needs for communication with the project partner. Other communication needs will be done via Messenger (see more details in our answer to Question 9). We are meeting with our project partner on Thursdays 12-1pm on a weekly basis.
 
-Describe meetings (and other events) you are planning to have. 
- * When and where? Recurring or ad hoc? In-person or online?
- * What's the purpose of each meeting?
- * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
- * You must have at least 2 meetings with your project partner (if you have one) before D1 is due. Describe them here:
-   * What did you discuss during the meetings?
-   * What were the outcomes of each meeting?
-   * You must provide meeting minutes.
-   * You must have a regular meeting schedule established by the second meeting.  
+We met with our project partner on October 8 and October 15. At our first meeting, we discussed the project partner’s requirements and ideas for the project, and inquired about technical and functional details for the project. We were able to better understand the project partner’s requirements and the potential userbase; the project partner agreed to send us data for cancer types and treatments in a week. The meeting minutes for the first meeting are below:
+
+First meeting notes:
+* Appname: CancerChat,
+  Web app is ok, 
+  Connect cancer patients with each other, 
+* Users: 18+, all cancer patients across the world, 
+  Potential users: ~74k connected with organization, ¼ would probably start using this app at first
+  Two types of users:
+  * Cancer survivors meeting with each other (for dating like tinder)
+  * Mentorship (for information)
+  * Or both
+* Project partner app requirements:
+  Simple to use: other website takes “20 clicks” to find what you’re looking for 
+  Few barriers to use, must be visually intuitive
+  * Including useable by people under medication or fatigued/dizzy, eg ADA standards
+  Can match with medication(and/or) cancer type and cancer stage and treatments
+  Admin access to obtain email list of users under certain criteria (to later send emails/notifications about treatment suggestions and clinical trials).
+* User information
+  Ask users to enter their location
+  Email is REQUIRED phone number is optional
+* Data policy: Doesn’t need to be HIPA. But follow regular data protection guidelines: GDPR
+* Project partner has accounts for AWS or liquibase.com; organization has a privacy policy already set up
+* US ADA guidelines for UI style that is cancer patient-friendly
+* Project partner will send us lists of cancer types and treatments next week
+
+Second meeting notes: 
+* Obtained strong approval for our user stories
+* Obtained feedback on mockups
+  Rename “Likes” to a different term
+  Think more about placement of icons, profile information to display
+* Partner would like a chat feature to be within the scope of the project (eg 3rd party plugin)
   
 #### Q8: What artifacts will you use to self-organize?
  
