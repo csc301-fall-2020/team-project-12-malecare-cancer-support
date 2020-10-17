@@ -128,12 +128,13 @@ Views/pages:
 We have separated our project into Frontend (including UI), Backend (including algorithms used by the app), and Database portions, with team members assigned to these areas. Team members in each area are responsible for setting up a development environment for their component, developing features, writing tests, and integrating their component with other team members’ work.
 We have two people responsible for email communication with the partner on behalf of the team; all team members are expected to attend meetings with the partner unless other circumstances arise.
 Someone: take minutes during partner meeting
-* Arnur
-Roles & responsibilities: Frontend & UI
-Strengths: Experience with frontend frameworks (Vue, Angular, React), experience with frontend libraries (Bootstrap, Materialize CSS, Vuetify), proficient in Javascript
-Weaknesses: Inexperienced with Github workflow, little experience with SQL databases, inexperienced with cloud platforms e.g. AWS 
-Ismail
 
+Arnur
+* Roles & responsibilities: Frontend & UI
+* Strengths: Experience with frontend frameworks (Vue, Angular, React), experience with frontend libraries (Bootstrap, Materialize CSS, Vuetify), proficient in Javascript
+* Weaknesses: Inexperienced with Github workflow, little experience with SQL databases, inexperienced with cloud platforms e.g. AWS 
+
+Ismail
 * Roles & responsibilities: Frontend & UI
 * Strengths: Python, Java, C
 * Weaknesses: Databases, Web development, CI/CD
