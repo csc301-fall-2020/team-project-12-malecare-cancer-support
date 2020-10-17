@@ -30,23 +30,43 @@ That is approximately 70,000 new cases every day. So all these people will be ou
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
-> Short (1 - 2 min' read max)
- * We want you to "connect the dots" for us - Why does your product (as described in your answer to Q1) fits the needs of your users (as described in your answer to Q2)?
- * Explain the benefits of your product explicitly & clearly. For example:
-    * Save users time (how much?)
-    * Allow users to discover new information (which information? And, why couldn't they discover it before?)
-    * Provide users with more accurate and/or informative data (what kind of data? Why is it useful to them?)
-    * Does this application exist in another form? If so, how does your differ and provide value to the users?
-    * How does this align with your partner's organization's values/mission/mandate?
+   Our app will give cancer patients an easy to use, intuitive platform to find and connect with other people who are going
+    through the same experience as them. Therefore it will make them feel less anxious, distressed, depressed or lonely. It will
+    be inclusive regardless of users race, sex, religion, or sexual preference. Additionally, it will notify users of any new
+    and upcoming clinical trials of which they are not aware. 
+Currently, MaleCancer already has a website that they are using called cancermatch.com. But, the old website had many
+    problems including but not limited to: hard to navigate user interface and the non functional user sign up process. 
+    Our web app will allow our users to save time (in days) and the effort it takes to call MaleCancer for manual registration 
+    by making the signup/signin screen functional. Our web app allows users to become mentors, so they can share their 
+    experiences and wisdom with other users. We will provide users with specifically selected profiles of other users based on
+    location, their common experiences, treatments, diagnoses. This will help users to connect efficiently with mentors or a 
+    date or both. Our app will help our partner’s organization’s mission of helping cancer patients of any race, gender over the
+    world by connecting them to each other and notifying them about helpful resources.
+
 
 #### Q4: How will you build it?
 
-> Short (1-2 min' read max)
- * What is the technology stack? Specify any and all languages, frameworks, libraries, PaaS products or tools. 
- * How will you deploy the application?
- * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
- * Will you be using third party applications or APIs? If so, what are they?
- * What is your testing strategy?
+Our technology stack for our web application is:
+* Languages: HTML, CSS, Javascript, SQL;
+* Frameworks: 
+    * Frontend: ReactJS
+    * Backend: NodeJS + ExpressJS
+    * General: Jest
+* Libraries:
+    * Frontend: Bootstrap, Material-UI, Redux
+    * Backend: Socket.io
+* Database: SQL database
+* PaaS: AWS
+* Other tools: Let's Encrypt, Liquibase, circleCI
+
+We plan to deploy our web application using AWS since our partner has an AWS account. We are planning that both the web application and the SQL database will be hosted on AWS.
+We will follow a basic web application architecture: 
+
+![Architecture](https://i.ibb.co/Bz6wDnc/yeett.png)
+
+We are planning to use third party APIs for our app. Our application will likely use Google API. Specifically, our application will use Google OAuth, so users of the app can sign in using their Google accounts.
+
+We will do Behaviour Driven Development. That is, all team members would write a few tests (e.g. Jest tests) for their daily commited code based on the user stories that we need to implement. On the weekends, we will write more comprehensive tests for our code and conduct code reviews before merging our code to a master branch, so our master branch only contains tested and working code. Moreover, we are planning to setup CI pipeline using circleCI, so we can conduct integration tests on our code.
 
 #### Q5: What are the user stories that make up the MVP?
 
