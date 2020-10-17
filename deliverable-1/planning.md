@@ -70,10 +70,54 @@ We will do Behaviour Driven Development. That is, all team members would write a
 
 #### Q5: What are the user stories that make up the MVP?
 
- * At least 5 user stories concerning the main features of the application - note that this can broken down further
- * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
- * If you have a partner, these must be reviewed and accepted by them
- * The user stories should be written in Github and each one must have clear acceptance criteria.
+**User Story:** As a cancer patient or survivor, I want to connect with other patients or survivors in order to mentor them or be mentored by them.
+
+**Acceptance criteria:** 
+* Show profiles of mentors to user
+* Show users as  mentors/mentees to others seeking mentors/mentees.
+* Allow users to match with mentors/mentees.
+* Allow users to chat with matched mentors/mentees.
+
+**User Story:** As a cancer patient or survivor, I want to be able to get notified of the most recent clinical trials and treatments near me in order to help improve my recovery process.
+
+**Acceptance criteria:**
+* User should receive notifications by email 
+* User should receive information about clinical trials and treatments that are relevant to the user’s condition and location
+
+**User Story:** As a cancer patient or survivor, I want to connect with other patients or survivors in order to find a significant other who went through the same processes as me and understands how I am feeling.
+
+**Acceptance criteria:**
+* Show potential matches in order of matching percentages.
+* Allow users to chat with matched survivors/patients
+* Allow users to exchange contact information with each other.
+
+**User Story:** As a cancer patient or survivor, I want to connect with other patients or survivors in order to hookup or have casual relationships with them without being judged.
+
+**Acceptance criteria:**
+* Have extensive matching criteria that are not exclusive to traditional dating to get into a relationship.
+* Allow users to chat with matched survivors/patients
+* Allow users to unmatch at any given time and have their chats deleted
+
+**User Story:** As a cancer patient or survivor, I want to see other patients or survivors in order to not feel alone in my journey.
+
+**Acceptance criteria:**
+* Allow users to filter matches by their location.
+* Allow users to chat with matched survivors/patients
+
+Profile information: Name, email, location, optional phone number, social media handles
+
+User stories:
+* Login and create profile
+* Find others
+* Looking at others' requests
+* Switching between dating & mentorship portions
+* Update profile
+
+Views/pages:
+* Login
+* Tutorial
+* Page with mentorship and dating "tabs"
+* Update profile
 
 ----
 
@@ -81,12 +125,39 @@ We will do Behaviour Driven Development. That is, all team members would write a
 
 #### Q6: What are the roles & responsibilities on the team?
 
-Describe the different roles on the team and the responsibilities associated with each role. 
- * Roles should reflect the structure of your team and be appropriate for your project. Not necessarily one role to one team member.
+We have separated our project into Frontend (including UI), Backend (including algorithms used by the app), and Database portions, with team members assigned to these areas. Team members in each area are responsible for setting up a development environment for their component, developing features, writing tests, and integrating their component with other team members’ work.
+We have two people responsible for email communication with the partner on behalf of the team; all team members are expected to attend meetings with the partner unless other circumstances arise.
+Someone: take minutes during partner meeting
+* Arnur
+Roles & responsibilities: Frontend & UI
+Strengths: Experience with frontend frameworks (Vue, Angular, React), experience with frontend libraries (Bootstrap, Materialize CSS, Vuetify), proficient in Javascript
+Weaknesses: Inexperienced with Github workflow, little experience with SQL databases, inexperienced with cloud platforms e.g. AWS 
+Ismail
 
-List each team member and:
- * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
- * 3 technical strengths and weaknesses each (e.g. languages, frameworks, libraries, development methodologies, etc.)
+* Roles & responsibilities: Frontend & UI
+* Strengths: Python, Java, C
+* Weaknesses: Databases, Web development, CI/CD
+
+Jonathan
+* Roles & responsibilities: Frontend & UI
+* Strengths: Python, C, CI/CD
+* Weaknesses: Databases, Not as familiar with JavaScript, ADA UI design
+
+Pascal
+* Roles & responsibilities: Backend (incl. database); UI mockups
+* Strengths: Javascript, Python, Frontend framework - Vue
+* Weaknesses: UI mockups, UX, Presentation
+
+Uttkarsh
+* Roles & responsibilities: Backend (incl. database)
+* Strengths: Experience with Backend Development (Node.js , Express, etc.),
+* Proficient in JavaScript, understanding of integrating API’s with the project, and Frontend UI
+* Weaknesses: Not well versed with SQL databases, inexperienced with unit testing and integration testing, No experience with React
+
+Rutav
+* Roles & responsibilities: Backend (may help with database)
+* Strengths: SQL, Python, Java
+* Weaknesses: Web Development, Javascript, NoSQL databases
 
 #### Q7: What operational events will you have as a team?
   
