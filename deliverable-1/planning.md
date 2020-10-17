@@ -89,35 +89,23 @@ List/describe the artifacts you will produce in order to organize your team.
 
 #### Q9: What are the rules regarding how your team works?
 
-Describe your team's working culture.
+**Team communication**: We will use a team Messenger group chat, as it is the method of communication all team members use most frequently. After a team meeting, we agreed that we would expect and prefer team members to respond to general messages within 24 hours, and respond to technical questions about the team member’s area/code preferably within a few hours. We noted that if a team member could not answer the question at the moment, we would prefer the team member to acknowledge the question and briefly reply instead of just ghosting.
 
-**Communications:**
- * What is the expected frequency? What methods/channels are appropriate? 
- * If you have a partner project, what is your process (in detail) for communicating with your partner?
- 
-**Meetings:**
- * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
- 
-**Conflict Resolution:**
- * List at least three team scenarios/conflicts you discussed in lecture and how you decided you will resolve them. Indecisions? Non-responsive team members? Any other scenarios you can think of?
+**Team meetings**: we expect everyone to attend our team meetings that will happen every week at 6pm Toronto time on Tuesdays. We will send a reminder message in our Messenger group before each meeting.
 
+**Communication with partner**: we anticipate most communication to be done during our weekly meetings with the partner. If there are any urgent items we need to discuss during the week, any team member can bring it up in our Messenger group chat or during a team meeting; at that point the team can discuss and then designate a person, who will write up an email for the partner (CC-ing everyone) and convey the results to the team
+Accountability: During our team meetings we will check up on each team member’s progress, and inquire about any outstanding/delayed work (including whether there were any circumstances that came up). If team members are non-responsive regarding attending meetings or completing action items, we will follow the procedure listed in the conflict resolution section below.
+
+**Conflict resolution:**
+- Different opinions on implementation of technical details: discuss as a team, and then have team members vote.
+- Non-responsive team member: first try contacting them via messages; then call via Messenger if two days pass with no response; as a last resort, contact our project TA with the relevant details.
+- Different opinions on how tasks should be distributed: have team members in the given area (Frontend, Backend, Database) first try to work it out; if that is unsuccessful, have other team members moderate the discussion.
 
 
 
 ----
 ### Highlights
 
-Specify 3 - 5 key decisions and/or insights that came up during your meetings
-and/or collaborative process.
-
- * Short (5 min' read max)
- * Decisions can be related to the product and/or the team process.
-    * Mention which alternatives you were considering.
-    * Present the arguments for each alternative.
-    * Explain why the option you decided on makes the most sense for your team/product/users.
- * Essentially, we want to understand how (and why) you ended up with your current product and process plan.
- * This section is useful for important information regarding your decision making process that may not necessarily fit in other sections. 
- 
 **Choosing Projects**: From the start of the project our approach to every decision so far has been to take a vote. For the project selection, we decided to give each team member the chance to vote for as many projects as they wanted but each vote of theirs had varying weights. Each team member was allowed to assign values of 1, 0.75, 0.5 and 0.25 only once to each respective project of their choosing, and 0.1 zero or more times to projects without a vote. The top three projects which had the highest weight aggregate were chosen to include in the proposal. We used this method because it gave each team member time to decide on their own without being swayed by the opinion of other group members, and this made for a better way to gauge everyone’s interests. The projects with the top 3 scores were chosen to be included in our project proposal. 
 
 **Meeting Times**: Instead of picking meeting times and having team members make adjustments to their schedule  accordingly we decided to take everyone’s timetables (including lecture times and other commitments) and time zones into account and found common free times where the meetings would take place. This way no one would have to adjust their schedules to fit team meetings, we found this to be a good way of coordinating this as it took every input into account. 
