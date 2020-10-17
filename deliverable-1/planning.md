@@ -19,10 +19,14 @@ Our goal is to improve their mental health through which we can improve their tr
 We have designed a mockup which can be viewed [here.](https://www.figma.com/proto/AKsBmCRIOOWOj00waI7xUa/Untitled?node-id=18%3A12&scaling=contain)
 #### Q2: Who are your target users?
 
-  > Short (1 - 2 min' read max)
- * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
- * **Feel free (but not obligated) to use personas.         
-   You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
+Through this application we will be targeting all the cancer patients/survivors throughout the world irrespective of color, race, sex, religion, or sexual preferences. 
+
+According to https://www.cancer.org/research/cancer-facts-statistics/global.html ,by 2040, the global burden is expected to grow to 27.5 million new cancer cases.
+
+![stats](https://cdn.statcdn.com/Infographic/images/normal/20706.jpeg)
+
+That is approximately 70,000 new cases every day. So all these people will be our target users.
+
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
