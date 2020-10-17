@@ -1,24 +1,22 @@
-# YOUR PRODUCT/TEAM NAME
-> _Note:_ This document is meant to evolve throughout the planning phase of your project.   That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
- > **This document will serve as a master plan between your team, your partner and your TA.**
+# Team 12 
 
 ## Product Details
  
 #### Q1: What are you planning to build?
 
- > Short (1 - 2 min' read)
- * Start with a single sentence, high-level description of the product.
- * Be clear - Describe the problem you are solving in simple terms.
- * Be concrete. For example:
-    * What are you planning to build? Is it a website, mobile app,
-   browser extension, command-line app, etc.?      
-    * When describing the problem/need, give concrete examples of common use cases.
-    * Assume your the reader knows nothing about the problem domain and provide the necessary context. 
- * Focus on *what* your product does, and avoid discussing *how* you're going to implement it.      
-   For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
- * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
+ We are planning to build a web application that will help the cancer survivors/patients to connect with each other based on the data they provide. 
+ 
+ Cancer doesn’t only affect someone's physical health but also takes a toll on their mental stability. This life-changing diagnosis and the exhausting treatment that comes after   it can induce feelings like anxiety, distress, depression, and **loneliness**. 
+ 
+### And WE BELIEVE 
 
+## NO ONE SHOULD FACE CANCER ALONE
 
+Therefore, to solve this problem we are making an app that will help the patients find a partner to date or a mentor to consult. (Maybe Both!!) 
+
+Our goal is to improve their mental health through which we can improve their treatment, physical health, and the life ahead. 
+
+We have designed a [mockup](https://www.figma.com/proto/AKsBmCRIOOWOj00waI7xUa/Untitled?node-id=18%3A12&scaling=contain)
 #### Q2: Who are your target users?
 
   > Short (1 - 2 min' read max)
