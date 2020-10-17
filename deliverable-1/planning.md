@@ -10,13 +10,13 @@
  
 ### And WE BELIEVE 
 
-![No one should face cancer alone](https://i0.wp.com/zoeamar.com/wp-content/uploads/2016/01/macmillan-image.jpg?w=600&ssl=1)
+## NO ONE SHOULD FACE CANCER ALONE
 
 Therefore, to solve this problem we are making an app that will help the patients find a partner to date or a mentor to consult. (Maybe Both!!) 
 
 Our goal is to improve their mental health through which we can improve their treatment, physical health, and the life ahead. 
 
-We have designed a mockup which can be viewed [here.](https://www.figma.com/proto/AKsBmCRIOOWOj00waI7xUa/Untitled?node-id=18%3A12&scaling=contain)
+We have designed a [mockup](https://www.figma.com/proto/AKsBmCRIOOWOj00waI7xUa/Untitled?node-id=18%3A12&scaling=contain)
 #### Q2: Who are your target users?
 
   > Short (1 - 2 min' read max)
@@ -77,15 +77,10 @@ Describe meetings (and other events) you are planning to have.
    * You must have a regular meeting schedule established by the second meeting.  
   
 #### Q8: What artifacts will you use to self-organize?
+ 
+**Partner Meetings**: During our meetings with the partner, we will take notes to keep track of topics that were discussed, the meetings will be around 30 to 60 minutes long.
 
-List/describe the artifacts you will produce in order to organize your team.       
-
- * Artifacts can be To-Do lists, Task boards, schedule(s), meeting minutes, etc.
- * We want to understand:
-   * How do you keep track of what needs to get done?
-   * How do you prioritize tasks?
-   * How do tasks get assigned to team members?
-   * How do you determine the status of work from inception to completion?
+**Team Meetings**: The team meetings will last anywhere between an hour to two hours and occur twice a week. During these we will identify and assign tasks as a whole team, after which we will split into our subteams (Frontend, Backend, etc.) and discuss any more specifics that we need to, for example we will identify problems, concerns, and new idea suggestions in this time. These team meetings To keep track of all of these issues the team will be using a Trello board to keep track of what the tasks are and who they were assigned to, most of these tasks will be created during the Team meeting. We will utilize a column in Trello that keeps track of the status on each task, and also use its tags to assign priority to each task. This way the whole team will be able to effectively communicate with each other.  
 
 #### Q9: What are the rules regarding how your team works?
 
