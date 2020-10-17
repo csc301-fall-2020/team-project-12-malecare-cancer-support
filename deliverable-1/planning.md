@@ -19,6 +19,8 @@ Our goal is to improve their mental health through which we can improve their tr
 We have designed a mockup which can be viewed [here.](https://www.figma.com/proto/AKsBmCRIOOWOj00waI7xUa/Untitled?node-id=18%3A12&scaling=contain)
 #### Q2: Who are your target users?
 
+[Persona link](https://app.xtensio.com/design/8n53ykwd)
+
 Through this application we will be targeting all the cancer patients/survivors throughout the world irrespective of color, race, sex, religion, or sexual preferences. 
 
 According to https://www.cancer.org/research/cancer-facts-statistics/global.html ,by 2040, the global burden is expected to grow to 27.5 million new cancer cases.
