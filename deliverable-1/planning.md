@@ -10,13 +10,13 @@
  
 ### And WE BELIEVE 
 
-## NO ONE SHOULD FACE CANCER ALONE
+![No one should face cancer alone](https://i0.wp.com/zoeamar.com/wp-content/uploads/2016/01/macmillan-image.jpg?w=600&ssl=1)
 
 Therefore, to solve this problem we are making an app that will help the patients find a partner to date or a mentor to consult. (Maybe Both!!) 
 
 Our goal is to improve their mental health through which we can improve their treatment, physical health, and the life ahead. 
 
-We have designed a [mockup](https://www.figma.com/proto/AKsBmCRIOOWOj00waI7xUa/Untitled?node-id=18%3A12&scaling=contain)
+We have designed a mockup which can be viewed [here.](https://www.figma.com/proto/AKsBmCRIOOWOj00waI7xUa/Untitled?node-id=18%3A12&scaling=contain)
 #### Q2: Who are your target users?
 
   > Short (1 - 2 min' read max)
