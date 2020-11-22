@@ -22,7 +22,7 @@ module.exports = {
         }],
     },
     devServer: {
-        contentBase: path.resolve(__dirname, './dist'), //should be where frontend files are
+        contentBase: path.resolve(__dirname, './../frontend/public/'), //should be where frontend files are can also be our dist folder
         compress: true,
         port:8000
     }
