@@ -19,6 +19,11 @@ module.exports = {
                     '@babel/preset-env'
                 ]
             }
-        }]
+        }],
+    },
+    devServer: {
+        contentBase: path.resolve(__dirname, './dist'), //should be where frontend files are
+        compress: true,
+        port:8000
     }
 };
