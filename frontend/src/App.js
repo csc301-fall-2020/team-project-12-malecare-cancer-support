@@ -64,6 +64,15 @@ class App extends React.Component {
               </div>
             )}
           />
+          <Route
+            exact
+            path="/matching-test"
+            render={(props) => (
+              <div className="App">
+                <Landing {...props} app={this} />
+              </div>
+            )}
+          />
           <Route render={() => <div>404 Not found</div>} />
         </Switch>
       </BrowserRouter>
