@@ -25,7 +25,7 @@ class App extends React.Component {
         <Switch>
           <Route
             exact
-            path={["/", "/login", "/register"]}
+            path={["/", "/login", "/register", "/landing"]}
             render={(props) => (
               <div className="App">
                 {!this.state.currentUser ? (
@@ -33,6 +33,34 @@ class App extends React.Component {
                 ) : (
                   <Landing {...props} app={this} />
                 )}
+              </div>
+            )}
+          />
+          {/* TEMPORARY ROUTES BELOW FOR DEVELOPMENT TESTING */}
+          <Route
+            exact
+            path="/login-test"
+            render={(props) => (
+              <div className="App">
+                <Login {...props} app={this} />
+              </div>
+            )}
+          />
+          <Route
+            exact
+            path="/registration-test"
+            render={(props) => (
+              <div className="App">
+                <Registration {...props} app={this} />
+              </div>
+            )}
+          />
+          <Route
+            exact
+            path="/landing-test"
+            render={(props) => (
+              <div className="App">
+                <Landing {...props} app={this} />
               </div>
             )}
           />

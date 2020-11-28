@@ -4,7 +4,7 @@ import "./landing.css";
 /* Landing page component */
 class Landing extends React.Component {
   render() {
-    return <div>Test</div>;
+    return <div>Landing Page</div>;
   }
 }
 
