@@ -2,6 +2,8 @@ import React from "react";
 import "./login.css";
 
 import { Redirect } from "react-router-dom";
+
+import { CurUserContext } from "../../curUserContext";
 import { login } from "../../actions/authentication";
 
 /* Login page component */
@@ -24,8 +26,8 @@ class Login extends React.Component {
       console.log("An error occurred: ", errorMessage);
     } else {
       // successfully logged in
-      this.props.app.setState({ currentUser: {accessToken: response.data.accessToken} });
-      <Redirect to="/landing" />;
+      this.context.setCurrentUser({ accessToken: response.data.accessToken });
+      this.props.history.push("/landing");
     }
   };
 
@@ -54,5 +56,6 @@ class Login extends React.Component {
     );
   }
 }
+Login.contextType = CurUserContext;
 
 export default Login;
