@@ -14,3 +14,7 @@
 .registration-submit {
     
 }
+
+.registration-bio {
+    resize: none;
+}
