@@ -18,8 +18,12 @@ class Login extends React.Component {
       email: formElements.namedItem("email").value,
       password: formElements.namedItem("password").value,
     };
+   
     const { response, errorMessage } = await login(payload);
     console.log(response);
+    console.log("abc");
+    console.log(errorMessage);
+    
     if (!response) {
       console.log("An error occurred: ", errorMessage);
     } else {
