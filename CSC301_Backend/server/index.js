@@ -32,4 +32,4 @@ app.use(bodyParser.json());
 
 app.use('/auth', user);
 
-app.listen(3000, () => console.log('Success, Server is up and running!'));
+app.listen(5000, () => console.log('Success, Server is up and running!'));
