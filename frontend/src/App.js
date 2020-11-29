@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./App.css";
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Check out an intro to react-bootstrap:
 // https://react-bootstrap.github.io/getting-started/introduction/
