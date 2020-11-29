@@ -23,12 +23,12 @@ class Login extends React.Component {
     }
   }
 
-  handleSubmit = async (event) => {
-    event.preventDefault();
-    const formElements = event.target.children;
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = e.target.elements;
     const payload = {
-      email: formElements.namedItem("email").value,
-      password: formElements.namedItem("password").value,
+      email: formData.inputEmail.value,
+      password: formData.inputPassword.value,
     };
     const { response, errorMessage } = await login(payload);
     console.log(response);
@@ -37,55 +37,49 @@ class Login extends React.Component {
     } else {
       // successfully logged in
       this.context.setCurrentUser({ accessToken: response.data.accessToken });
+      if (formData.inputStayLoggedIn.checked) {
+        // User wants to stay logged in
+      }
       this.props.history.push("/landing");
     }
   };
 
   render() {
+    const formLabelClasses = "h4 font-weight-normal";
     return (
       <div>
-        <div>CancerChat</div>
-        <Form>
+        <h2 className="text-center m-5">CancerChat</h2>
+        <Form className="login-form mx-auto" onSubmit={this.handleSubmit}>
           <Form.Group controlId="inputEmail">
-            <Form.Label className="h4 font-weight-normal">Email address</Form.Label>
-            <Form.Control size="lg" type="email" placeholder="Enter email" className="col-md-4 col-sm-6 col-10"/>
-          </Form.Group>
-          <Form.Group controlId="inputPassword">
-            <Form.Label className="h4 font-weight-normal">Password (must be at least 6 characters)</Form.Label>
-            <Form.Control size="lg" type="password" placeholder="Enter password" className="col-md-4 col-sm-6 col-10"/>
-          </Form.Group>
-          <Form.Group>
-            <Form.Check className="h4 font-weight-normal" type="checkbox" id="staySignedIn" label="Stay signed in" custom />
-          </Form.Group>
-          <Button size="lg" variant="primary" type="submit">Login</Button>
-        </Form>
-        <form className="login-form" onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label for="email">Email</label>
-            <input
-              className="form-control"
+            <Form.Label className={formLabelClasses}>Email address</Form.Label>
+            <Form.Control
+              size="lg"
               type="email"
-              name="email"
-              placeholder="Email"
+              placeholder="Enter email"
               required
             />
-          </div>
-          <input
-            className="login-input login-username"
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-          />
-          <input
-            className="login-input login-password"
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
-          <input className="login-submit" type="submit" value="Login" />
-        </form>
+          </Form.Group>
+          <Form.Group controlId="inputPassword">
+            <Form.Label className={formLabelClasses}>Password</Form.Label>
+            <Form.Control
+              size="lg"
+              type="password"
+              placeholder="Enter password"
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="inputStayLoggedIn">
+            <Form.Check
+              className={formLabelClasses}
+              type="checkbox"
+              label="Stay logged in"
+              custom
+            />
+          </Form.Group>
+          <Button size="lg" variant="primary" type="submit">
+            Login
+          </Button>
+        </Form>
       </div>
     );
   }
