@@ -2,7 +2,7 @@ import React from "react";
 import "./geosearchbar.css";
 import "react-phone-number-input/style.css";
 import SearchIcon from "@material-ui/icons/Search";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import Spinner from "react-bootstrap/Spinner";
 
 class GeoSearchBar extends React.Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class GeoSearchBar extends React.Component {
       suggestedLocations: [],
       selected_location: null,
       search_requested: false,
+      loading: false,
     };
   }
 
@@ -68,6 +69,12 @@ class GeoSearchBar extends React.Component {
   };
 
   handleOnSearch = async () => {
+    await this.setState((state) => {
+      return {
+        ...state,
+        loading: true,
+      };
+    });
     const city = this.state.userInput;
     const data = await this.getPossibleLocationsData(city);
     this.setState((state) => {
@@ -75,13 +82,14 @@ class GeoSearchBar extends React.Component {
         ...state,
         suggestedLocations: data,
         search_requested: true,
+        loading: false,
       };
     });
   };
 
   handleOnChangeInput = (e) => {
     const value = e.target.value;
-    let { selected_location } = this.state;
+    let { selected_location, suggestedLocations } = this.state;
     if (selected_location != null) {
       const location_name =
         selected_location.city +
@@ -94,10 +102,16 @@ class GeoSearchBar extends React.Component {
         this.handleCustomValidity(false);
       }
     }
+
+    if (suggestedLocations.length > 0) {
+      suggestedLocations = [];
+    }
+
     this.setState((state) => {
       return {
         ...state,
         selected_location,
+        suggestedLocations,
         userInput: value,
         search_requested: false,
       };
@@ -138,8 +152,9 @@ class GeoSearchBar extends React.Component {
       "," +
       locationData["country"];
     this.props.handleOnChangeLocation(locationData);
-    this.setState(() => {
+    this.setState((state) => {
       return {
+        ...state,
         search_requested: false,
         selected_location: locationData,
         userInput: locationName,
@@ -157,7 +172,7 @@ class GeoSearchBar extends React.Component {
   };
 
   render() {
-    const { suggestedLocations, search_requested } = this.state;
+    const { suggestedLocations, search_requested, loading } = this.state;
     let results;
     if (suggestedLocations.length == 0 && !search_requested) {
       results = null;
@@ -182,6 +197,15 @@ class GeoSearchBar extends React.Component {
       );
     }
 
+    let icon;
+    if (!loading) {
+      icon = (
+        <SearchIcon id="search-button" onClick={(e) => this.handleOnSearch()} />
+      );
+    } else {
+      icon = <Spinner animation="border" size="sm" id="search-button" />;
+    }
+
     return (
       <div className="search-component-container">
         <div>
@@ -194,10 +218,7 @@ class GeoSearchBar extends React.Component {
             onKeyPress={this.handleOnPress}
             required
           />
-          <SearchIcon
-            id="search-button"
-            onClick={(e) => this.handleOnSearch()}
-          />
+          {icon}
         </div>
         <div id="search-results">{results}</div>
       </div>
