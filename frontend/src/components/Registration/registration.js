@@ -48,9 +48,9 @@ class Registration extends React.Component {
       };
     });
 
-    this.curr_location = null
-    this.search_results = []
-    this.data_source = ["sacasc", "sacsacas"]
+    this.curr_location = null;
+    this.search_results = [];
+    this.data_source = ["sacasc", "sacsacas"];
   }
 
   componentDidMount = () => {
@@ -86,7 +86,6 @@ class Registration extends React.Component {
     }
     checkbox.setCustomValidity(error_message);
   };
-
 
   handleOnChangeEmail = (new_email) => {
     this.setState((state) => {
@@ -161,15 +160,13 @@ class Registration extends React.Component {
   };
 
   handleOnChangeLocation = (new_location) => {
-      console.log("handleOnChangeLocation called")
-      console.log(new_location)
-      this.setState((state) => {
-        return {
-          ...state,
-          location: new_location
-        }
-      })
-  }
+    this.setState((state) => {
+      return {
+        ...state,
+        location: new_location,
+      };
+    });
+  };
 
   handleOnChangeSexualOrientation = (e) => {
     this.setState((state) => {
@@ -188,7 +185,6 @@ class Registration extends React.Component {
   };
 
   handleOnChangeTreatments = (e) => {
-    console.log(e);
     this.setState((state) => {
       let treatments_copy = e.map((entry) => entry.label);
       return {
@@ -200,7 +196,6 @@ class Registration extends React.Component {
 
   handleOnChangeCancerTypes = (e) => {
     this.setState((state) => {
-      console.log(e);
       let cancer_types_copy = e.map((entry) => entry.label);
       return {
         ...state,
@@ -272,11 +267,9 @@ class Registration extends React.Component {
     });
   };
 
-
   handleOnSubmit = (e) => {
     e.preventDefault();
     const state_copy = this.state;
-    console.log(state_copy);
     if (state_copy.phone_number && state_copy.date) {
       console.log(state_copy);
     } else if (!state_copy.phone_number && !state_copy.date) {
@@ -289,10 +282,6 @@ class Registration extends React.Component {
       const { interests, ...data_to_submit } = state_copy;
       console.log(data_to_submit);
     }
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
   };
 
   render() {
@@ -315,7 +304,11 @@ class Registration extends React.Component {
     return (
       <div>
         <div>Join the CancerChat community</div>
-        <form className="registration-form" onSubmit={this.handleSubmit} onKeyDown={null}  onKeyPress={null}>
+        <form
+          id="registration-form"
+          className="registration-form"
+          onSubmit={this.handleOnSubmit}
+        >
           <input
             className="registrtion-input registration-email"
             type="email"
@@ -380,9 +373,8 @@ class Registration extends React.Component {
             }
           />
           <br />
-          <GeoSearchBar
-            handleOnChangeLocation={this.handleOnChangeLocation}
-          />
+          <GeoSearchBar handleOnChangeLocation={this.handleOnChangeLocation} />
+          <br />
           <Select
             required={true}
             placeholder="Select your gender"
@@ -470,9 +462,6 @@ class Registration extends React.Component {
             className="registration-submit"
             type="submit"
             value="Register"
-            onClick={this.handleOnSubmit}
-            onKeyDown={null}
-            onKeyPress={null}
           />
           <br />
         </form>

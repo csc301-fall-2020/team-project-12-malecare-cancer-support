@@ -1,3 +1,25 @@
 .search-component-container {
-    width: 100%
+  width: 100%;
+  border: 1px solid grey;
+}
+
+.search-component-container input {
+  width: 90%;
+  border: none;
+}
+
+.search-button {
+  width: 10%;
+  border: 1px solid grey;
+}
+
+.search-results {
+  width: 90%;
+}
+
+.search-component-container ul {
+  list-style-type: none;
+  text-align: left;
+  padding: 0;
+  margin: 0;
 }
