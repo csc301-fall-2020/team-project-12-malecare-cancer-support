@@ -14,6 +14,7 @@ import CheckLogin from "./components/CheckLogin";
 import Login from "./components/Login";
 import Landing from "./components/Landing";
 import Registration from "./components/Registration";
+import Matching from "./components/Matching";
 
 class App extends React.Component {
   constructor(props) {
@@ -85,7 +86,7 @@ class App extends React.Component {
               <Route
                 exact
                 path="/matching-test"
-                render={(props) => <Landing {...props} />}
+                render={(props) => <Matching {...props} />}
               />
               <Route render={() => <div>404 Not found</div>} />
             </Switch>

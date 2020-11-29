@@ -1,0 +1,68 @@
+@font-face{
+    font-family: textFont;
+    src: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap'
+}
+
+.main{
+    background-color: grey;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: auto;
+    position: absolute;
+}
+.top{
+    background-color: royalblue;
+    /* width: 100%;
+    margin: 0;
+    position: relative;
+    overflow: auto;
+    height: 20%; */
+}
+.bottom{
+    background-color: sandybrown;
+    /* width: 100%;
+    margin: 0;
+    position: relative;
+    overflow: auto;
+    height: 80%; */
+}
+.menuBar{
+    background-color: violet;
+    width: 30%;
+    margin: 0;
+    position: relative;
+    overflow: auto;
+    height: 100%;
+}
+.logo{
+    background-color: yellow;
+    width: 0%;
+    margin: 0;
+    position: relative;
+    overflow: auto;
+    height: 80%;
+}
+.text{
+    color: #E74B1A;
+    font-family: 'Roboto', sans-serif;
+}
+.bio{
+    background-color: #C4C4C4;
+}
+
+.hei{
+    height: 150px;
+}
+
+
+
+
+
+
+
+/*Fonts - I used Roboto
+// Between Roboto light - Roboto medium
+// Colors: #E74B1A and #C4C4C4 **/
