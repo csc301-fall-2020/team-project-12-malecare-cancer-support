@@ -5,7 +5,7 @@ import PhoneInput from "react-phone-number-input";
 import Select from "react-dropdown-select";
 import CancerData from "./cancer_data.json";
 import InterestsData from "./interests.json";
-
+import GeoSearchBar from "../GeoSearchBar";
 
 /* Registration page component */
 class Registration extends React.Component {
@@ -29,8 +29,8 @@ class Registration extends React.Component {
       date: false,
       interests: [],
       bio: null,
+      location: null,
     };
-
 
     for (let key in CancerData) {
       this[key] = CancerData[key].map((entry) => {
@@ -40,140 +40,116 @@ class Registration extends React.Component {
         };
       });
     }
+
     this.interests = InterestsData.interests.map((entry) => {
       return {
         value: entry,
         label: entry,
       };
     });
+
+    this.curr_location = null
+    this.search_results = []
+    this.data_source = ["sacasc", "sacsacas"]
   }
 
   componentDidMount = () => {
-    const checkbox = document.querySelector("#mentee")
-    checkbox.setCustomValidity("At least one checkbox must be checked" )
-  }
+    const checkbox = document.querySelector("#mentee");
+    checkbox.setCustomValidity("At least one checkbox must be checked");
+  };
 
   validateCheckBoxes = (checked, field) => {
-    const checkbox = document.querySelector("#mentee")
+    const checkbox = document.querySelector("#mentee");
     let error_message;
-    if(checked) {
-      error_message = ""
+    if (checked) {
+      error_message = "";
     } else {
-      if(field == "mentee") {
-        if(!this.state.mentor && !this.state.date) {
-          error_message = "At least one checkbox must be checked" 
+      if (field === "mentee") {
+        if (!this.state.mentor && !this.state.date) {
+          error_message = "At least one checkbox must be checked";
         } else {
-          error_message = ""
+          error_message = "";
         }
-      } else if (field == "mentor") {
-        if(!this.state.mentee && !this.state.date) {
-          error_message = "At least one checkbox must be checked" 
+      } else if (field === "mentor") {
+        if (!this.state.mentee && !this.state.date) {
+          error_message = "At least one checkbox must be checked";
         } else {
-          error_message = ""
+          error_message = "";
         }
       } else {
-        if(!this.state.mentor && !this.state.mentee) {
-          error_message = "At least one checkbox must be checked" 
+        if (!this.state.mentor && !this.state.mentee) {
+          error_message = "At least one checkbox must be checked";
         } else {
-          error_message = ""
+          error_message = "";
         }
       }
     }
-    checkbox.setCustomValidity(error_message)
-  }
-
-  get_location_data = async (city) => {
-    const response = await fetch(
-      "https://api.teleport.org/api/cities/?search=" + city
-    );
-    const data = await response.json();
-    const search_results = data["_embedded"]["city:search_results"];
-    if (!search_results.length) {
-      this.search_results = [
-        {
-          city_name: "No results",
-        },
-      ];
-    } else if (!search_results.length < 4) {
-      this.search_results = search_results.map((search_result) => {
-        return {
-          full_city_name: search_result.matching_full_name,
-          href: search_result._links["city:item"]["href"],
-        };
-      });
-    } else {
-      for (let i = 0; i < 4; i++) {
-        let search_result = search_results[i];
-        this.search_results.append({
-          full_city_name: search_result.matching_full_name,
-          href: search_result._links["city:item"]["href"],
-        });
-      }
-    }
+    checkbox.setCustomValidity(error_message);
   };
+
 
   handleOnChangeEmail = (new_email) => {
     this.setState((state) => {
       return {
         ...state,
-        email: new_email
-      }
-    })
-  }
+        email: new_email,
+      };
+    });
+  };
 
   handleOnChangeFirstName = (new_name) => {
     this.setState((state) => {
       return {
         ...state,
-        first_name: new_name
-      }
-    })
-  }
+        first_name: new_name,
+      };
+    });
+  };
 
   handleOnChangeLastName = (new_name) => {
     this.setState((state) => {
       return {
         ...state,
-        last_name: new_name
-      }
-    })
-  }
+        last_name: new_name,
+      };
+    });
+  };
 
   handleOnChangePassword = (new_password) => {
     this.setState((state) => {
       return {
         ...state,
-        password: new_password
-      }
-    })
-  }
+        password: new_password,
+      };
+    });
+  };
 
   handleOnChangeConfirmPassword = (new_password) => {
     this.setState((state) => {
       return {
         ...state,
-        confirm_password: new_password
-      }
-    })
-  }
+        confirm_password: new_password,
+      };
+    });
+  };
 
   handleOnChangePhoneNumber = (new_phone_number) => {
     this.setState((state) => {
       return {
         ...state,
-        phone_number: new_phone_number
-      }
-    })
-  }
+        phone_number: new_phone_number,
+      };
+    });
+  };
 
   handleOnChangeBirthday = (new_date) => {
     this.setState((state) => {
       return {
         ...state,
-        birthday: new_date
-      }
-    })
-  }
+        birthday: new_date,
+      };
+    });
+  };
 
   handleOnChangeGender = (e) => {
     this.setState((state) => {
@@ -184,6 +160,17 @@ class Registration extends React.Component {
     });
   };
 
+  handleOnChangeLocation = (new_location) => {
+      console.log("handleOnChangeLocation called")
+      console.log(new_location)
+      this.setState((state) => {
+        return {
+          ...state,
+          location: new_location
+        }
+      })
+  }
+
   handleOnChangeSexualOrientation = (e) => {
     this.setState((state) => {
       return { ...state, sexual_orientation: e[0].label };
@@ -192,7 +179,7 @@ class Registration extends React.Component {
 
   handleOnChangeMedications = (e) => {
     this.setState((state) => {
-      let medications_copy = e.map((entry) => entry.label)
+      let medications_copy = e.map((entry) => entry.label);
       return {
         ...state,
         medications: medications_copy,
@@ -203,7 +190,7 @@ class Registration extends React.Component {
   handleOnChangeTreatments = (e) => {
     console.log(e);
     this.setState((state) => {
-      let treatments_copy = e.map((entry) => entry.label)
+      let treatments_copy = e.map((entry) => entry.label);
       return {
         ...state,
         treatments: treatments_copy,
@@ -213,8 +200,8 @@ class Registration extends React.Component {
 
   handleOnChangeCancerTypes = (e) => {
     this.setState((state) => {
-      console.log(e)
-      let cancer_types_copy = e.map((entry) => entry.label)
+      console.log(e);
+      let cancer_types_copy = e.map((entry) => entry.label);
       return {
         ...state,
         cancer_types: cancer_types_copy,
@@ -226,35 +213,34 @@ class Registration extends React.Component {
     this.setState((state) => {
       return {
         ...state,
-        mentee: checked
-      }
-    })
+        mentee: checked,
+      };
+    });
 
-    this.validateCheckBoxes(checked, "mentee")
-  }
-
+    this.validateCheckBoxes(checked, "mentee");
+  };
 
   handleOnChangeMentor = (checked) => {
     this.setState((state) => {
       return {
         ...state,
-        mentor: checked
-      }
-    })
+        mentor: checked,
+      };
+    });
 
-    this.validateCheckBoxes(checked, "mentor")
-  }
+    this.validateCheckBoxes(checked, "mentor");
+  };
 
   handleOnChangeDate = (checked) => {
     this.setState((state) => {
       return {
         ...state,
-        date: checked
-      }
-    })
+        date: checked,
+      };
+    });
 
-    this.validateCheckBoxes(checked, "date")
-  }
+    this.validateCheckBoxes(checked, "date");
+  };
 
   handleOnChangeInterests = (e) => {
     this.setState((state) => {
@@ -265,7 +251,7 @@ class Registration extends React.Component {
         interests: interests_copy,
       };
     });
-  }
+  };
 
   handOnInputBio = (e) => {
     const textarea = e.target;
@@ -281,52 +267,55 @@ class Registration extends React.Component {
     this.setState((state) => {
       return {
         ...state,
-        bio: new_bio
-      }
-    })
-  }
+        bio: new_bio,
+      };
+    });
+  };
+
 
   handleOnSubmit = (e) => {
     e.preventDefault();
-    const state_copy = this.state
-    console.log(state_copy) 
-    if(state_copy.phone_number && state_copy.date) {
-      console.log(state_copy)
+    const state_copy = this.state;
+    console.log(state_copy);
+    if (state_copy.phone_number && state_copy.date) {
+      console.log(state_copy);
     } else if (!state_copy.phone_number && !state_copy.date) {
-      const {phone_number, interests, ...data_to_submit } = state_copy
-      console.log(data_to_submit)
-    } else if(!state_copy.phone_number) {
-      const {phone_number, ...data_to_submit } = state_copy
-      console.log(data_to_submit)
+      const { phone_number, interests, ...data_to_submit } = state_copy;
+      console.log(data_to_submit);
+    } else if (!state_copy.phone_number) {
+      const { phone_number, ...data_to_submit } = state_copy;
+      console.log(data_to_submit);
     } else {
-      const {interests, ...data_to_submit } = state_copy
-      console.log(data_to_submit)
+      const { interests, ...data_to_submit } = state_copy;
+      console.log(data_to_submit);
     }
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
-  }
+  };
 
   render() {
     const isDateInterested = this.state.date;
     let interests_selection;
-    if(isDateInterested) {
-      interests_selection = <Select
-                              multi
-                              required={true}
-                              placeholder="Select your interests"
-                              options={this.interests}
-                              onChange={this.handleOnChangeInterests}
-                            />
+    if (isDateInterested) {
+      interests_selection = (
+        <Select
+          multi
+          required={true}
+          placeholder="Select your interests"
+          options={this.interests}
+          onChange={this.handleOnChangeInterests}
+        />
+      );
     } else {
-      interests_selection = <span></span>
+      interests_selection = <span></span>;
     }
 
     return (
       <div>
         <div>Join the CancerChat community</div>
-        <form className="registration-form" onSubmit={this.handleSubmit}>
+        <form className="registration-form" onSubmit={this.handleSubmit} onKeyDown={null}  onKeyPress={null}>
           <input
             className="registrtion-input registration-email"
             type="email"
@@ -335,7 +324,7 @@ class Registration extends React.Component {
             onChange={(e) => this.handleOnChangeEmail(e.target.value)}
             required
           />
-          <br/>
+          <br />
           <input
             className="registration-input registration-password"
             type="password"
@@ -345,7 +334,7 @@ class Registration extends React.Component {
             onChange={(e) => this.handleOnChangePassword(e.target.value)}
             required
           />
-          <br/>
+          <br />
           <input
             className="registration-input registration-confirm-password"
             type="password"
@@ -355,7 +344,7 @@ class Registration extends React.Component {
             onChange={(e) => this.handleOnChangeConfirmPassword(e.target.value)}
             required
           />
-          <br/>
+          <br />
           <input
             className="registration-input registration-first-name"
             type="text"
@@ -364,7 +353,7 @@ class Registration extends React.Component {
             onChange={(e) => this.handleOnChangeFirstName(e.target.value)}
             required
           />
-          <br/>
+          <br />
           <input
             className="registration-input registration-last-name"
             type="text"
@@ -373,7 +362,7 @@ class Registration extends React.Component {
             onChange={(e) => this.handleOnChangeLastName(e.target.value)}
             required
           />
-          <br/>
+          <br />
           <input
             className="registration-input registration-birthday"
             type="date"
@@ -382,27 +371,32 @@ class Registration extends React.Component {
             onChange={(e) => this.handleOnChangeBirthday(e.target.value)}
             required
           />
-          <br/>
+          <br />
           <PhoneInput
             placeholder="Enter your phone number (optional)"
             value={this.state.phone_number}
-            onChange={(phone_number) => this.handleOnChangePhoneNumber(phone_number)}
+            onChange={(phone_number) =>
+              this.handleOnChangePhoneNumber(phone_number)
+            }
           />
           <br />
+          <GeoSearchBar
+            handleOnChangeLocation={this.handleOnChangeLocation}
+          />
           <Select
             required={true}
             placeholder="Select your gender"
             options={this.genderOptions}
             onChange={this.handleOnChangeGender}
           />
-          <br/>
+          <br />
           <Select
             required={true}
             placeholder="Select your sexual orientation"
             options={this.sexualOrientationOptions}
             onChange={this.handleOnChangeSexualOrientation}
           />
-          <br/>
+          <br />
           <Select
             multi
             required={true}
@@ -410,7 +404,7 @@ class Registration extends React.Component {
             options={this.cancerTypes}
             onChange={this.handleOnChangeCancerTypes}
           />
-          <br/>
+          <br />
           <Select
             multi
             required={true}
@@ -418,7 +412,7 @@ class Registration extends React.Component {
             options={this.treatmentTypes}
             onChange={this.handleOnChangeTreatments}
           />
-          <br/>
+          <br />
           <Select
             multi
             required={true}
@@ -426,48 +420,42 @@ class Registration extends React.Component {
             options={this.medications}
             onChange={this.handleOnChangeMedications}
           />
-          <br/>
-          <div style={{display: "flex", justifyContent: "space-between"}}>
-            <label htmlFor="mentee">
-              Looking for a mentor
-            </label>
+          <br />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label htmlFor="mentee">Looking for a mentor</label>
             <input
-                id="mentee"
-                className="registration-mentee"
-                type="checkbox"
-                name="mentee"
-                onChange={(e) => this.handleOnChangeMentee(e.target.checked)}
-              />
+              id="mentee"
+              className="registration-mentee"
+              type="checkbox"
+              name="mentee"
+              onChange={(e) => this.handleOnChangeMentee(e.target.checked)}
+            />
           </div>
-          <br/>
-          <div style={{display: "flex", justifyContent: "space-between"}}>
-            <label htmlFor="mentor">
-              Looking to be a mentor
-            </label>
+          <br />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label htmlFor="mentor">Looking to be a mentor</label>
             <input
-                id="mentor"
-                className="registration-mentor"
-                type="checkbox"
-                name="mentor"
-                onChange={(e) => this.handleOnChangeMentor(e.target.checked)}
-              />
+              id="mentor"
+              className="registration-mentor"
+              type="checkbox"
+              name="mentor"
+              onChange={(e) => this.handleOnChangeMentor(e.target.checked)}
+            />
           </div>
-          <br/>
-          <div style={{display: "flex", justifyContent: "space-between"}}>
-            <label htmlFor="date">
-              Looking for a date
-            </label>
+          <br />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <label htmlFor="date">Looking for a date</label>
             <input
-                id="date"
-                className="registration-date"
-                type="checkbox"
-                name="date"
-                onChange={(e) => this.handleOnChangeDate(e.target.checked)}
-              />
+              id="date"
+              className="registration-date"
+              type="checkbox"
+              name="date"
+              onChange={(e) => this.handleOnChangeDate(e.target.checked)}
+            />
           </div>
-          <br/>
+          <br />
           {interests_selection}
-          <br/>
+          <br />
           <textarea
             className="registration-input registration-bio"
             placeholder="Enter your bio"
@@ -477,14 +465,16 @@ class Registration extends React.Component {
             onChange={(e) => this.handleOnChangeBio(e.target.value)}
             required
           ></textarea>
-          <br/>
+          <br />
           <input
             className="registration-submit"
             type="submit"
             value="Register"
             onClick={this.handleOnSubmit}
+            onKeyDown={null}
+            onKeyPress={null}
           />
-          <br/>
+          <br />
         </form>
       </div>
     );
