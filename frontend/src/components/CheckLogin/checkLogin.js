@@ -13,7 +13,7 @@ class CheckLogin extends React.Component {
     return this.context.isLoggedIn() ? (
       <RequestedComponent {...otherProps} />
     ) : (
-      <Login {...otherProps} />
+      <Login {...otherProps} redirect={true} />
     );
   }
 }

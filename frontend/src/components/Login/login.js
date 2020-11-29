@@ -1,8 +1,6 @@
 import React from "react";
 import "./login.css";
 
-import { Redirect } from "react-router-dom";
-
 import { CurUserContext } from "../../curUserContext";
 import { login } from "../../actions/authentication";
 
@@ -10,7 +8,16 @@ import { login } from "../../actions/authentication";
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.props.history.push("/login");
+    if (this.props.redirect) {
+      this.props.history.replace("/login");
+    }
+  }
+
+  componentDidMount() {
+    if (this.context.isLoggedIn()) {
+      // If user is already logged in, go to the landing page
+      this.props.history.replace("/landing");
+    }
   }
 
   handleSubmit = async (event) => {

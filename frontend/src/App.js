@@ -33,7 +33,7 @@ class App extends React.Component {
         },
         logout: () => {
           this.setState({ currentUser: null });
-          <Redirect to="/login" />;
+          this.props.history.push("/login");
         },
       },
     };
