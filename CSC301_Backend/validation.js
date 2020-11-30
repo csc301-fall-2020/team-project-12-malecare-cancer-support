@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const joi = require('joi');
 
 //Register Validation
@@ -40,10 +41,16 @@ const registerValidation = (data) => {
         medications: joi
             .array()
             .required(),
-        //location: joi
-          //  .map()  data type for location?
-          
-            //.required(),    
+        location: joi
+           .object()
+           .keys({
+            city: joi.string(),
+            region: joi.string(),
+            country: joi.string(),
+            latitude: joi.number(),
+            longitude: joi.number()
+            }) 
+            .required(),    
         is_mentor: joi
             .boolean()
             .required(),

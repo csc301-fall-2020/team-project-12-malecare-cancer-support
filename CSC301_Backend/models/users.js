@@ -61,10 +61,11 @@ let UserSchema = new Schema({
         type: [String],
         //required: true
     },
-    // location: {
-    //     type: Map,
+    location: {
+        type: Map,
+        
 
-    // },
+    },
     is_mentor: {
         type: Boolean,
         //required: true

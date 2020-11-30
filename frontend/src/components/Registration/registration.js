@@ -31,9 +31,9 @@ class Registration extends React.Component {
       treatments: [],
       cancer_types: [],
       medications: [],
-      mentor: null,
-      mentee: null,
-      date: null,
+      mentor: false,
+      mentee: false,
+      date: false,
       interests: [],
       bio: null,
       location: null,
@@ -307,9 +307,9 @@ class Registration extends React.Component {
       cancer_types: this.state.cancer_types,
       location: this.state.location,
       medications: this.state.medications,
-      is_mentor: this.state.is_mentor,
-      is_mentee: this.state.is_mentee,
-      is_partner: this.state.is_partner,
+      is_mentor: this.state.mentor,
+      is_mentee: this.state.mentee,
+      is_partner: this.state.date,
       interests: this.state.interests,
       bio: formElements.namedItem("bio").value
     };
@@ -507,7 +507,7 @@ class Registration extends React.Component {
             className="registration-submit"
             type="submit"
             value="Register"
-          >Registerrr</button>
+          >Register</button>
           <br />
         </form>
       </div>
