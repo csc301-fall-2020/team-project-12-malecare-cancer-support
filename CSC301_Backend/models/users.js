@@ -51,27 +51,31 @@ let UserSchema = new Schema({
     },
     treatments: {
         type: [String],
-        required: true
+        //required: true
     },
     cancer_types: {
         type : [String],
-        required: true
+        //required: true
     },
     medications: {
         type: [String],
-        required: true
+        //required: true
     },
+    // location: {
+    //     type: Map,
+
+    // },
     is_mentor: {
         type: Boolean,
-        required: true
+        //required: true
     },
     is_mentee: {
         type: Boolean,
-        required: true
+        //required: true
     },
     is_partner: {
         type: Boolean,
-        required: true
+        //required: true
     },
     interests: {
         type: [String]

@@ -40,6 +40,10 @@ const registerValidation = (data) => {
         medications: joi
             .array()
             .required(),
+        //location: joi
+          //  .map()  data type for location?
+          
+            //.required(),    
         is_mentor: joi
             .boolean()
             .required(),

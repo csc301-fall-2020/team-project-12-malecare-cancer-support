@@ -5,6 +5,7 @@ import PhoneInput from "react-phone-number-input";
 import Select from "react-dropdown-select";
 import CancerData from "./cancer_data.json";
 import InterestsData from "./interests.json";
+import { CurUserContext } from "../../curUserContext";
 import GeoSearchBar from "../GeoSearchBar";
 import {registration} from "../../actions/authentication";
 import { BrowserRouter } from 'react-router-dom'
@@ -12,6 +13,8 @@ import { Redirect } from 'react-router';
 
 /* Registration page component */
 class Registration extends React.Component {
+ 
+
   constructor() {
     super();
     this.state = {
@@ -20,6 +23,7 @@ class Registration extends React.Component {
       last_name: null,
       birthday: null,
       phone_number: null,
+      locations: null,
       gender: null,
       password: null,
       confirm_password: null,
@@ -27,13 +31,14 @@ class Registration extends React.Component {
       treatments: [],
       cancer_types: [],
       medications: [],
-      mentor: false,
-      mentee: false,
-      date: false,
+      mentor: null,
+      mentee: null,
+      date: null,
       interests: [],
       bio: null,
       location: null,
     };
+   
 
     for (let key in CancerData) {
       this[key] = CancerData[key].map((entry) => {
@@ -287,6 +292,7 @@ class Registration extends React.Component {
   //   }
 
   handleSubmit = async (event) => {
+    console.log("abcdd");
     event.preventDefault();
     const formElements = event.target.children;
     const payload = {
@@ -300,11 +306,12 @@ class Registration extends React.Component {
       sexual_orientation: this.state.sexual_orientation,
       treatments: this.state.treatments,
       cancer_types: this.state.cancer_types,
+      location: this.state.location,
       medications: this.state.medications,
       is_mentor: this.state.is_mentor,
       is_mentee: this.state.is_mentee,
       is_partner: this.state.is_partner,
-      interests: ["interests"],
+      interests: this.state.interests,
       bio: formElements.namedItem("bio").value
     };
     console.log(payload)
@@ -317,7 +324,8 @@ class Registration extends React.Component {
       console.log("An error occurred: ", errorMessage);
     } else {
       // successfully logged in
-      this.props.app.setState({ currentUser: {accessToken: response.data.accessToken} });
+      this.context.setCurrentUser({ accessToken: response.data.accessToken });
+      //this.props.app.setState({ currentUser: {accessToken: response.data.accessToken} });
       <Redirect to="/landing" />;
     }
   }
@@ -345,7 +353,7 @@ class Registration extends React.Component {
         <form
           id="registration-form"
           className="registration-form"
-          onSubmit={this.handleOnSubmit}
+          onSubmit={this.handleSubmit}
         >
           <input
             className="registrtion-input registration-email"
@@ -363,7 +371,7 @@ class Registration extends React.Component {
             placeholder="Password"
             minLength="6"
             onChange={(e) => this.handleOnChangePassword(e.target.value)}
-            required
+            //required
           />
           <br />
           <input
@@ -373,7 +381,7 @@ class Registration extends React.Component {
             placeholder="Confirm password"
             minLength="6"
             onChange={(e) => this.handleOnChangeConfirmPassword(e.target.value)}
-            required
+            //required
           />
           <br />
           <input
@@ -382,7 +390,7 @@ class Registration extends React.Component {
             name="first_name"
             placeholder="Your first name"
             onChange={(e) => this.handleOnChangeFirstName(e.target.value)}
-            required
+            //required
           />
           <br />
           <input
@@ -391,7 +399,7 @@ class Registration extends React.Component {
             name="last_name"
             placeholder="Your last name"
             onChange={(e) => this.handleOnChangeLastName(e.target.value)}
-            required
+            //required
           />
           <br />
           <input
@@ -400,7 +408,7 @@ class Registration extends React.Component {
             name="birthday"
             placeholder="Select your birthday"
             onChange={(e) => this.handleOnChangeBirthday(e.target.value)}
-            required
+            //required
           />
           <br />
           <PhoneInput
@@ -411,17 +419,17 @@ class Registration extends React.Component {
             }
           />
           <br />
-          <GeoSearchBar handleOnChangeLocation={this.handleOnChangeLocation} />
+          <GeoSearchBar handleOnChangeLocation={this.handleOnChangeLocation}/>
           <br />
           <Select
-            required={true}
+            //required={true}
             placeholder="Select your gender"
             options={this.genderOptions}
             onChange={this.handleOnChangeGender}
           />
           <br />
           <Select
-            required={true}
+            //required={true}
             placeholder="Select your sexual orientation"
             options={this.sexualOrientationOptions}
             onChange={this.handleOnChangeSexualOrientation}
@@ -429,7 +437,7 @@ class Registration extends React.Component {
           <br />
           <Select
             multi
-            required={true}
+            //required={true}
             placeholder="Select your cancer types"
             options={this.cancerTypes}
             onChange={this.handleOnChangeCancerTypes}
@@ -437,7 +445,7 @@ class Registration extends React.Component {
           <br />
           <Select
             multi
-            required={true}
+            //required={true}
             placeholder="Select your treatments"
             options={this.treatmentTypes}
             onChange={this.handleOnChangeTreatments}
@@ -445,7 +453,7 @@ class Registration extends React.Component {
           <br />
           <Select
             multi
-            required={true}
+            //required={true}
             placeholder="Select your medications"
             options={this.medications}
             onChange={this.handleOnChangeMedications}
@@ -493,14 +501,14 @@ class Registration extends React.Component {
             rows="5"
             onInput={this.handOnInputBio}
             onChange={(e) => this.handleOnChangeBio(e.target.value)}
-            required
+           // required
           ></textarea>
           <br />
-          <input
+          <button
             className="registration-submit"
             type="submit"
             value="Register"
-          />
+          >Registerrr</button>
           <br />
         </form>
       </div>

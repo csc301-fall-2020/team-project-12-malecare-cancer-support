@@ -24,7 +24,7 @@ export const registration = (payload) => {
     //     console.log("returning null")
     //     return null;
     // }
-    console.log(payload)
+  
   const returnVal = axios
       .post("/auth/signup", payload)
       .then((response) => {
