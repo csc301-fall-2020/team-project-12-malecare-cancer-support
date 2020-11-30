@@ -247,8 +247,7 @@ class Registration extends React.Component {
 
   handleOnChangeInterests = (e) => {
     this.setState((state) => {
-      let interests_copy = state.interests;
-      interests_copy.push(e.label);
+      let interests_copy = e.map((entry) => entry.label)
       return {
         ...state,
         interests: interests_copy,
