@@ -2,6 +2,7 @@ const joi = require('joi');
 
 //Register Validation
 const registerValidation = (data) => {
+    console.log(data);
     const UserSchema = joi.object({
         email: joi
             .string()
@@ -19,9 +20,43 @@ const registerValidation = (data) => {
             .strict()
             .required()
             .max(1024)
-            .min(6)
+            .min(6),
+        birthday: joi
+            .date()
+            .required(),
+        phone: joi
+            .number(),
+        gender: joi
+            .string(),
+        sexual_orientation: joi
+            .string()
+            .required(),
+        treatments: joi
+            .array()
+            .required(),
+        cancer_types: joi
+            .array()
+            .required(),
+        medications: joi
+            .array()
+            .required(),
+        is_mentor: joi
+            .boolean()
+            .required(),
+        is_mentee: joi
+            .boolean()
+            .required(),
+        is_partner: joi
+            .boolean()
+            .required(),
+        interests: joi
+            .array(),
+        bio : joi
+            .string()
+            .required()
     });
-
+    console.log(data);
+    console.log("in validation")
     return UserSchema.validate(data)
 }
 

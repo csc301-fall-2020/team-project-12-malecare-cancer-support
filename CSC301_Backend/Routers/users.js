@@ -27,7 +27,6 @@ router.post('/signup',   async (req, res) => {
     }
 
     //generate a hashed password
-    console.log('Hello World');
     const saltRounds = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
@@ -37,7 +36,20 @@ router.post('/signup',   async (req, res) => {
         email: req.body.email,
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        password: hashedPassword
+        password: hashedPassword,
+        birthday: req.body.birthday,
+        phone: req.body.phone,
+        gender: req.body.gender,
+        sexual_orientation: req.body.sexual_orientation,
+        treatments: req.body.treatment_types,
+        cancer_types: req.body.cancer_types,
+        medication: req.body.medication,
+        is_mentee: req.body.is_mentee,
+        is_mentor: req.body.is_mentor,
+        is_partner: req.body.is_partner,
+        bio: req.body.bio,
+        interests: req.body.interests
+
     });
     try {
         const savedUser = await user.save();

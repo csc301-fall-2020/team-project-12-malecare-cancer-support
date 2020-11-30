@@ -33,7 +33,54 @@ let UserSchema = new Schema({
     date: {
         type: Date,
         default: Date.now()
+    },
+    birthday: {
+        type: Date,
+        required: true,
+    },
+    phone: {
+        type: Number
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    sexual_orientation: {
+        type: String,
+        required: true
+    },
+    treatments: {
+        type: [String],
+        required: true
+    },
+    cancer_types: {
+        type : [String],
+        required: true
+    },
+    medications: {
+        type: [String],
+        required: true
+    },
+    is_mentor: {
+        type: Boolean,
+        required: true
+    },
+    is_mentee: {
+        type: Boolean,
+        required: true
+    },
+    is_partner: {
+        type: Boolean,
+        required: true
+    },
+    interests: {
+        type: [String]
+    },
+    bio : {
+        type: [String],
+        required: true
     }
+
 });
 
 

@@ -18,3 +18,23 @@ export const login = (payload) => {
     });
   return returnVal;
 };
+
+export const registration = (payload) => {
+    // if (!(payload.length === 16)) {
+    //     console.log("returning null")
+    //     return null;
+    // }
+    console.log(payload)
+  const returnVal = axios
+      .post("/auth/signup", payload)
+      .then((response) => {
+
+        return { response: response, errorMessage: "" };
+      })
+      .catch((error) => {
+
+        return { response: null, errorMessage: error.response.data };
+      });
+  console.log(returnVal);
+  return returnVal;
+}

@@ -6,6 +6,9 @@ import Select from "react-dropdown-select";
 import CancerData from "./cancer_data.json";
 import InterestsData from "./interests.json";
 import GeoSearchBar from "../GeoSearchBar";
+import {registration} from "../../actions/authentication";
+import { BrowserRouter } from 'react-router-dom'
+import { Redirect } from 'react-router';
 
 /* Registration page component */
 class Registration extends React.Component {
@@ -267,22 +270,57 @@ class Registration extends React.Component {
     });
   };
 
-  handleOnSubmit = (e) => {
-    e.preventDefault();
-    const state_copy = this.state;
-    if (state_copy.phone_number && state_copy.date) {
-      console.log(state_copy);
-    } else if (!state_copy.phone_number && !state_copy.date) {
-      const { phone_number, interests, ...data_to_submit } = state_copy;
-      console.log(data_to_submit);
-    } else if (!state_copy.phone_number) {
-      const { phone_number, ...data_to_submit } = state_copy;
-      console.log(data_to_submit);
+  // handleOnSubmit = (e) => {
+  //   e.preventDefault();
+  //   const state_copy = this.state;
+  //   if (state_copy.phone_number && state_copy.date) {
+  //     console.log(state_copy);
+  //   } else if (!state_copy.phone_number && !state_copy.date) {
+  //     const { phone_number, interests, ...data_to_submit } = state_copy;
+  //     console.log(data_to_submit);
+  //   } else if (!state_copy.phone_number) {
+  //     const { phone_number, ...data_to_submit } = state_copy;
+  //     console.log(data_to_submit);
+  //   } else {
+  //     const { interests, ...data_to_submit } = state_copy;
+  //     console.log(data_to_submit);
+  //   }
+
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    const formElements = event.target.children;
+    const payload = {
+      email: formElements.namedItem("email").value,
+      password: formElements.namedItem("password").value,
+      firstname: formElements.namedItem("first_name").value,
+      lastname: formElements.namedItem("last_name").value,
+      birthday: formElements.namedItem("birthday").value,
+      phone: this.state.phone_number,
+      gender: this.state.gender,
+      sexual_orientation: this.state.sexual_orientation,
+      treatments: this.state.treatments,
+      cancer_types: this.state.cancer_types,
+      medications: this.state.medications,
+      is_mentor: this.state.is_mentor,
+      is_mentee: this.state.is_mentee,
+      is_partner: this.state.is_partner,
+      interests: ["interests"],
+      bio: formElements.namedItem("bio").value
+    };
+    console.log(payload)
+    const { response, errorMessage } = await registration(payload);
+    console.log(response);
+    console.log("abc");
+    console.log(errorMessage);
+
+    if (!response) {
+      console.log("An error occurred: ", errorMessage);
     } else {
-      const { interests, ...data_to_submit } = state_copy;
-      console.log(data_to_submit);
+      // successfully logged in
+      this.props.app.setState({ currentUser: {accessToken: response.data.accessToken} });
+      <Redirect to="/landing" />;
     }
-  };
+  }
 
   render() {
     const isDateInterested = this.state.date;
