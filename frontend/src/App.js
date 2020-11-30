@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./App.css";
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Check out an intro to react-bootstrap:
 // https://react-bootstrap.github.io/getting-started/introduction/
@@ -34,7 +34,7 @@ class App extends React.Component {
         },
         logout: () => {
           this.setState({ currentUser: null });
-          <Redirect to="/login" />;
+          this.props.history.push("/login");
         },
       },
     };

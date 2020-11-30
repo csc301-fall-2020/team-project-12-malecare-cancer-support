@@ -1,9 +1,7 @@
 /** HTTP requests related to authentication */
 import axios from "axios";
 
-const baseUrl = "http://localhost:3000";
-
-axios.defaults.baseURL = baseUrl;
+axios.defaults.baseURL = "http://localhost:5000";
 
 /* payload must contain fields "email" and "password" */
 export const login = (payload) => {
