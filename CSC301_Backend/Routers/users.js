@@ -100,9 +100,10 @@ router.post('/login', async (req, res) => {
 });
 
 //get current-user
-router.get('user/userId', auth, async(req, res) => {
+router.get('user/:userId', auth, async(req, res) => {
+    const userId = req.params.userId;
     try {
-        const user = await User.findById(req.user.userId);
+        const user = await User.findById(userId);
         // do something here with the user
         res.json({user: user});
     }
