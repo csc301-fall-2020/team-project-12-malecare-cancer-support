@@ -101,9 +101,23 @@
 }
 .heartIcon{
     height: 30px;
+    top: 10px;
+    left: 5px;
+    position: absolute;
 }
 .mentorIcon{
     height: 30px;
+    top: 10px;
+    position: absolute;
+}
+.carouselItem{
+    object-fit: fill;
+    /* height: auto;
+    width: 100%;
+    display: block; */
+}
+.carouselImage{
+    object-fit: fill;
 }
 .bioAndPhoto{
     background-color: #C4C4C4;
