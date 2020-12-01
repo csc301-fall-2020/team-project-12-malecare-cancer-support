@@ -25,6 +25,8 @@
 .navigation{
     width: 30%;
     background-color: #FCE6DF;
+    justify-content: center;
+    align-items: center;
 }
 .likes{
     width: 30%;
@@ -119,6 +121,12 @@
 }
 .carousel-item{
     height: 100%;
+}
+.menuIcon{
+    height: 30%;
+    left: 15px;
+    top: 15px;
+    position: absolute;
 }
 .likeOrPass{
     background-color: white;
