@@ -46,7 +46,7 @@ class Matching extends React.Component {
 
 
 
-            <Carousel>
+            <Carousel className="carousel" interval={null}>
   <Carousel.Item className="carouselItem">
     <img
       className="d-block w-100 carouselImage"
