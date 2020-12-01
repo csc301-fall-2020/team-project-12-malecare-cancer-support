@@ -23,4 +23,8 @@ const auth = (req, res, next) => {
             }
         }
     }
+    else
+        res.status(401).json({error: 'Authentication failed'});
 }
+
+module.exports = auth;

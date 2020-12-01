@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/users');
+const auth = require('../middleware/is-auth');
 const {registerValidation, loginValidation} = require('../validation');
 
 
@@ -94,17 +95,12 @@ router.post('/login', async (req, res) => {
     if (!validPassword)
         return res.status(400).json({error: 'Email address or password is incorrect'});
 
-    const accessToken = jwt.sign({
-        userId: user
-    },
-        'SECRET_TOKEN'
-    );
-
+    const accessToken = jwt.sign({userId: user}, 'SECRET_TOKEN');
     res.header('auth-token', accessToken).json({accessToken: accessToken});
 });
 
 //get current-user
-router.get('user/userId', async(req, res) => {
+router.get('user/userId', auth, async(req, res) => {
     try {
         const user = await User.findById(req.user.userId);
         // do something here with the user
