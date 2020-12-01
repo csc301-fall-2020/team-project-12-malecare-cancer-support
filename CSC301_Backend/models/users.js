@@ -39,7 +39,7 @@ let UserSchema = new Schema({
         required: true,
     },
     phone: {
-        type: Number
+        type: String
     },
     gender: {
         type: String,
