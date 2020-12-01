@@ -99,6 +99,12 @@
     font-size: 35px;
     text-align: right;
 }
+.heartIcon{
+    height: 30px;
+}
+.mentorIcon{
+    height: 30px;
+}
 .bioAndPhoto{
     background-color: #C4C4C4;
     height: 75%;
