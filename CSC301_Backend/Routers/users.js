@@ -18,16 +18,16 @@ router.post('/signup',   async (req, res) => {
     // Validating data of the user before submission
     let {error} = registerValidation(req.body);
     if (error)
-        return res.status(400).send(error.details[0].message);
+        return res.status(400).json({error: error.details[0].message});
 
     //checking if the user is already in database
     let emailExist = await User.findOne({email: req.body.email});
     if (emailExist) {
-        return res.status(400).send('Email address already exists');
+        return res.status(400).json({error: 'Email address already exists'});
     }
 
     //generate a hashed password
-    const saltRounds = await bcrypt.genSalt(10);
+    const saltRounds = await bcrypt.genSalt(15);
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
     // creates user with a hashed password
@@ -54,10 +54,25 @@ router.post('/signup',   async (req, res) => {
     });
     try {
         const savedUser = await user.save();
-        res.send(savedUser);
+        const payload = {
+            userId: savedUser._id
+        }
+        jwt.sign(
+            payload,
+            'SECRET_TOKEN',
+            {expiresIn: '1h'},
+            function(err, accessToken){
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).json({
+                    accessToken,
+                    savedUser
+                });
+            });
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({error: err});
     }
 });
 
@@ -66,31 +81,38 @@ router.post('/login', async (req, res) => {
     //Validating login registration details
     let {error} = loginValidation(req.body);
     if (error)
-        return res.status(400).send(error.details[0].message);
+        return res.status(400).json({error: error.details[0].message});
 
     let user = await User.findOne({email: req.body.email});
     // if the email does not exist
     if (!user) {
-        return res.status(400).send('Email address or Password is wrong');
+        return res.status(400).json({error: 'Email address or password is incorrect'});
     }
 
     //check if password is correct
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword)
-        return res.status(400).send('Email address or password is wrong');
+        return res.status(400).json({error: 'Email address or password is incorrect'});
 
-    //create token
-    const accessToken = jwt.sign(
-        {userId: user._id.toString()},
-        'SECRET_TOKEN',
-        {expiresIn: '1h'}
+    const accessToken = jwt.sign({
+        userId: user
+    },
+        'SECRET_TOKEN'
     );
-    res.status(200).json({
-        accessToken
-    });
 
-    //do something here. Redirect to the main screen which I do not know yet
-    res.send('We are logged in');
+    res.header('auth-token', accessToken).json({accessToken: accessToken});
+});
+
+//get current-user
+router.get('user/userId', async(req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        // do something here with the user
+        res.json({user: user});
+    }
+    catch (err) {
+        res.status(400).json({error: 'Error in finding user'});
+    }
 });
 
 module.exports = router;

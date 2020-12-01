@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
                 next();
             }
             catch (err) {
-                res.status(401).send('Unauthorized');
+                res.status(401).json({error: 'Unauthorized'});
             }
         }
     }
