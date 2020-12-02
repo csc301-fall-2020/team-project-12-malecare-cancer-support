@@ -3,18 +3,17 @@ import "./registration.css";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Select from "react-dropdown-select";
+import { Redirect, BrowserRouter } from "react-router-dom";
+
+import GeoSearchBar from "../GeoSearchBar";
+import { CurUserContext } from "../../curUserContext";
+import { signup } from "../../actions/serverRequests";
+
 import CancerData from "./cancer_data.json";
 import InterestsData from "./interests.json";
-import { CurUserContext } from "../../curUserContext";
-import GeoSearchBar from "../GeoSearchBar";
-import {registration} from "../../actions/authentication";
-import { BrowserRouter } from 'react-router-dom'
-import { Redirect } from 'react-router';
 
 /* Registration page component */
 class Registration extends React.Component {
- 
-
   constructor() {
     super();
     this.state = {
@@ -38,7 +37,6 @@ class Registration extends React.Component {
       bio: null,
       location: null,
     };
-   
 
     for (let key in CancerData) {
       this[key] = CancerData[key].map((entry) => {
@@ -247,7 +245,7 @@ class Registration extends React.Component {
 
   handleOnChangeInterests = (e) => {
     this.setState((state) => {
-      let interests_copy = e.map((entry) => entry.label)
+      let interests_copy = e.map((entry) => entry.label);
       return {
         ...state,
         interests: interests_copy,
@@ -291,7 +289,7 @@ class Registration extends React.Component {
   //   }
 
   handleSubmit = async (event) => {
-    console.log("abcdd");
+    // console.log("abcdd");
     event.preventDefault();
     const formElements = event.target.children;
     const payload = {
@@ -311,29 +309,34 @@ class Registration extends React.Component {
       is_mentee: this.state.mentee,
       is_partner: this.state.date,
       interests: this.state.interests,
-      bio: formElements.namedItem("bio").value
+      bio: formElements.namedItem("bio").value,
     };
-    console.log(payload)
-    if (payload["phone"] == undefined){
+    console.log(payload);
+    if (payload["phone"] == undefined) {
       delete payload["phone"];
     }
-    if (payload["interests"].length == 0){
+    if (payload["interests"].length === 0) {
       delete payload["interests"];
     }
-    const { response, errorMessage } = await registration(payload);
+    //TODO: remove
+    console.log(JSON.stringify(payload));
+
+    const { response, errorMessage } = await signup(payload);
     console.log(response);
-    console.log("abc");
     console.log(errorMessage);
 
     if (!response) {
       console.log("An error occurred: ", errorMessage);
     } else {
       // successfully logged in
-      this.context.setCurrentUser({ accessToken: response.data.accessToken });
-      //this.props.app.setState({ currentUser: {accessToken: response.data.accessToken} });
-      <Redirect to="/landing" />;
+      this.context.setCurrentUser({
+        accessToken: response.data.accessToken,
+        userId: response.data.userId,
+      });
+      // TODO: could instead go to a custom introduction page?
+      this.props.history.push("/landing");
     }
-  }
+  };
 
   render() {
     const isDateInterested = this.state.date;
@@ -424,7 +427,7 @@ class Registration extends React.Component {
             }
           />
           <br />
-          <GeoSearchBar handleOnChangeLocation={this.handleOnChangeLocation}/>
+          <GeoSearchBar handleOnChangeLocation={this.handleOnChangeLocation} />
           <br />
           <Select
             //required={true}
@@ -506,19 +509,22 @@ class Registration extends React.Component {
             rows="5"
             onInput={this.handOnInputBio}
             onChange={(e) => this.handleOnChangeBio(e.target.value)}
-           // required
+            // required
           ></textarea>
           <br />
           <button
             className="registration-submit"
             type="submit"
             value="Register"
-          >Register</button>
+          >
+            Register
+          </button>
           <br />
         </form>
       </div>
     );
   }
 }
+Registration.contextType = CurUserContext;
 
 export default Registration;
