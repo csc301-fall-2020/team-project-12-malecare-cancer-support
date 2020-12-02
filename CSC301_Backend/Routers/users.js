@@ -58,6 +58,7 @@ router.post('/signup',   async (req, res) => {
         const payload = {
             userId: savedUser._id
         }
+        
         jwt.sign(
             payload,
             'SECRET_TOKEN',
@@ -67,8 +68,8 @@ router.post('/signup',   async (req, res) => {
                     res.send(err);
                 }
                 res.status(200).json({
-                    accessToken,
-                    userId//not the right syntax
+                    accessToken : accessToken,
+                    userId: payload["userId"]//not the right syntax
                 });
             });
     }
