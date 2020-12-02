@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import { CurUserContext } from "../../curUserContext";
-import { login } from "../../actions/authentication";
+import { login } from "../../actions/serverRequests";
 
 /* Login page component */
 class Login extends React.Component {
@@ -36,7 +36,10 @@ class Login extends React.Component {
       console.log("An error occurred: ", errorMessage);
     } else {
       // successfully logged in
-      this.context.setCurrentUser({ accessToken: response.data.accessToken });
+      this.context.setCurrentUser({
+        accessToken: response.data.accessToken,
+        userId: response.data.userId,
+      });
       if (formData.inputStayLoggedIn.checked) {
         // User wants to stay logged in
       }
