@@ -2,6 +2,7 @@ import React from "react";
 import "./matching.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
+import Image from 'react-bootstrap/Image';
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous"></link>
 
@@ -32,10 +33,10 @@ class Matching extends React.Component {
           </div>
           <div class="likesMessages bigRightBorder">Space for Likes and Messages</div>
         </div>
-        <div class="col">
+        <div class="col bigLeftBorder">
           <div class="row-10 bioAndPhoto">
           <div class="row no-gutters h-100">
-            <div class="col-sm-12 col-md-6 flex">
+            <div class="col-sm-12 col-lg-6 flex">
               
               
 
@@ -48,59 +49,50 @@ class Matching extends React.Component {
 
             <Carousel className="carousel" interval={null}>
   <Carousel.Item className="carouselItem">
-    <img
+    <Image
       className="d-block w-100 carouselImage"
       src="https://images.pexels.com/photos/3226584/pexels-photo-3226584.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-      alt="First slide"
+      alt="First slide" fluid
     />
     <Carousel.Caption>
-      <h3>First slide label</h3>
-      <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+    <p><text className="borderLikeOrPass">PASS</text>      
+    <text class="borderLikeOrPass">LIKE</text></p>
     </Carousel.Caption>
   </Carousel.Item>
   <Carousel.Item className="carouselItem">
-    <img
+    <Image
       className="d-block w-100 carouselImage"
       src="https://www.liveabout.com/thmb/jyBQcDiXM_ysKfIHu88GvvW-20U=/1300x866/filters:no_upscale():max_bytes(150000):strip_icc()/loan-599c450a03f40200117e717a.jpg"
-      alt="Second slide"
+      alt="Second slide" fluid
     />
-
     <Carousel.Caption>
       <h3>Second slide label</h3>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </Carousel.Caption>
   </Carousel.Item>
   <Carousel.Item className="carouselItem">
-    <img
+    <Image
       className="d-block w-100 carouselImage"
       src="https://i.ytimg.com/vi/3PjV1PQixGI/maxresdefault.jpg"
-      alt="Third slide"
+      alt="Third slide" fluid
     />
-
     <Carousel.Caption>
-      <h3>Third slide label</h3>
-      <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+      <h3>Second slide label</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </Carousel.Caption>
   </Carousel.Item>
 </Carousel>
        
-              
-
-
-{/* 
-https://images.pexels.com/photos/3226584/pexels-photo-3226584.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500
-https://www.liveabout.com/thmb/jyBQcDiXM_ysKfIHu88GvvW-20U=/1300x866/filters:no_upscale():max_bytes(150000):strip_icc()/loan-599c450a03f40200117e717a.jpg
-https://cdn.business2community.com/wp-content/uploads/2015/10/42454567_m.jpg.jpg */}
 
               
 </div>
-            <div class="col-sm-12 col-md-6 bioContainer">
+            <div class="col-sm-12 col-lg-6 bioContainer">
              <text class="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus nec quam non viverra. Vivamus ultrices augue a velit ullamcorper placerat. Ut vel lectus tortor. Vestibulum consequat dui a condimentum pulvinar. Vestibulum ac congue mi. Sed iaculis luctus placerat. Sed nec mauris condimentum, lobortis purus et, bibendum ex. Mauris scelerisque rhoncus quam, et lobortis libero dictum sit amet. Vivamus scelerisque est sem, a elementum est bibendum et. Aenean sit amet ornare arcu. Aliquam id enim neque. Nulla blandit, enim vitae dignissim sagittis, sapien nisl finibus diam, ac convallis nisi arcu ut lorem. Curabitur viverra a urna non faucibus. Mauris eu enim mattis, commodo nibh non, posuere felis. Nulla facilisi.
 
 Proin sagittis neque a ligula efficitur, vel malesuada massa commodo. Phasellus iaculis, sem ut auctor sollicitudin, elit risus dictum quam, et volutpat augue lacus ut lectus. Mauris dignissim pretium fermentum. Morbi fermentum erat ac velit tincidunt sollicitudin. Donec gravida ipsum elit, at luctus massa aliquam sed. Ut tristique magna vitae magna consectetur, sed congue leo consectetur. Quisque in viverra justo. Etiam vestibulum dolor eu odio suscipit, ac sodales augue tincidunt. Proin porta, purus non hendrerit volutpat, lacus eros gravida sapien, nec aliquam sapien quam fringilla lectus. Nullam non mauris nibh. Suspendisse efficitur eros non turpis vestibulum commodo. Donec venenatis neque vel dapibus efficitur.
         </text></div></div>
           </div>
-          <div class="row-2 likeOrPass">Like Pass</div>
+          <div class="row-2 likeOrPass"></div>
         </div>
       </div>
     </div></div>

@@ -111,23 +111,17 @@
     top: 10px;
     position: absolute;
 }
-.carousel{
-    height: auto;
-    width: auto;
-    overflow: hidden;
-}
-.carouselItem{
-    overflow: hidden;
-    /* display: flex; */
-}
 .carouselImage{
-    object-fit: fill;
     overflow: hidden;
-    height: max-content;
-    width: max-content;
-    max-width: 35rem;
+    width: 100%;
+    height: 35rem;
+    /* object-fit: fill;
+    overflow: hidden; */
+    /* height: max-content;
+    width: max-content; */
+    /* max-width: 35rem;
     max-height: 35rem;
-}
+ */}
 .bioAndPhoto{
     background-color: #C4C4C4;
     height: 35rem;
@@ -144,13 +138,9 @@
 .bio{
     height: 100%;
 }
-.photo{
-    object-fit: contain;
-    max-width: 100px;
-    max-height: 100px;
-}
 .carousel-item{
     height: 100%;
+    overflow: hidden;
 }
 .menuIcon{
     height: 30%;
@@ -158,10 +148,24 @@
     top: 15px;
     position: absolute;
 }
-.likeOrPass{
+/* .likeOrPass{
     background-color: white;
     height: 25%;
     position: relative;
+} */
+.borderLikeOrPass{
+    border: solid;
+    border-radius: 30px;
+    background-color: white;
+    color: #E74B1A;
+    border-color: #E74B1A;
+    font-size: 40px;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    /* position: relative; */
+    
+    font-family: 'Roboto', sans-serif;
 }
 
 .hei{
