@@ -68,7 +68,7 @@ router.post('/signup',   async (req, res) => {
                 }
                 res.status(200).json({
                     accessToken,
-                    savedUser
+                    userId//not the right syntax
                 });
             });
     }
@@ -95,8 +95,8 @@ router.post('/login', async (req, res) => {
     if (!validPassword)
         return res.status(400).json({error: 'Email address or password is incorrect'});
 
-    const accessToken = jwt.sign({userId: user}, 'SECRET_TOKEN');
-    res.header('auth-token', accessToken).json({accessToken: accessToken});
+    const accessToken = jwt.sign({userId: user}, 'SECRET_TOKEN');//should be user._Id?
+    res.header('auth-token', accessToken).json({accessToken: accessToken, userId: user._id});
 });
 
 //get current-user
