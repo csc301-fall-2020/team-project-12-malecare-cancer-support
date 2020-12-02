@@ -314,6 +314,12 @@ class Registration extends React.Component {
       bio: formElements.namedItem("bio").value
     };
     console.log(payload)
+    if (payload["phone"] == undefined){
+      delete payload["phone"];
+    }
+    if (payload["interests"].length == 0){
+      delete payload["interests"];
+    }
     const { response, errorMessage } = await registration(payload);
     console.log(response);
     console.log("abc");
