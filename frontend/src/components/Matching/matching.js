@@ -28,8 +28,8 @@ class Matching extends React.Component {
       <div class="row bottom no-gutters">
         <div class="col-3 likes">
           <div class="row no-gutters likesOrMessages">
-            <div class=" col no-gutters rightBorder"><text class="center bold">Likes<text class="numLikes">1</text></text></div>
-            <div class="col no-gutters bigRightBorder"><text class="center">Messages <text class="numLikes">99+</text></text></div>
+            <div class=" col-sm-12 col-md-6 no-gutters bigRightBorder"><text class="center bold">Likes<text class="numLikes">1</text></text></div>
+            <div class="col-sm-12 col-md-6 no-gutters bigRightBorder"><text class="center">Messages <text class="numLikes">99+</text></text></div>
           </div>
           <div class="likesMessages bigRightBorder">Space for Likes and Messages</div>
         </div>
@@ -55,8 +55,8 @@ class Matching extends React.Component {
       alt="First slide" fluid
     />
     <Carousel.Caption>
-    <p><text className="borderLikeOrPass">PASS</text>      
-    <text class="borderLikeOrPass">LIKE</text></p>
+    <text className="borderLikeOrPass">PASS</text>      
+    <text class="borderLikeOrPass">CONNECT</text>
     </Carousel.Caption>
   </Carousel.Item>
   <Carousel.Item className="carouselItem">
@@ -66,8 +66,8 @@ class Matching extends React.Component {
       alt="Second slide" fluid
     />
     <Carousel.Caption>
-      <h3>Second slide label</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <text className="borderLikeOrPass">PASS</text>      
+    <text class="borderLikeOrPass">CONNECT</text>
     </Carousel.Caption>
   </Carousel.Item>
   <Carousel.Item className="carouselItem">
@@ -77,8 +77,8 @@ class Matching extends React.Component {
       alt="Third slide" fluid
     />
     <Carousel.Caption>
-      <h3>Second slide label</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <text className="borderLikeOrPass">PASS</text>      
+    <text class="borderLikeOrPass">CONNECT</text>
     </Carousel.Caption>
   </Carousel.Item>
 </Carousel>
