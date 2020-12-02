@@ -318,8 +318,6 @@ class Registration extends React.Component {
     if (payload["interests"].length === 0) {
       delete payload["interests"];
     }
-    //TODO: remove
-    console.log(JSON.stringify(payload));
 
     const { response, errorMessage } = await signup(payload);
     console.log(response);
@@ -327,6 +325,7 @@ class Registration extends React.Component {
 
     if (!response) {
       console.log("An error occurred: ", errorMessage);
+      // TODO: display error message in the browser in some way
     } else {
       // successfully logged in
       this.context.setCurrentUser({
