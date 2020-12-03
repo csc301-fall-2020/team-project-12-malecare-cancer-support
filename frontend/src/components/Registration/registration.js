@@ -3,6 +3,7 @@ import "./registration.css";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Select from "react-dropdown-select";
+import { withRouter } from "react-router-dom";
 
 import GeoSearchBar from "../GeoSearchBar";
 import { CurUserContext } from "../../curUserContext";
@@ -13,8 +14,8 @@ import InterestsData from "./interests.json";
 
 /* Registration page component */
 class Registration extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: null,
       first_name: null,
@@ -529,4 +530,4 @@ class Registration extends React.Component {
 }
 Registration.contextType = CurUserContext;
 
-export default Registration;
+export default withRouter(Registration);
