@@ -1,7 +1,10 @@
 import React from "react";
 
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "./App.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+
+// Use Sass to allow overriding/adding to the bootstrap variables/classes
+import "./App.scss";
 
 // Check out an intro to react-bootstrap:
 // https://react-bootstrap.github.io/getting-started/introduction/
@@ -14,6 +17,7 @@ import CheckLogin from "./components/CheckLogin";
 import Login from "./components/Login";
 import Landing from "./components/Landing";
 import Registration from "./components/Registration";
+import Matching from "./components/Matching";
 
 class App extends React.Component {
   constructor(props) {
@@ -45,49 +49,34 @@ class App extends React.Component {
         <CurUserContext.Provider value={this.state.contextValue}>
           <BrowserRouter>
             <Switch>
-              <Route
-                exact
-                path={["/", "/login"]}
-                render={(props) => (
-                  <CheckLogin {...props} requestedComponent={Login} />
-                )}
-              />
-              <Route
-                exact
-                path={"/register"}
-                render={(props) => (
-                  <CheckLogin {...props} requestedComponent={Registration} />
-                )}
-              />
-              <Route
-                exact
-                path={"/landing"}
-                render={(props) => (
-                  <CheckLogin {...props} requestedComponent={Landing} />
-                )}
-              />
+              <Route exact path={["/", "/login"]}>
+                <Login />
+              </Route>
+              <Route exact path="/register">
+                <Registration />
+              </Route>
+              {/* The rest of the routes require login to access */}
+              <Route exact path="/landing">
+                <CheckLogin requestedComponent={Landing} />
+              </Route>
+
               {/* TEMPORARY ROUTES BELOW FOR DEVELOPMENT TESTING */}
-              <Route
-                exact
-                path="/login-test"
-                render={(props) => <Login {...props} />}
-              />
-              <Route
-                exact
-                path="/registration-test"
-                render={(props) => <Registration {...props} />}
-              />
-              <Route
-                exact
-                path="/landing-test"
-                render={(props) => <Landing {...props} />}
-              />
-              <Route
-                exact
-                path="/matching-test"
-                render={(props) => <Landing {...props} />}
-              />
-              <Route render={() => <div>404 Not found</div>} />
+              <Route exact path="/login-test">
+                <Login />
+              </Route>
+              <Route exact path="/registration-test">
+                <Registration />
+              </Route>
+              <Route exact path="/landing-test">
+                <Landing />
+              </Route>
+              <Route exact path="/matching-test">
+                <Matching />
+              </Route>
+
+              <Route>
+                <div>404 Not found</div>
+              </Route>
             </Switch>
           </BrowserRouter>
         </CurUserContext.Provider>

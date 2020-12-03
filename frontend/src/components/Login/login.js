@@ -1,6 +1,8 @@
 import React from "react";
 import "./login.css";
 
+import { Link, withRouter } from "react-router-dom";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -11,9 +13,7 @@ import { login } from "../../actions/serverRequests";
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    if (this.props.redirect) {
-      this.props.history.replace("/login");
-    }
+    console.log(this.props)
   }
 
   componentDidMount() {
@@ -40,7 +40,10 @@ class Login extends React.Component {
       console.log("An error occurred: ", errorMessage);
     } else {
       // successfully logged in
-      this.context.setCurrentUser({ accessToken: response.data.accessToken });
+      this.context.setCurrentUser({
+        accessToken: response.data.accessToken,
+        userId: response.data.userId,
+      });
       if (formData.inputStayLoggedIn.checked) {
         // User wants to stay logged in
       }
@@ -52,7 +55,7 @@ class Login extends React.Component {
     const formLabelClasses = "h4 font-weight-normal";
     return (
       <div>
-        <h2 className="text-center m-5">CancerChat</h2>
+        <h1 className="text-center m-5 text-customOrange">CancerChat</h1>
         <Form className="login-form mx-auto" onSubmit={this.handleSubmit}>
           <Form.Group controlId="inputEmail">
             <Form.Label className={formLabelClasses}>Email address</Form.Label>
@@ -72,7 +75,7 @@ class Login extends React.Component {
               required
             />
           </Form.Group>
-          <Form.Group controlId="inputStayLoggedIn">
+          <Form.Group controlId="inputStayLoggedIn" className="mt-4 mb-4">
             <Form.Check
               className={formLabelClasses}
               type="checkbox"
@@ -80,14 +83,22 @@ class Login extends React.Component {
               custom
             />
           </Form.Group>
-          <Button size="lg" variant="primary" type="submit">
+          <Button
+            size="lg"
+            variant="customOrange"
+            type="submit"
+            className="d-block mx-auto w-100 login-submit"
+          >
             Login
           </Button>
         </Form>
+        <Link to="/register" className="d-block mx-auto text-center mt-4">
+          Don't have an account? Sign up now!
+        </Link>
       </div>
     );
   }
 }
 Login.contextType = CurUserContext;
 
-export default Login;
+export default withRouter(Login);

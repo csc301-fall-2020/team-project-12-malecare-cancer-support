@@ -31,3 +31,4 @@ export const signup = (payload) => {
     });
   return returnVal;
 };
+
