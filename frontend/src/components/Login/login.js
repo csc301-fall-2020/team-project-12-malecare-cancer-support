@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import { CurUserContext } from "../../curUserContext";
-import { login } from "../../actions/authentication";
+import { login } from "../../actions/serverRequests";
 
 /* Login page component */
 class Login extends React.Component {
