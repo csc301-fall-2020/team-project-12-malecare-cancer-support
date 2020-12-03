@@ -1,7 +1,10 @@
 import React from "react";
 
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "./App.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+
+// Use Sass to allow overriding/adding to the bootstrap variables/classes
+import "./App.scss";
 
 // Check out an intro to react-bootstrap:
 // https://react-bootstrap.github.io/getting-started/introduction/
