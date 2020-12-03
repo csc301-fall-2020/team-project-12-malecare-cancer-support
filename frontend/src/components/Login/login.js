@@ -30,8 +30,12 @@ class Login extends React.Component {
       email: formData.inputEmail.value,
       password: formData.inputPassword.value,
     };
+   
     const { response, errorMessage } = await login(payload);
     console.log(response);
+    console.log("abc");
+    console.log(errorMessage);
+    
     if (!response) {
       console.log("An error occurred: ", errorMessage);
     } else {
