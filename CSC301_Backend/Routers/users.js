@@ -53,6 +53,9 @@ router.post('/signup',   async (req, res) => {
         interests: req.body.interests
 
     });
+    if (user.interests.length == 0){//not required
+        delete user.interests;
+      }
     try {
         const savedUser = await user.save();
         const payload = {
