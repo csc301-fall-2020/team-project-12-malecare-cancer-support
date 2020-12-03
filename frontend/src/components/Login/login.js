@@ -13,9 +13,7 @@ import { login } from "../../actions/serverRequests";
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    if (this.props.redirect) {
-      this.props.history.replace("/login");
-    }
+    console.log(this.props)
   }
 
   componentDidMount() {
@@ -53,7 +51,7 @@ class Login extends React.Component {
     const formLabelClasses = "h4 font-weight-normal";
     return (
       <div>
-        <h2 className="text-center m-5">CancerChat</h2>
+        <h1 className="text-center m-5 text-customOrange">CancerChat</h1>
         <Form className="login-form mx-auto" onSubmit={this.handleSubmit}>
           <Form.Group controlId="inputEmail">
             <Form.Label className={formLabelClasses}>Email address</Form.Label>
@@ -90,7 +88,7 @@ class Login extends React.Component {
             Login
           </Button>
         </Form>
-        <Link to="/registration-test" className="d-block mx-auto text-center mt-3">
+        <Link to="/register" className="d-block mx-auto text-center mt-4">
           Don't have an account? Sign up now!
         </Link>
       </div>

@@ -3,7 +3,6 @@ import "./registration.css";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Select from "react-dropdown-select";
-import { Redirect, BrowserRouter } from "react-router-dom";
 
 import GeoSearchBar from "../GeoSearchBar";
 import { CurUserContext } from "../../curUserContext";
@@ -60,6 +59,10 @@ class Registration extends React.Component {
   }
 
   componentDidMount = () => {
+    if (this.context.isLoggedIn()) {
+      // If user is already logged in, go to the landing page
+      this.props.history.replace("/landing");
+    }
     const checkbox = document.querySelector("#mentee");
     checkbox.setCustomValidity("At least one checkbox must be checked");
   };
