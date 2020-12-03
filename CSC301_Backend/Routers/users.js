@@ -104,17 +104,17 @@ router.post('/login', async (req, res) => {
 });
 
 //get current-user
-router.get('user/:userId', auth, async(req, res) => {
-    const userId = req.params.userId;
-    try {
-        const user = await User.findById(userId);
-        // do something here with the user
-        res.json({user: user});
-    }
-    catch (err) {
-        res.status(400).json({error: 'Error in finding user'});
-    }
-});
+// router.get('user/:userId', auth, async(req, res) => {
+//     const userId = req.params.userId;
+//     try {
+        // const user = await User.findById(userId);
+        // // do something here with the user
+        // res.json({user: user});
+//     }
+//     catch (err) {
+//         res.status(400).json({error: 'Error in finding user'});
+//     }
+// });
 
 module.exports = router;
 
