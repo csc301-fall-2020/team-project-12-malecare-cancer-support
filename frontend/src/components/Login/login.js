@@ -1,6 +1,8 @@
 import React from "react";
 import "./login.css";
 
+import { Link, withRouter } from "react-router-dom";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -71,7 +73,7 @@ class Login extends React.Component {
               required
             />
           </Form.Group>
-          <Form.Group controlId="inputStayLoggedIn">
+          <Form.Group controlId="inputStayLoggedIn" className="mt-4 mb-4">
             <Form.Check
               className={formLabelClasses}
               type="checkbox"
@@ -79,14 +81,22 @@ class Login extends React.Component {
               custom
             />
           </Form.Group>
-          <Button size="lg" variant="primary" type="submit">
+          <Button
+            size="lg"
+            variant="customOrange"
+            type="submit"
+            className="d-block mx-auto w-100 login-submit"
+          >
             Login
           </Button>
         </Form>
+        <Link to="/registration-test" className="d-block mx-auto text-center mt-3">
+          Don't have an account? Sign up now!
+        </Link>
       </div>
     );
   }
 }
 Login.contextType = CurUserContext;
 
-export default Login;
+export default withRouter(Login);
