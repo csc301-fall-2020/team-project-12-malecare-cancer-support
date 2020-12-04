@@ -20,17 +20,14 @@ router.post('/signup',   async (req, res) => {
     let {error} = registerValidation(req.body);
     if (error)
         return res.status(400).json({error: error.details[0].message});
-
     //checking if the user is already in database
     let emailExist = await User.findOne({email: req.body.email});
     if (emailExist) {
         return res.status(400).json({error: 'Email address already exists'});
     }
-
     //generate a hashed password
-    const saltRounds = await bcrypt.genSalt(15);
+    const saltRounds = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-
     // creates user with a hashed password
     //  more objects can be passed in here
     const user = new User({
@@ -50,10 +47,13 @@ router.post('/signup',   async (req, res) => {
         is_mentor: req.body.is_mentor,
         is_partner: req.body.is_partner,
         bio: req.body.bio,
-        interests: req.body.interests
-
+        interests: req.body.interests,
+        likes: [],
+        liked_by: [],
+        matched: [],
+        passed: []
     });
-    if (user.interests.length == 0){//not required
+    if (user.interests.length === 0){//not required
         delete user.interests;
       }
     try {

@@ -64,10 +64,16 @@ const registerValidation = (data) => {
             .array(),
         bio : joi
             .string()
-            .required()
+            .required(),
+        likes: joi
+            .array(),
+        liked_by: joi
+            .array(),
+        matched: joi
+            .array(),
+        passed: joi
+            .array()
     });
-    console.log(data);
-    console.log("in validation")
     return UserSchema.validate(data)
 }
 

@@ -63,8 +63,6 @@ let UserSchema = new Schema({
     },
     location: {
         type: Map,
-        
-
     },
     is_mentor: {
         type: Boolean,
@@ -84,8 +82,19 @@ let UserSchema = new Schema({
     bio : {
         type: [String],
         required: true
+    },
+    likes: {
+        type: [String]
+    },
+    liked_by: {
+        type: [String]
+    },
+    matched: {
+        type: [String]
+    },
+    passed: {
+        type: [String]
     }
-
 });
 
 
