@@ -14,13 +14,20 @@
     padding: 0;
     position: absolute;
     overflow-x: hidden !important;
+    background-color: royalblue;
 }
 .top{
-    background-color: royalblue;
     height: 10%;
+    width: 100%;
 }
 .bottom{
     height: 90%;
+    width: 100%;
+}
+.topLeftNavigation {
+    background-color: #FCE6DF;
+    justify-content: center;
+    align-items: center;
 }
 .navigation{
     width: 30%;
