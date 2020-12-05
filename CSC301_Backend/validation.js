@@ -1,4 +1,3 @@
-const Joi = require('joi');
 const joi = require('joi');
 
 //Register Validation

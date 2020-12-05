@@ -74,6 +74,7 @@ router.post('/signup',   async (req, res) => {
                     accessToken : accessToken,
                     userId: payload["userId"]//not the right syntax
                 });
+
             });
     }
     catch (err) {

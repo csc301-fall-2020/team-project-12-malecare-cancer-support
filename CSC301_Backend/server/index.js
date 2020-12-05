@@ -14,9 +14,7 @@ mongoose.connect('mongodb://localhost:27017/cancer',
     () => console.log('connected to db')
     );
 
-//--------------------------------------------
-
-
+//---------------------------------------------------------------------
 // for communication between front end & backend from different servers
 
 app.use((req, res, next) => {
@@ -38,13 +36,13 @@ app.get('/user/:userId', async(req,res) => {
     var oid = mongoose.Types.ObjectId(req.params.userId);
     console.log(oid)
     try {
-      
+
         const user = await User.findById({_id: oid});
         console.log(user)
         console.log()
         console.log('abc')
         res.status(200).json({user: user});
-        
+
     }
     catch (err) {
         console.log("abcd")
@@ -88,36 +86,56 @@ app.get('/matches/:userId', async(req,res) => {
     }
 });
 
+
 app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => {
 
     // When current user likes another user (liked) we update both of their arrays/ properties
     // if both of them like each other then match (remove each other from liked arrays
     // if at least one of them doesn't like the other, then add this user
     try {
-        // const currstring = req.params.currentUser
-        // const likedstring = req.params.UserthatwasLiked
-        const currentUser = User.findById({_id: mongoose.Types.ObjectId(req.params.currentUser)})
-        const likedUser = User.findById({_id: mongoose.Types.ObjectId(req.params.UserthatwasLiked)})
-
-        if (currentUser.liked_by.contains(likedUser)){
+        // const currentUser = req.params.currentUser;
+        // const likedUser = req.params.UserthatwasLiked;
+        const currentUser = await User.findById({_id: req.params.currentUser}).exec()
+        const likedUser = await User.findById({_id:req.params.UserthatwasLiked}).exec()
+        console.log(currentUser.id);
+        console.log(likedUser.id);
+        // const likedUser = User.findById(req.params.currentUser);
+        //console.log(currentUser);
+        //console.log(likedUser);
+        //console.log(currentUser.liked_by);
+        //console.log(currentUser.liked_by.contains(likedUser));
+        //  try{
+        //     User.findById(currentUser, function(err, user){
+        //         console.log(user.liked_by);
+        //         user.liked_by.push(likedUser);
+        //         user.save()
+        //         console.log(user.liked_by)
+        //         console.log(user.liked_by.includes(likedUser));
+        //     })
+        // }catch(err){
+        //     console.log(err)
+        // }
+        if (currentUser.liked_by.includes(likedUser.id)){
+            console.log('Hurray');
             // When Liked User already liked current user -> results in a match
-            let index = currentUser.liked_by.indexOf(likedUser)
-            currentUser.liked_by.splice(index, 1)
-            index = likedUser.likes.indexOf(currentUser)
-            likedUser.likes.splice(index, 1)
-            currentUser.matched.push(likedUser)
-            likedUser.matched.push(currentUser)
-            currentUser.save()
-            likedUser.save()
+            let index = currentUser.liked_by.indexOf(likedUser.id);
+            currentUser.liked_by.splice(index, 1);
+            index = likedUser.likes.indexOf(currentUser);
+            likedUser.likes.splice(index, 1);
+            currentUser.matched.push(likedUser.id);
+            likedUser.matched.push(currentUser.id);
+            currentUser.save();
+            likedUser.save();
         } else{
             // When liked user hasn't liked current user -> add current to likedby list of liked user,
+            console.log('Hello');
             // and add liked to likes of current user
-            currentUser.likes.push(likedUser)
-            likedUser.liked_by.push(currentUser)
+            currentUser.likes.push(likedUser.id)
+            likedUser.liked_by.push(currentUser.id)
             currentUser.save()
             likedUser.save()
         }
-        // res.status(200).json({user: user});
+        res.status(200).json({user: user});
     }
     catch (err) {
         res.status(400).json({error: "Error in finding user"});
@@ -151,3 +169,13 @@ app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
 });
 
 app.listen(5000, () => console.log('Success, Server is up and running!'));
+
+
+// user A - 5fcaf1762137ae5a38470903
+// A likes [5fcaf1a32137ae5a38470904 ]
+
+// user B - 5fcaf1a32137ae5a38470904
+
+// B liked_by[5fcaf1762137ae5a38470903 ]
+
+
