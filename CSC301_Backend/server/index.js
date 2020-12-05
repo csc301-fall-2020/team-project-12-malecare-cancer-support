@@ -7,6 +7,7 @@ const User = require('../models/users');
 const mongoose = require('mongoose');
 
 const user = require('../Routers/users');
+const data = require('../Routers/data');
 
 
 mongoose.connect('mongodb://localhost:27017/cancer',
@@ -31,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/auth', user);
-
+app.use('/data', data);
 app.get('/user/:userId', async(req,res) => {
     const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
     console.log(o_id);
