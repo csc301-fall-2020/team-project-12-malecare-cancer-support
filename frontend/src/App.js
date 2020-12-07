@@ -18,6 +18,9 @@ import Login from "./components/Login";
 import Landing from "./components/Landing";
 import Registration from "./components/Registration";
 import Matching from "./components/Matching";
+import Requests from './components/Requests';
+import Chat from './components/Chat';
+import Chats from './components/Chats';
 
 class App extends React.Component {
   constructor(props) {
@@ -73,7 +76,14 @@ class App extends React.Component {
               <Route exact path="/matching-test">
                 <Matching />
               </Route>
-
+              <Route exact path="/chats-test">
+                <Chats/>
+              </Route>
+              <Route exact path='/contacts-test'>
+                <Requests/>
+              </Route>
+              <Route path='/chat/:id' component={Chat}>
+              </Route>
               <Route>
                 <div>404 Not found</div>
               </Route>

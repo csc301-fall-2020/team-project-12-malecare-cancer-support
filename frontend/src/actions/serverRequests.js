@@ -31,3 +31,16 @@ export const signup = (payload) => {
     });
   return returnVal;
 };
+
+export const getConversations = (user_id) => {
+  const returnVal = axios
+    .get("/conversations/" + user_id)
+    .then((response) => {
+      return response.data
+    })
+    .catch((error) => {
+      return {response: null, errorMessage: error.response.data};
+    })
+
+  return returnVal;
+}
