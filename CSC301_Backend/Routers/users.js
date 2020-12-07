@@ -51,7 +51,8 @@ router.post('/signup',   async (req, res) => {
         likes: [],
         liked_by: [],
         matched: [],
-        passed: []
+        passed: [],
+        profileImage: req.body.profileImage
     });
     if (user.interests.length === 0){//not required
         delete user.interests;

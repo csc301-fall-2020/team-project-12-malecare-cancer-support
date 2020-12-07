@@ -94,6 +94,10 @@ let UserSchema = new Schema({
     },
     passed: {
         type: [String]
+    },
+    profileImage:{
+        type: String,
+        required: true
     }
 });
 

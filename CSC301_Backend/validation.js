@@ -71,7 +71,10 @@ const registerValidation = (data) => {
         matched: joi
             .array(),
         passed: joi
-            .array()
+            .array(),
+        profileImage: joi
+            .string()
+            .required()
     });
     return UserSchema.validate(data)
 }
