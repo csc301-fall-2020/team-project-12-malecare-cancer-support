@@ -2,12 +2,16 @@ const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 const User = require('../models/users');
+const socket = require("socket.io");
+const Conversation = require('../models/conversation');
 
 //----------------------------------------
 const mongoose = require('mongoose');
 
 const user = require('../Routers/users');
 const data = require('../Routers/data');
+const conversations = require('../Routers/conversations');
+const messages = require('../Routers/messages');
 
 
 mongoose.connect('mongodb://localhost:27017/cancer',
@@ -169,8 +173,91 @@ app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
 
 });
 
-app.listen(5000, () => console.log('Success, Server is up and running!'));
+server = app.listen(5000, () => console.log('Success, Server is up and running!'));
 
+
+const io = socket(server, {
+    cors: {
+        origin: '*'
+    }
+})
+
+io.on('connection', socket => {
+    socket.on('join', async ({conversationId, userId}, callback) => {
+        try {
+            let conversation = await Conversation.findById(conversationId);
+            if(!conversation) {
+                return callback(e);
+            }
+            let messages = conversation.messages.sort((m1, m2) => m2.createdAt - m1.createdAt);
+            let count = 0;
+            messages = messages.filter(msg => {
+                if (count < 10) {
+                  count++;
+                  return true;
+                }
+                return false;
+              });
+            messages.reverse();
+            
+            socket.userId = userId;
+            socket.activeRoom = conversationId
+            
+            const areMessagesLeft = count >= 10
+            socket.emit('messages', {messages, isNew: false, areMessagesLeft});
+
+            socket.join(conversationId);
+            callback({error: false});
+        } catch (e) {
+            callback({error: e});
+        }
+    });
+
+    socket.on('sendMessage', async ({content, author}, callback) => {
+        try{
+            const new_message = {author, content};
+            let conversation = await Conversation.findById(socket.activeRoom);
+            conversation.messages.push(new_message);
+            await conversation.save();
+            let messages = conversation.messages.toObject();
+            const edited_message = messages[messages.length - 1];
+            io.to(socket.activeRoom).emit('messages', {messages: [edited_message], isNew: true, areMessagesLeft: 'not applicable'});
+            callback({error: false});
+        } catch(e) {
+            callback({error: e});
+        }
+
+      })
+
+    socket.on('latestMessages', async (_id, callback) => {
+        try {
+            let conversation = await Conversation.findById(socket.activeRoom);
+            if(!conversation) {
+                return callback(e);
+            }
+            let messages = conversation.messages.sort((m1, m2) => m2.createdAt - m1.createdAt);
+            let count = 0;
+            let idFound = false; 
+            messages = messages.filter(msg => {
+                if (count < 10 && idFound) {
+                  count++;
+                  return true;
+                } else if (msg._id == _id) {
+                    idFound = true;
+                }
+                return false;
+              });
+            messages.reverse();
+
+            const areMessagesLeft = count == 10
+            socket.emit('messages', {messages, isNew: false, areMessagesLeft});
+            callback({error: false});
+        } catch (e) {
+            callback({error: e})
+        }
+    })
+
+});
 
 // user A - 5fcaf1762137ae5a38470903
 // A likes [5fcaf1a32137ae5a38470904 ]
