@@ -5,9 +5,6 @@ axios.defaults.baseURL = "http://localhost:5000";
 /** HTTP requests related to authentication */
 /* payload must contain fields "email" and "password" */
 export const login = (payload) => {
-  // if (!("email" in payload && "password" in payload)) {
-  //   return null;
-  // }
   const returnVal = axios
     .post("/auth/login", payload)
     .then((response) => {
@@ -19,15 +16,47 @@ export const login = (payload) => {
   return returnVal;
 };
 
+/* payload must contain the fields required for registration */
 export const signup = (payload) => {
   // For this function, assume the payload is properly formatted by the caller
   const returnVal = axios
     .post("/auth/signup", payload)
     .then((response) => {
-      return { response: response, errorMessage: "" };
+      return { response: response.data, errorMessage: "" };
     })
     .catch((error) => {
-      return { response: null, errorMessage: error.response.data };
+      return { response: null, errorMessage: error.response.data.error };
+    });
+  return returnVal;
+};
+
+/*** HTTP requests related to user information */
+/* Get the profile information of the user with targetUserId */
+export const getUser = (curAccessToken, targetUserId) => {
+  // Include authToken in payload
+  const payload = { authToken: curAccessToken };
+  const returnVal = axios
+    .get("/user/" + targetUserId, payload)
+    .then((response) => {
+      return { response: response.data, errorMessage: "" };
+    })
+    .catch((error) => {
+      return { response: null, errorMessage: error.response.data.error };
+    });
+  return returnVal;
+};
+
+/* Get the profile information of the user with targetUserId */
+export const getMatchRecommendations = (curAccessToken, curUserId) => {
+  // Include authToken in payload
+  const payload = { authToken: curAccessToken };
+  const returnVal = axios
+    .get("/matches/" + curUserId, payload)
+    .then((response) => {
+      return { response: response.data, errorMessage: "" };
+    })
+    .catch((error) => {
+      return { response: null, errorMessage: error.response.data.error };
     });
   return returnVal;
 };
