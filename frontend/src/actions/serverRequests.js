@@ -44,3 +44,28 @@ export const getConversations = (user_id) => {
 
   return returnVal;
 }
+
+export const getCancerData = () => {
+  const returnVal = axios
+    .get("/data/cancer-data")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error.response.data;
+    })
+
+    return returnVal;
+}
+
+export const getInterestsData = () => {
+  const returnVal = axios
+    .get("/data/interests")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error.response.data;
+    })
+    return returnVal;
+}

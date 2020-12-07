@@ -6,7 +6,6 @@ import {withRouter} from 'react-router-dom';
 
 
 class Requests extends React.Component {
-    static contextType = UserContext;
 
     constructor(props) {
         super(props);
@@ -74,7 +73,6 @@ class Requests extends React.Component {
     }
   }
 
-  
-Requests.contextType = UserContext;
+
   
 export default withRouter(Requests);
