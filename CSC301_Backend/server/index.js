@@ -112,6 +112,7 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
     // if both of them like each other then match (remove each other from liked arrays
     // if at least one of them doesn't like the other, then add this user
     try {
+        let matched = false;
         const currentUser = await User.findById({_id: req.params.currentUser}).exec()
         const likedUser = await User.findById({_id:req.params.UserthatwasLiked}).exec()
         if (currentUser.liked_by.includes(likedUser.id)){
@@ -122,6 +123,7 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
             likedUser.likes.splice(index, 1);
             currentUser.matched.push(likedUser.id);
             likedUser.matched.push(currentUser.id);
+            matched = true;
             currentUser.save();
             likedUser.save();
         } else{
@@ -132,7 +134,11 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
             currentUser.save()
             likedUser.save()
         }
-        res.status(200).json({user: user});
+        if (matched){
+            res.status(200).json(likedUser.id)
+        }else{
+            res.status(200).json({})
+        }
     }
     catch (err) {
         res.status(400).json({error: "Error in finding user"});
@@ -157,7 +163,7 @@ app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
             currentUser.likes.splice(likesindex, 1)
         }
         currentUser.save()
-        // res.status(200).json({user: user});
+        res.status(200).json({});
     } else {
         res.status(400).json({error: "User is matched, cannot pass"});
     }
@@ -248,12 +254,3 @@ io.on('connection', socket => {
     })
 
 });
-
-// user A - 5fcaf1762137ae5a38470903
-// A likes [5fcaf1a32137ae5a38470904 ]
-
-// user B - 5fcaf1a32137ae5a38470904
-
-// B liked_by[5fcaf1762137ae5a38470903 ]
-
-
