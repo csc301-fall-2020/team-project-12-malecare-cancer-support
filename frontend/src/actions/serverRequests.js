@@ -45,7 +45,7 @@ export const getMatchRecommendations = (mode, curUserId) => {
 };
 
 /* When the current user wants to "pass" a match recommendation.
- * "mode" is one of ("dating", "mentor") */
+ * "mode" is one of ("date", "mentor") */
 export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
   // Include authToken in payload, or pass along as cookie?
   const payload = { mode: mode };
@@ -58,7 +58,7 @@ export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
 };
 
 /* When the current user wants to "connect" with a match recommendation.
- * "mode" is one of ("dating", "mentor") */
+ * "mode" is one of ("date", "mentor") */
 export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
   // Include authToken in payload?
   const payload = { mode: mode };
