@@ -21,6 +21,7 @@ import Matching from "./components/Matching";
 import Requests from './components/Requests';
 import Chat from './components/Chat';
 import Chats from './components/Chats';
+import Menu from './components/Menu';
 
 class App extends React.Component {
   constructor(props) {
@@ -83,6 +84,9 @@ class App extends React.Component {
                 <Requests/>
               </Route>
               <Route path='/chat/:id' component={Chat}>
+              </Route>
+              <Route exact path="/menu-test">
+                <Menu />
               </Route>
               <Route>
                 <div>404 Not found</div>

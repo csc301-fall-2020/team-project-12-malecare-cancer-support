@@ -22,7 +22,7 @@ class Landing extends React.Component {
               <img class="menuIcon ml-4" src={menuIcon} />
             </Row>
             <Row className="bottom no-gutters">
-              <Col className="no-gutters w-100">
+              <Col className="no-gutters w-100"> {/* Switch this Col with Menu if user presses menu button.*/}
                 <Row className="no-gutters likesOrMessages">
                   <Col xs={12} xl={6} className="no-gutters">
                     <text class="center bold">

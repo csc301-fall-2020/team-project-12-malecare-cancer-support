@@ -1,0 +1,27 @@
+.image {
+  height: calc(4rem + 8vw);
+  margin-top: 40px;
+  margin-bottom: 1.3vw;
+  border: #e74b1a solid 4px;
+  border-radius: 50%;
+}
+.menu {
+  height: 100%;
+  background-color: white;
+}
+.displayContents {
+  display: contents;
+}
+.buttons {
+  height: 100%;
+  margin-top: 7vw;
+}
+.button {
+  border-top: #e74b1a solid 2px !important;
+  font-size: calc(1rem + 0.9vw);
+  height: 10vw;
+  max-height: 10%;
+}
+.nameUser {
+  font-size: calc(0.8rem + 0.5vw);
+}
