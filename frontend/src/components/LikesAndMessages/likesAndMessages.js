@@ -4,22 +4,17 @@ import "./likesAndMessages.css";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import menuIcon from "../../images/menuIcon.svg";
-import mentorIcon from "../../images/mentorIcon.svg";
-import heartIcon from "../../images/heartIcon.svg";
-import SideBar from '../SideBar'
 
-import Matching from "../Matching";
 import { CurUserContext } from "../../curUserContext";
 
 /* Landing page component */
 class LikesAndMessages extends React.Component {
   render() {
     return (
-      <Col className="no-gutters w-100"> {/* Switch this Col with Menu if user presses menu button.*/}
+      <Col className="no-gutters w-100 h-100">
         <Row className="no-gutters likesOrMessages">
           <Col xs={12} xl={6} className="no-gutters">
-            <text class="center bold">
+            <text class="center">
               Likes<text class="numLikes">99+</text>
             </text>
           </Col>

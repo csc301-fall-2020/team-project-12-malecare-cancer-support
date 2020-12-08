@@ -1,5 +1,61 @@
-.menuButton{
-    background-color: transparent;
-    border: none;
-    outline: none;
+.menuButton {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+.main {
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border-width: 1px;
+  padding: 0;
+  position: absolute;
+  overflow-x: hidden !important;
+  background-color: white;
+}
+.top {
+  height: 10%;
+  width: 100%;
+}
+.bottom {
+  height: 90%;
+  width: 100%;
+}
+.topLeftNavigation {
+  background-color: #fce6df;
+  align-items: center;
+}
+.topRightNavigation {
+  background-color: white;
+  align-items: center;
+}
+.navigation {
+  background-color: #fce6df;
+  justify-content: center;
+  align-items: center;
+}
+.bigLeftBorder {
+  border-left: 4px solid #e74b1a !important;
+}
+.logo {
+  color: #e74b1a;
+  font-size: 35px;
+  text-align: right;
+}
+.heartIcon {
+  height: 30px;
+  background-color: #fbe2da;
+}
+.mentorIcon {
+  height: 30px;
+}
+.menuIcon {
+  max-height: 30px;
+}
+.bottomRightPane {
+  position: "relative";
 }

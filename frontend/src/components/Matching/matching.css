@@ -1,102 +1,28 @@
-.main {
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  border-width: 1px;
-  padding: 0;
-  position: absolute;
-  overflow-x: hidden !important;
-  background-color: white;
+.name {
+  font-size: calc(2rem + 1vw);
+  word-wrap: break-word;
 }
-.top {
-  height: 10%;
-  width: 100%;
-}
-.bottom {
-  height: 90%;
-  width: 100%;
-}
-.topLeftNavigation {
-  background-color: #fce6df;
-  align-items: center;
-}
-.navigation {
-  background-color: #fce6df;
-  justify-content: center;
-  align-items: center;
-}
-.likes {
-  width: 30%;
-}
-.likesOrMessages {
-  background-color: #f6f6f6;
-  height: 10%;
-  font-size: calc(0.7rem + 1vw);
-}
-.likesMessages {
-  background-color: white;
-  height: 90%;
-}
-.bigLeftBorder {
-  border-left: 4px solid #e74b1a !important;
-}
-.bigRightBorder {
-  border-right: 4px solid #e74b1a !important;
-}
-.numLikes {
-  margin-left: 5px !important;
-  text-align: center;
-  border: 1px solid red;
-  border-radius: 50% !important;
-  background-color: #e74b1a;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  height: calc(2.3rem + 1vw);
-  width: calc(2.3rem + 1vw);
-  color: white;
-}
-.logoAndMode {
-  background-color: white;
-  top: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  border-width: 1px;
-  padding: 0;
-  position: absolute;
-  overflow-x: hidden !important;
-}
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90%;
-  font-weight: 550;
-}
-.menuBar {
-  background-color: violet;
-  width: 30%;
-  margin: 0;
-  position: relative;
-  overflow: auto;
-  height: 100%;
-}
-.logo {
+.ageAndLocation {
   color: #e74b1a;
-  font-size: 35px;
-  text-align: right;
+  font-size: calc(1rem + 0.5vw);
 }
-.heartIcon {
-  height: 30px;
-  background-color: #fbe2da;
+.matchPassButton {
+  margin-right: 10px;
 }
-.mentorIcon {
-  height: 30px;
+.matchConnectButton {
+  margin-left: 10px;
+}
+.matchingToast {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background-color: white;
+  border: 4px solid #e9a100;
+}
+.matchingToastHeader {
+  justify-content: flex-end;
 }
 .carouselImage {
   overflow: hidden;
@@ -124,14 +50,6 @@
   white-space: pre-wrap;
   font-size: calc(0.8rem + 0.5vw);
 }
-.name {
-  font-size: calc(2rem + 1vw);
-  word-wrap: break-word;
-}
-.ageAndLocation {
-  color: #e74b1a;
-  font-size: calc(1rem + 0.5vw);
-}
 .cancerType {
   font-size: calc(0.9rem + 0.5vw);
 }
@@ -148,46 +66,9 @@
   height: calc(1rem + 0.5vw);
   width: calc(1rem + 0.5vw);
 }
-.menuIcon {
-  max-height: 30px;
-}
-
 .likeOrPassButton {
   font-size: 30px;
   padding-top: 0px;
   padding-bottom: 0px;
   min-width: 100px;
-  /* justify-content: center;
-  align-items: center; */
-}
-
-.matchPassButton {
-  margin-right: 10px;
-}
-
-.matchConnectButton {
-  margin-left: 10px;
-}
-
-.matchingToast {
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  background-color: white;
-  border: 4px solid #e9a100;
-}
-
-.matchingToastHeader {
-  justify-content: flex-end;
-}
-
-.topRightNavigation {
-  background-color: white;
-  align-items: center;
-}
-
-.bottomRightPane {
-  position: "relative";
 }
