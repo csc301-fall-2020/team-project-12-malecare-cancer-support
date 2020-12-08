@@ -11,7 +11,7 @@ import {
   getCancerData,
   getInterestsData,
 } from "../../actions/serverRequests";
-import {Container, Col, Row, Button, Form} from 'react-bootstrap';
+import { Container, Col, Row, Button, Form } from "react-bootstrap";
 
 /* Registration page component */
 class Registration extends React.Component {
@@ -72,15 +72,16 @@ class Registration extends React.Component {
     });
     await this.setState((prev) => {
       return {
-      ...prev,
-      email: 'ascasc'
-    }});
+        ...prev,
+        email: "ascasc",
+      };
+    });
     await this.setState((prev) => {
       return {
         ...prev,
-        email: null
-      }
-    })
+        email: null,
+      };
+    });
     const checkbox = document.querySelector("#mentee");
     checkbox.setCustomValidity("At least one checkbox must be checked");
   };
@@ -281,14 +282,14 @@ class Registration extends React.Component {
       this.setState((prev) => {
         return {
           ...prev,
-          profileImage: reader.result
-        }
+          profileImage: reader.result,
+        };
       });
-    }
+    };
 
     await reader.readAsDataURL(imgFile);
     console.log(this.state.profileImage);
-  }
+  };
 
   handOnInputBio = (e) => {
     const textarea = e.target;
@@ -307,8 +308,6 @@ class Registration extends React.Component {
       };
     });
   };
-
-
 
   handleSubmit = async (event) => {
     event.preventDefault();
@@ -332,22 +331,33 @@ class Registration extends React.Component {
       profileImage: this.state.profileImage,
       bio: this.state.bio,
     };
-    if (payload["phone"] == undefined) {
+    if (payload["phone"] === undefined) {
       delete payload["phone"];
     }
     if (payload["interests"].length === 0) {
       delete payload["interests"];
     }
 
-    const { response, errorMessage } = await signup(payload);
-    if (!response) {
-      alert(errorMessage);
-    } else {
-      this.context.setCurrentUser({
-        accessToken: response.data.accessToken,
-        userId: response.data.userId,
-      });
-      this.props.history.push("/landing");
+    try {
+      const { responseData, errorMessage } = await signup(payload);
+      console.log(responseData);
+
+      if (!responseData) {
+        alert(errorMessage);
+      } else {
+        // successfully logged in
+        this.context.setCurrentUser({
+          accessToken: responseData.accessToken,
+          userId: responseData.userId,
+        });
+        // TODO: could instead go to a custom introduction page?
+        this.props.history.push("/landing");
+      }
+    } catch (error) {
+      alert(
+        "An error occurred connecting to the server," +
+          " please make sure you have a working internet connect"
+      );
     }
   };
 
@@ -372,178 +382,194 @@ class Registration extends React.Component {
     return (
       <Container>
         <Row>
-          <Col xs={12} md={{span: 8, offset: 2}} className="text-center my-3 display-4 mx-auto">
-              Join the CancerChat community
+          <Col
+            xs={12}
+            md={{ span: 8, offset: 2 }}
+            className="text-center my-3 display-4 mx-auto"
+          >
+            Join the CancerChat community
           </Col>
         </Row>
         <Row>
-        <Col md={{span: 6, offset: 3}}> 
-        <Form.Group
-          id="registration-form"
-          className="mx-auto"
-          onSubmit={this.handleSubmit}
-        >
-          <Form.Control
-            className="my-3 mx-auto"
-            size="lg"
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={(e) => this.handleOnChangeEmail(e.target.value)}
-            required
-          />
-          <Form.Control
-            className="my-3"
-            type="password"
-            name="password"
-            placeholder="Password"
-            minLength="6"
-            onChange={(e) => this.handleOnChangePassword(e.target.value)}
-            required
-          />
-          <Form.Control
-            className="my-3"
-            type="password"
-            name="confirm_password"
-            placeholder="Confirm password"
-            minLength="6"
-            onChange={(e) => this.handleOnChangeConfirmPassword(e.target.value)}
-            required
-          />
-          <Form.Control
-            className="my-3"
-            type="text"
-            name="first_name"
-            placeholder="Your first name"
-            onChange={(e) => this.handleOnChangeFirstName(e.target.value)}
-            required
-          />
-          <Form.Control
-            className="my-3"
-            type="text"
-            name="last_name"
-            placeholder="Your last name"
-            onChange={(e) => this.handleOnChangeLastName(e.target.value)}
-            required
-          />
-          <Form.Control
-            className="my-3"
-            type="date"
-            name="birthday"
-            placeholder="Select your birthday"
-            onChange={(e) => this.handleOnChangeBirthday(e.target.value)}
-            required
-          />
-          <PhoneInput
-            className="my-4 mx-auto"
-            placeholder="Enter your phone number (optional)"
-            value={this.state.phone_number}
-            onChange={(phone_number) =>
-              this.handleOnChangePhoneNumber(phone_number)
-            }
-          />
-          <GeoSearchBar 
-          className="my-3"
-          handleOnChangeLocation={this.handleOnChangeLocation} />
-          <Select
-            className="my-3"
-            required={true}
-            placeholder="Select your gender"
-            options={this.genderOptions}
-            onChange={this.handleOnChangeGender}
-          />
-          <Select
-            className="my-3"
-            required={true}
-            placeholder="Select your sexual orientation"
-            options={this.sexualOrientationOptions}
-            onChange={this.handleOnChangeSexualOrientation}
-          />
-          <Select
-            multi
-            className="my-3"
-            required={true}
-            placeholder="Select your cancer types"
-            options={this.cancerTypes}
-            onChange={this.handleOnChangeCancerTypes}
-          />
-          <Select
-            multi
-            className="my-3"
-            required={true}
-            placeholder="Select your treatments"
-            options={this.treatmentTypes}
-            onChange={this.handleOnChangeTreatments}
-          />
-          <Select
-            multi
-            className="my-3"
-            required={true}
-            placeholder="Select your medications"
-            options={this.medications}
-            onChange={this.handleOnChangeMedications}
-          />
-          <div style={{ display: "flex", justifyContent: "space-between" }} className="my-3">
-            <label htmlFor="mentee">Looking for a mentor</label>
-            <input
-              id="mentee"
-              className="registration-mentee"
-              type="checkbox"
-              name="mentee"
-              onChange={(e) => this.handleOnChangeMentee(e.target.checked)}
-            />
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }} className="my-3">
-            <label htmlFor="mentor">Looking to be a mentor</label>
-            <input
-              id="mentor"
-              className="registration-mentor"
-              type="checkbox"
-              name="mentor"
-              onChange={(e) => this.handleOnChangeMentor(e.target.checked)}
-            />
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }} className="my-3">
-            <label htmlFor="date">Looking for a date</label>
-            <input
-              id="date"
-              className="registration-date"
-              type="checkbox"
-              name="date"
-              onChange={(e) => this.handleOnChangeDate(e.target.checked)}
-            />
-          </div>
-          {interests_selection}
-          <Form.Control
-              className="my-3 border border-dark"
-              type="file"
-              name="birthday"
-              placeholder="Select your profile image"
-              accept="image/png, image/jpeg"
-              onChange={(e) => this.handleOnChangeImage(e.target.files[0])}
-              required
-          />
-          <div class="form-group">
-          <textarea
-            className="my-1 registration-bio form-control"
-            placeholder="Enter your bio"
-            name="bio"
-            rows="5"
-            onInput={this.handOnInputBio}
-            onChange={(e) => this.handleOnChangeBio(e.target.value)}
-            required
-          ></textarea>
-          </div>
-          <Button
-            className="my-3 d-block mx-auto"
-            variant="customOrange"
-            type="submit"
-            value="Register"
-          >
-            Register
-          </Button>
-        </Form.Group>
-        </Col>
+          <Col md={{ span: 6, offset: 3 }}>
+            <Form.Group
+              id="registration-form"
+              className="mx-auto"
+              onSubmit={this.handleSubmit}
+            >
+              <Form.Control
+                className="my-3 mx-auto"
+                size="lg"
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={(e) => this.handleOnChangeEmail(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="password"
+                name="password"
+                placeholder="Password"
+                minLength="6"
+                onChange={(e) => this.handleOnChangePassword(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm password"
+                minLength="6"
+                onChange={(e) =>
+                  this.handleOnChangeConfirmPassword(e.target.value)
+                }
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="text"
+                name="first_name"
+                placeholder="Your first name"
+                onChange={(e) => this.handleOnChangeFirstName(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="text"
+                name="last_name"
+                placeholder="Your last name"
+                onChange={(e) => this.handleOnChangeLastName(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="date"
+                name="birthday"
+                placeholder="Select your birthday"
+                onChange={(e) => this.handleOnChangeBirthday(e.target.value)}
+                required
+              />
+              <PhoneInput
+                className="my-4 mx-auto"
+                placeholder="Enter your phone number (optional)"
+                value={this.state.phone_number}
+                onChange={(phone_number) =>
+                  this.handleOnChangePhoneNumber(phone_number)
+                }
+              />
+              <GeoSearchBar
+                className="my-3"
+                handleOnChangeLocation={this.handleOnChangeLocation}
+              />
+              <Select
+                className="my-3"
+                required={true}
+                placeholder="Select your gender"
+                options={this.genderOptions}
+                onChange={this.handleOnChangeGender}
+              />
+              <Select
+                className="my-3"
+                required={true}
+                placeholder="Select your sexual orientation"
+                options={this.sexualOrientationOptions}
+                onChange={this.handleOnChangeSexualOrientation}
+              />
+              <Select
+                multi
+                className="my-3"
+                required={true}
+                placeholder="Select your cancer types"
+                options={this.cancerTypes}
+                onChange={this.handleOnChangeCancerTypes}
+              />
+              <Select
+                multi
+                className="my-3"
+                required={true}
+                placeholder="Select your treatments"
+                options={this.treatmentTypes}
+                onChange={this.handleOnChangeTreatments}
+              />
+              <Select
+                multi
+                className="my-3"
+                required={true}
+                placeholder="Select your medications"
+                options={this.medications}
+                onChange={this.handleOnChangeMedications}
+              />
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="my-3"
+              >
+                <label htmlFor="mentee">Looking for a mentor</label>
+                <input
+                  id="mentee"
+                  className="registration-mentee"
+                  type="checkbox"
+                  name="mentee"
+                  onChange={(e) => this.handleOnChangeMentee(e.target.checked)}
+                />
+              </div>
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="my-3"
+              >
+                <label htmlFor="mentor">Looking to be a mentor</label>
+                <input
+                  id="mentor"
+                  className="registration-mentor"
+                  type="checkbox"
+                  name="mentor"
+                  onChange={(e) => this.handleOnChangeMentor(e.target.checked)}
+                />
+              </div>
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="my-3"
+              >
+                <label htmlFor="date">Looking for a date</label>
+                <input
+                  id="date"
+                  className="registration-date"
+                  type="checkbox"
+                  name="date"
+                  onChange={(e) => this.handleOnChangeDate(e.target.checked)}
+                />
+              </div>
+              {interests_selection}
+              <Form.Control
+                className="my-3 border border-dark"
+                type="file"
+                name="birthday"
+                placeholder="Select your profile image"
+                accept="image/png, image/jpeg"
+                onChange={(e) => this.handleOnChangeImage(e.target.files[0])}
+                required
+              />
+              <div class="form-group">
+                <textarea
+                  className="my-1 registration-bio form-control"
+                  placeholder="Enter your bio"
+                  name="bio"
+                  rows="5"
+                  onInput={this.handOnInputBio}
+                  onChange={(e) => this.handleOnChangeBio(e.target.value)}
+                  required
+                ></textarea>
+              </div>
+              <Button
+                className="my-3 d-block mx-auto"
+                variant="customOrange"
+                type="submit"
+                value="Register"
+              >
+                Register
+              </Button>
+            </Form.Group>
+          </Col>
         </Row>
       </Container>
     );
