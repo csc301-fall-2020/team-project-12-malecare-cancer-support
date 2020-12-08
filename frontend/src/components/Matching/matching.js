@@ -9,7 +9,8 @@ import Image from "react-bootstrap/Image";
 class Matching extends React.Component {
   render() {
     return (
-      <Row xs={10} className="bottom no-gutters bioAndPhoto">
+      // The parent element of this component must be a Row element
+      <Row className="no-gutters bioAndPhoto">
         <Col xs={12} lg={6} className="flex">
           <Carousel className="carousel" interval={null}>
             <Carousel.Item className="carouselItem">

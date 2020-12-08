@@ -55,7 +55,9 @@ class Landing extends React.Component {
               </Col>
               <Col xs={2}></Col>
             </Row>
-            <Matching />
+            <Row xs={10} className="bottom no-gutters">
+              <Matching />
+            </Row>
           </Col>
         </Row>
       </div>
