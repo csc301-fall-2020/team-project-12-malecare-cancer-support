@@ -44,6 +44,7 @@ app.get('/user/:userId', async(req,res) => {
 
         const user = await User.findById({_id: oid});
         console.log(user)
+        user.password = undefined
         console.log()
         console.log('abc')
         res.status(200).json({user: user});
