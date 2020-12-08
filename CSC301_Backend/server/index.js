@@ -56,35 +56,49 @@ app.get('/user/:userId', async(req,res) => {
 });
 
 app.get('/matches/:userId', async(req,res) => {
-    const oid = mongoose.Types.ObjectId(req.params.userId);
     try {
-        const user = await User.findById({_id: oid});
-        let ret_users = []
-        if (user.liked_by.length !== 0){
-            for (let i = 0; i < user.liked_by.length; i++){
-                if (!user.passed.includes(user.liked_by[i])){
-                    ret_users.push(user.liked_by[i])
-                }
-            }
-        }
-        if (ret_users.length < 5){
-            const all_users = User.find({})
-            let count = 0
-            do {
-                if (!user.passed.includes(all_users[count])){
-                    ret_users.push(all_users[count])
-                }
-                count++
-            } while (ret_users.length < 5 || count < all_users.length)
-            count = 0
-            if (ret_users.length < 5 || user.passed.length !== 0){
-                do{
-                    ret_users.push(user.passed[count])
-                }while(ret_users.length < 5 || count < all_users.length)
-            }
+        const currentUser = await User.findById({_id: req.params.userId}).exec()
+        let arr = [currentUser.id]
+        const dont_find = arr.concat(currentUser.passed)
+        const all_users = await User.find({ _id: { $nin: dont_find}}).exec()
+        let options = []
+        options = options.concat(currentUser.liked_by, all_users, currentUser.passed)
+        let ret_users;
+        if (options.length >= 5) {
+            ret_users = options.slice(0, 5);
+        } else{
+            ret_users = options.slice(0, options.length);
         }
         res.send(ret_users)
-        res.status(200).json({users: ret_users});
+        // if (currentUser.liked_by.length !== 0){
+        //     for (let i = 0; i < currentUser.liked_by.length; i++){
+        //         if (!currentUser.passed.includes(currentUser.liked_by[i])){
+        //             ret_users.push(currentUser.liked_by[i])
+        //         }
+        //     }
+        // }
+        // if (ret_users.length < 5){
+        //     const all_users = await User.find({}).exec()
+        //     let count = 0
+        //     do {
+        //         console.log(currentUser.id)
+        //         console.log(all_users[count].id)
+        //         if (!currentUser.passed.includes(all_users[count]) || !currentUser.id === all_users[count].id){
+        //             ret_users.push(all_users[count])
+        //             all_users.splice(count, 1);
+        //         }
+        //         console.log(all_users)
+        //         count++
+        //     } while (ret_users.length < 5 && count < all_users.length || all_users.length > 0)
+        //     console.log("out")
+        //     count = 0
+        //     if (ret_users.length < 5 || currentUser.passed.length !== 0){
+        //         do{
+        //             ret_users.push(currentUser.passed[count])
+        //             count += 1
+        //         }while(ret_users.length < 5 && count < currentUser.passed.length)
+        //     }
+        // }
     }
     catch (err) {
         res.status(400).json({error: "Error in matches"});
@@ -98,29 +112,9 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
     // if both of them like each other then match (remove each other from liked arrays
     // if at least one of them doesn't like the other, then add this user
     try {
-        // const currentUser = req.params.currentUser;
-        // const likedUser = req.params.UserthatwasLiked;
         const currentUser = await User.findById({_id: req.params.currentUser}).exec()
         const likedUser = await User.findById({_id:req.params.UserthatwasLiked}).exec()
-        console.log(currentUser.id);
-        console.log(likedUser.id);
-        // const likedUser = User.findById(req.params.currentUser);
-        //console.log(likedUser);
-        //console.log(currentUser.liked_by);
-        //console.log(currentUser.liked_by.contains(likedUser));
-        //  try{
-        //     User.findById(currentUser, function(err, user){
-        //         console.log(user.liked_by);
-        //         user.liked_by.push(likedUser);
-        //         user.save()
-        //         console.log(user.liked_by)
-        //         console.log(user.liked_by.includes(likedUser));
-        //     })
-        // }catch(err){
-        //     console.log(err)
-        // }
         if (currentUser.liked_by.includes(likedUser.id)){
-            console.log('Hurray');
             // When Liked User already liked current user -> results in a match
             let index = currentUser.liked_by.indexOf(likedUser.id);
             currentUser.liked_by.splice(index, 1);
@@ -132,7 +126,6 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
             likedUser.save();
         } else{
             // When liked user hasn't liked current user -> add current to likedby list of liked user,
-            console.log('Hello');
             // and add liked to likes of current user
             currentUser.likes.push(likedUser.id)
             likedUser.liked_by.push(currentUser.id)
@@ -168,8 +161,6 @@ app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
     } else {
         res.status(400).json({error: "User is matched, cannot pass"});
     }
-
-
 });
 
 server = app.listen(5000, () => console.log('Success, Server is up and running!'));
