@@ -52,6 +52,7 @@ router.post('/signup',   async (req, res) => {
         liked_by: [],
         matched: [],
         passed: [],
+        conversations: [],
         profileImage: req.body.profileImage
     });
     if (user.interests.length === 0){//not required
