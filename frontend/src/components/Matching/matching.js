@@ -13,14 +13,14 @@ class Matching extends React.Component {
       matches: [
         {
           imageLink:
-            "https://images.pexels.com/photos/3226584/pexels-photo-3226584.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "https://upload.wikimedia.org/wikipedia/commons/c/c2/Rihanna_Fenty_2018.png",
         },
         {
           imageLink:
-            "https://www.liveabout.com/thmb/jyBQcDiXM_ysKfIHu88GvvW-20U=/1300x866/filters:no_upscale():max_bytes(150000):strip_icc()/loan-599c450a03f40200117e717a.jpg",
+            "https://www.incimages.com/uploaded_files/image/1920x1080/getty_1157882721_200013432000928078_414319.jpg",
         },
         {
-          imageLink: "https://i.ytimg.com/vi/3PjV1PQixGI/maxresdefault.jpg",
+          imageLink: "https://media1.popsugar-assets.com/files/thumbor/GwrkdTP4PmYn0v4dBkX1ulwT83s/1196x242:2764x1810/fit-in/500x500/filters:format_auto-!!-:strip_icc-!!-/2019/09/04/006/n/1922398/fe7006935d7044366c8982.50946989_/i/Rihanna.jpg",
         },
       ],
     };
