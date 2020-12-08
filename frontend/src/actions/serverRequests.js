@@ -33,33 +33,40 @@ export const signup = (payload) => {
 
 /*** HTTP requests related to user information */
 /* Get the profile information of the user with targetUserId */
-export const getUser = (curAccessToken, targetUserId) => {
-  // const payload = { authToken: curAccessToken };
+export const getUser = (targetUserId) => {
   const returnVal = axiosRequest("GET", "/user/" + targetUserId);
   return returnVal;
 };
 
 /* Get the profile information of the user with targetUserId */
-export const getMatchRecommendations = (curAccessToken, curUserId) => {
-  // Include authToken in payload
-  // const payload = { authToken: curAccessToken };
+export const getMatchRecommendations = (curUserId) => {
   const returnVal = axiosRequest("GET", "/matches/" + curUserId);
   return returnVal;
 };
 
-// pass on a match recommendation
-export const matchRecommendationPass = (curAccessToken, curUserId) => {
-  // Include authToken in payload
-  const payload = { authToken: curAccessToken };
-  const returnVal = axiosRequest("POST", "/matches/" + curUserId, payload);
+/* When the current user wants to "pass" a match recommendation.
+ * "mode" is one of ("dating", "mentor") */
+export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
+  // Include authToken in payload, or pass along as cookie?
+  const payload = { mode: mode };
+  const returnVal = axiosRequest(
+    "POST",
+    "/matches/pass/" + curUserId + "&" + targetUserId,
+    payload
+  );
   return returnVal;
 };
 
-// connect with a match recommendation
-export const matchRecommendationConnect = (curAccessToken, curUserId) => {
-  // Include authToken in payload
-  const payload = { authToken: curAccessToken };
-  const returnVal = axiosRequest("POST", "/matches/" + curUserId, payload);
+/* When the current user wants to "connect" with a match recommendation.
+ * "mode" is one of ("dating", "mentor") */
+export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
+  // Include authToken in payload?
+  const payload = { mode: mode };
+  const returnVal = axiosRequest(
+    "POST",
+    "/matches/connect" + curUserId + "&" + targetUserId,
+    payload
+  );
   return returnVal;
 };
 
