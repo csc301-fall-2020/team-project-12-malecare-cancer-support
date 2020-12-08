@@ -22,6 +22,7 @@ import Requests from './components/Requests';
 import Chat from './components/Chat';
 import Chats from './components/Chats';
 import Menu from './components/Menu';
+import LikesAndMessages from './components/LikesAndMessages'
 
 class App extends React.Component {
   constructor(props) {
@@ -87,6 +88,9 @@ class App extends React.Component {
               </Route>
               <Route exact path="/menu-test">
                 <Menu />
+              </Route>
+              <Route exact path="/likesAndMessages-test">
+                <LikesAndMessages />
               </Route>
               <Route>
                 <div>404 Not found</div>
