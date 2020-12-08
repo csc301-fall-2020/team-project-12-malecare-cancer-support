@@ -7,48 +7,47 @@ import Carousel from "react-bootstrap/Carousel";
 import Image from "react-bootstrap/Image";
 
 class Matching extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      matches: [
+        {
+          imageLink:
+            "https://images.pexels.com/photos/3226584/pexels-photo-3226584.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        },
+        {
+          imageLink:
+            "https://www.liveabout.com/thmb/jyBQcDiXM_ysKfIHu88GvvW-20U=/1300x866/filters:no_upscale():max_bytes(150000):strip_icc()/loan-599c450a03f40200117e717a.jpg",
+        },
+        {
+          imageLink: "https://i.ytimg.com/vi/3PjV1PQixGI/maxresdefault.jpg",
+        },
+      ],
+    };
+  }
+
   render() {
     return (
       // The parent element of this component must be a Row element
       <Row className="no-gutters bioAndPhoto">
         <Col xs={12} lg={6} className="flex">
           <Carousel className="carousel" interval={null}>
-            <Carousel.Item className="carouselItem">
-              <Image
-                className="d-block w-100 carouselImage"
-                src="https://images.pexels.com/photos/3226584/pexels-photo-3226584.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                alt="First slide"
-                fluid
-              />
-              <Carousel.Caption>
-                <text className="borderLikeOrPass">PASS</text>
-                <text class="borderLikeOrPass">CONNECT</text>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item className="carouselItem">
-              <Image
-                className="d-block w-100 carouselImage"
-                src="https://www.liveabout.com/thmb/jyBQcDiXM_ysKfIHu88GvvW-20U=/1300x866/filters:no_upscale():max_bytes(150000):strip_icc()/loan-599c450a03f40200117e717a.jpg"
-                alt="Second slide"
-                fluid
-              />
-              <Carousel.Caption>
-                <text className="borderLikeOrPass">PASS</text>
-                <text class="borderLikeOrPass">CONNECT</text>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item className="carouselItem">
-              <Image
-                className="d-block w-100 carouselImage"
-                src="https://i.ytimg.com/vi/3PjV1PQixGI/maxresdefault.jpg"
-                alt="Third slide"
-                fluid
-              />
-              <Carousel.Caption>
-                <text className="borderLikeOrPass">PASS</text>
-                <text class="borderLikeOrPass">CONNECT</text>
-              </Carousel.Caption>
-            </Carousel.Item>
+            {this.state.matches.map((matchedUser, index) => {
+              return (
+                <Carousel.Item className="carouselItem">
+                  <Image
+                    className="d-block w-100 carouselImage"
+                    src={matchedUser.imageLink}
+                    alt={`Slide ${index + 1}`}
+                    fluid
+                  />
+                  <Carousel.Caption>
+                    <text className="borderLikeOrPass">PASS</text>
+                    <text class="borderLikeOrPass">CONNECT</text>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              );
+            })}
           </Carousel>
         </Col>
         <Col xs={12} lg={6} className="bioContainer">
