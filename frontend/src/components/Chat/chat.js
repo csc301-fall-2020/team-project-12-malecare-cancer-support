@@ -73,8 +73,11 @@ class Chat extends React.Component {
     }
   };
 
+
+
   componentDidMount = async () => {
     const conversationData = this.props.location.conversationData;
+    console.log(conversationData);
     this.setState((prev) => {
       const messages = this.state.conversation.messages;
       console.log("currNamse mount", conversationData.currUserName);
@@ -212,8 +215,8 @@ class Chat extends React.Component {
               <div className="leftChatContainer">
                 <img
                   className="rounded-circle"
-                  style={{maxWidth: "80%", maxHeight: "80%", marginRight: "5%"}}
-                  src={base64Icon}
+                  style={{maxWidth: "30%", maxHeight: "30%", marginRight: "5%"}}
+                  src={this.state.conversation.profileImage}
                   alt="profile icon"
                 />
                 <h3>{this.state.conversation.otherUserName}</h3>
@@ -229,24 +232,6 @@ class Chat extends React.Component {
           </Row>
         </Container>
 
-          {/* <div className="chatBar" 
-        style={{background: this.isConversationDate() ? "#fe3c72" : "#2979FF"}}
-          >
-            <div className="leftChatContainer">
-              <img
-                className="rounded-circle"
-                style={{maxWidth: "80%", maxHeight: "80%"}}
-                src={base64Icon}
-                alt="profile icon"
-              />
-              <h5>{this.state.conversation.otherUserName}</h5>
-            </div>
-            <div className="rightChatContainer">
-              <a onClick={() => this.handleBackButton()}>
-                <BiExit size={"3em"} color="white" />
-              </a>
-            </div>
-          </div> */}
 
             <div
             id="scrollableDiv"

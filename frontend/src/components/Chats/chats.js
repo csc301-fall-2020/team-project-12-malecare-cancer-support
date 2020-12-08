@@ -3,7 +3,7 @@ import './chats.css';
 import {Container, Image, Row, Col, Text} from 'react-bootstrap';
 import { CurUserContext } from "../../curUserContext";
 import { withRouter } from "react-router-dom";
-import { getConversations} from "../../actions/serverRequests";
+import { getConversations, getUser} from "../../actions/serverRequests";
 
 var base64Icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAnUlEQVR42u3RQREAAAQAMP70j0sN57YKy66e4IwUIgQhQhAiBCFCECJEiBCECEGIEIQIQYgQhCBECEKEIEQIQoQgBCFCECIEIUIQIgQhCBGCECEIEYIQIQhBiBCECEGIEIQIQQhChCBECEKEIEQIQhAiBCFCECIEIUIQghAhCBGCECEIEYIQhAhBiBCECEGIEIQIESIEIUIQIgQh3y2QM3LZVgIpFAAAAABJRU5ErkJggg==';
 
@@ -21,9 +21,14 @@ class Chats extends React.Component {
         const { responseData } = await getConversations(
           this.context.getCurrentUser().userId
         );
-        const userConversations = responseData;
         this.updatePredicate();
         window.addEventListener("resize", this.updatePredicate);
+        let userConversations = [];
+        for (let conversation of responseData) {
+            const otherId = this.otherId(conversation);
+            const profileImage = await this.getUserProfileImage(otherId);
+            userConversations.push({...conversation, profileImage});
+        }
         this.setState((prev) => {return {...prev, conversations: userConversations }});
       };
 
@@ -45,6 +50,7 @@ class Chats extends React.Component {
         const chatURI = '/chat/' + conversation._id;
         const otherUserName = conversation.userIdOne == this.context.getCurrentUser().userId ? conversation.userNameTwo : conversation.userNameOne;
         const currUserName = conversation.userIdOne == this.context.getCurrentUser().userId ? conversation.userNameOne : conversation.userNameTwo;
+        const profileImage = conversation.profileImage;
         const {history} = this.props;
         history.push({
             pathname: chatURI,
@@ -52,6 +58,7 @@ class Chats extends React.Component {
                 _id: conversation._id,
                 currUserName,
                 otherUserName,
+                profileImage,
                 conversationType: conversation.conversationType
             }
         });
@@ -61,9 +68,19 @@ class Chats extends React.Component {
         return conversation.userIdOne == this.context.getCurrentUser().userId ? conversation.userNameTwo : conversation.userNameOne;
     }
 
+    otherId = (conversation) => {
+        return conversation.userIdOne == this.context.getCurrentUser().userId ? conversation.userIdTwo : conversation.userIdOne;
+    }
+
+    getUserProfileImage = async (userId) => {
+        const response = await getUser(userId);
+        const data = response.responseData;
+        const profileImage = data.user.profileImage;
+        return profileImage;
+    }
+
     render () {
         const isWide = this.state.isWide;
-        console.log(isWide)
         return (
             <Container fluid className="my-2"> 
             {this.state.conversations.map((conservation) => {
@@ -77,7 +94,7 @@ class Chats extends React.Component {
                             onClick={()=> this.handleClick(conservation)}
                             >
                                 <Col md={5}>
-                                <Image src={base64Icon} 
+                                <Image src={conservation.profileImage} 
                                 className="imgFluid"
                                 roundedCircle
                                 />
@@ -87,7 +104,7 @@ class Chats extends React.Component {
                                 </Col>
                             </Row>
                             ) : (
-                                <Image src={base64Icon} 
+                                <Image src={conservation.profileImage} 
                                 className="imgFluid mx-auto"
                                 onClick={()=> this.handleClick(conservation)}
                                 roundedCircle
