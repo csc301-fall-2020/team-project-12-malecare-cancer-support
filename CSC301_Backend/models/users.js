@@ -98,7 +98,11 @@ let UserSchema = new Schema({
     profileImage:{
         type: String,
         required: true
-    }
+    },
+    conversations: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Conversation'
+    }]
 });
 
 

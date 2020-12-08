@@ -35,6 +35,8 @@ app.use(bodyParser.json());
 
 app.use('/auth', user);
 app.use('/data', data);
+app.use('/conversations', conversations);
+app.use('/messages', messages);
 app.get('/user/:userId', async(req,res) => {
     // const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
     const oid = mongoose.Types.ObjectId(req.params.userId);
