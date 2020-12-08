@@ -4,7 +4,7 @@ import "./likesAndMessages.css";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-
+import Chats from "../Chats";
 import { CurUserContext } from "../../curUserContext";
 
 /* Landing page component */
@@ -25,8 +25,7 @@ class LikesAndMessages extends React.Component {
           </Col>
         </Row>
         <Row className="likesMessages no-gutters">
-          {/* Space for Likes and Messages */}
-          Space for Likes and Messages
+          <Chats/>
         </Row>
       </Col>
     );
