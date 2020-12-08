@@ -59,8 +59,16 @@ app.get('/matches/:userId', async(req,res) => {
             .concat([currentUser.id],currentUser.passed, currentUser.liked_by, currentUser.likes, currentUser.matched)
             .filter((item, i, arr) => item && arr.indexOf(item) === i);
         const all_users = await User.find({ _id: { $nin: dont_find}}).exec()
+        let liked_by = []
+        let passed = []
+        if (currentUser.liked_by.length > 0){
+            liked_by = await User.find({_id: {$in: currentUser.liked_by}}).exec();
+        }
+        if (currentUser.passed.length > 0){
+            passed = await User.find({_id: {$in: currentUser.passed}}).exec();
+        }
         const options = []
-            .concat(currentUser.liked_by, all_users, currentUser.passed)
+            .concat(liked_by, all_users, passed)
             .filter((item, i, arr) => item && arr.indexOf(item) === i);
         let ret_users;
         if (options.length >= 5) {
@@ -72,7 +80,6 @@ app.get('/matches/:userId', async(req,res) => {
         for (let i = 0; i < ret_users.length; i++){
             ret_users[i].password = undefined;
             ids.push(ret_users[i]);
-            console.log(ret_users[i].id, ret_users[i].password)
         }
         res.send(ids)
         // if (currentUser.liked_by.length !== 0){
