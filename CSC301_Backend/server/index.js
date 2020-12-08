@@ -36,16 +36,12 @@ app.use(bodyParser.json());
 app.use('/auth', user);
 app.use('/data', data);
 app.get('/user/:userId', async(req,res) => {
-    const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
-    console.log(o_id);
-    var oid = mongoose.Types.ObjectId(req.params.userId);
+    // const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
+    const oid = mongoose.Types.ObjectId(req.params.userId);
     console.log(oid)
     try {
-
         const user = await User.findById({_id: oid});
-        console.log(user)
         user.password = undefined
-        console.log()
         console.log('abc')
         res.status(200).json({user: user});
 
@@ -74,7 +70,9 @@ app.get('/matches/:userId', async(req,res) => {
         }
         let ids = [];
         for (let i = 0; i < ret_users.length; i++){
-            ids.push(ret_users[i].id);
+            ret_users[i].password = undefined;
+            ids.push(ret_users[i]);
+            console.log(ret_users[i].id, ret_users[i].password)
         }
         res.send(ids)
         // if (currentUser.liked_by.length !== 0){
