@@ -29,6 +29,7 @@ class Login extends React.Component {
       email: formData.inputEmail.value,
       password: formData.inputPassword.value,
     };
+
     try {
       const { responseData, errorMessage } = await login(payload);
       // console.log(responseData);
@@ -45,6 +46,7 @@ class Login extends React.Component {
           // TODO: User wants to stay logged in
         }
         this.props.history.push("/landing");
+
       }
     } catch (error) {
       alert(
