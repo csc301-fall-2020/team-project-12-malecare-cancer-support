@@ -1,72 +1,78 @@
 import axios from "axios";
 
-// The SERVER_BASE_URL environment variable should be defined when deploying
-axios.defaults.baseURL = process.env.SERVER_BASE_URL || "http://localhost:5000";
+axios.defaults.baseURL = "http://localhost:5000";
 
-/* Helper function (not exported) to make requests and return the result in a
- * uniform format. */
-const axiosRequest = (method, url, data) => {
-  const config = { method: method, url: url, data: data };
-  return axios
-    .request(config)
-    .then((response) => {
-      return { responseData: response.data, errorMessage: "" };
-    })
-    .catch((error) => {
-      return { responseData: null, errorMessage: error.response.data.error };
-    });
-};
-
-/*** HTTP requests related to authentication */
+/** HTTP requests related to authentication */
 /* payload must contain fields "email" and "password" */
 export const login = (payload) => {
-  const returnVal = axiosRequest("POST", "/auth/login", payload);
+  const returnVal = axios
+    .post("/auth/login", payload)
+    .then((response) => {
+      return { response: response, errorMessage: "" };
+    })
+    .catch((error) => {
+      return { response: null, errorMessage: error.response.data };
+    });
   return returnVal;
 };
 
 /* payload must contain the fields required for registration */
 export const signup = (payload) => {
   // For this function, assume the payload is properly formatted by the caller
-  const returnVal = axiosRequest("POST", "/auth/signup", payload);
+  const returnVal = axios
+    .post("/auth/signup", payload)
+    .then((response) => {
+      return { response: response.data, errorMessage: "" };
+    })
+    .catch((error) => {
+      return { response: null, errorMessage: error.response.data.error };
+    });
   return returnVal;
 };
 
 /*** HTTP requests related to user information */
 /* Get the profile information of the user with targetUserId */
 export const getUser = (curAccessToken, targetUserId) => {
-  // const payload = { authToken: curAccessToken };
-  const returnVal = axiosRequest("GET", "/user/" + targetUserId);
+  // Include authToken in payload
+  const payload = { authToken: curAccessToken };
+  const returnVal = axios
+    .get("/user/" + targetUserId, payload)
+    .then((response) => {
+      return { response: response.data, errorMessage: "" };
+    })
+    .catch((error) => {
+      return { response: null, errorMessage: error.response.data.error };
+    });
   return returnVal;
 };
 
 /* Get the profile information of the user with targetUserId */
 export const getMatchRecommendations = (curAccessToken, curUserId) => {
   // Include authToken in payload
-  // const payload = { authToken: curAccessToken };
-  const returnVal = axiosRequest("GET", "/matches/" + curUserId);
-  return returnVal;
-};
-
-// pass on a match recommendation
-export const matchRecommendationPass = (curAccessToken, curUserId) => {
-  // Include authToken in payload
   const payload = { authToken: curAccessToken };
-  const returnVal = axiosRequest("POST", "/matches/" + curUserId, payload);
+  const returnVal = axios
+    .get("/matches/" + curUserId, payload)
+    .then((response) => {
+      return { response: response.data, errorMessage: "" };
+    })
+    .catch((error) => {
+      return { response: null, errorMessage: error.response.data.error };
+    });
   return returnVal;
 };
 
-// connect with a match recommendation
-export const matchRecommendationConnect = (curAccessToken, curUserId) => {
-  // Include authToken in payload
-  const payload = { authToken: curAccessToken };
-  const returnVal = axiosRequest("POST", "/matches/" + curUserId, payload);
-  return returnVal;
-};
+export const getConversations = (user_id) => {
+  const returnVal = axios
+    .get("/conversations/" + user_id)
+    .then((response) => {
+      return response.data
+    })
+    .catch((error) => {
+      return {response: null, errorMessage: error.response.data};
+    })
 
-export const getConversations = (userId) => {
-  const returnVal = axiosRequest("GET", "/conversations/" + userId);
   return returnVal;
-};
+}
 
 export const getCancerData = () => {
   const returnVal = axios
@@ -76,9 +82,10 @@ export const getCancerData = () => {
     })
     .catch((error) => {
       return error.response.data;
-    });
-  return returnVal;
-};
+    })
+
+    return returnVal;
+}
 
 export const getInterestsData = () => {
   const returnVal = axios
@@ -88,6 +95,6 @@ export const getInterestsData = () => {
     })
     .catch((error) => {
       return error.response.data;
-    });
-  return returnVal;
-};
+    })
+    return returnVal;
+}

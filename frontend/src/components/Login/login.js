@@ -7,13 +7,13 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import { CurUserContext } from "../../curUserContext";
-import { login, getUser } from "../../actions/serverRequests";
+import { login } from "../../actions/serverRequests";
 
 /* Login page component */
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
+    console.log(this.props)
   }
 
   componentDidMount() {
@@ -25,43 +25,25 @@ class Login extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { responseData, errorMessage } = await getUser(
-      "",
-      "5fc823e311835d41a4f67a61",
-      {
-        randText: "asdfalsdf",
-      }
-    );
-    console.log(responseData, errorMessage);
-
     const formData = e.target.elements;
     const payload = {
       email: formData.inputEmail.value,
       password: formData.inputPassword.value,
     };
-    try {
-      const { responseData, errorMessage } = await login(payload);
-      // console.log(responseData);
-      if (!responseData) {
-        console.log("An error occurred: ", errorMessage);
-        // Server response indicates error with the user login information
-      } else {
-        // successfully logged in
-        this.context.setCurrentUser({
-          accessToken: responseData.accessToken,
-          userId: responseData.userId,
-        });
-        if (formData.inputStayLoggedIn.checked) {
-          // User wants to stay logged in
-        }
-        this.props.history.push("/landing");
+    const { response, errorMessage } = await login(payload);
+    console.log(response);
+    if (!response) {
+      console.log("An error occurred: ", errorMessage);
+    } else {
+      // successfully logged in
+      this.context.setCurrentUser({
+        accessToken: response.data.accessToken,
+        userId: response.data.userId,
+      });
+      if (formData.inputStayLoggedIn.checked) {
+        // User wants to stay logged in
       }
-    } catch (error) {
-      alert(
-        "An error occurred connecting to the server," +
-          " please make sure you have a working internet connect"
-      );
+      this.props.history.push("/landing");
     }
   };
 
