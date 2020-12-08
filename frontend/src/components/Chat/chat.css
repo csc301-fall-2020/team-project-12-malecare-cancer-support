@@ -42,7 +42,7 @@
 
 .rightChatContainer {
   display: flex;
-  flex: 1;
+  flex: 1 1 auto;
   justify-content: flex-end;
   margin-right: 5%;
 }

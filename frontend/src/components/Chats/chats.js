@@ -2,7 +2,6 @@ import React from 'react';
 import './chats.css';
 import {Container, Image, Row, Col, Text} from 'react-bootstrap';
 import { CurUserContext } from "../../curUserContext";
-import SideBar from '../SideBar';
 import { withRouter } from "react-router-dom";
 import { getConversations} from "../../actions/serverRequests";
 
@@ -13,26 +12,40 @@ class Chats extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isWide: true,
             conversations: []
-        }
-    }  
+        } 
+    }
     
     componentDidMount = async () => {
-        console.log(this.context);
         const { responseData } = await getConversations(
           this.context.getCurrentUser().userId
         );
         const userConversations = responseData;
-        console.log(userConversations);
-        this.setState({ conversations: userConversations });
+        this.updatePredicate();
+        window.addEventListener("resize", this.updatePredicate);
+        this.setState((prev) => {return {...prev, conversations: userConversations }});
       };
+
+    updatePredicate = () => {
+        const isWide = window.innerWidth > 768; 
+        this.setState(prev => {
+            return {
+                ...prev,
+                isWide,
+            }
+        })
+    }
+
+    componentWillUnmount = () => {
+        window.removeEventListener("resize", this.updatePredicate);
+    }
 
     handleClick = (conversation) => {
         const chatURI = '/chat/' + conversation._id;
         const otherUserName = conversation.userIdOne == this.context.getCurrentUser().userId ? conversation.userNameTwo : conversation.userNameOne;
         const currUserName = conversation.userIdOne == this.context.getCurrentUser().userId ? conversation.userNameOne : conversation.userNameTwo;
         const {history} = this.props;
-        console.log('currUserName', currUserName);
         history.push({
             pathname: chatURI,
             conversationData: {
@@ -49,35 +62,46 @@ class Chats extends React.Component {
     }
 
     render () {
+        const isWide = this.state.isWide;
+        console.log(isWide)
         return (
-        <div>
-            <SideBar/>
-            <Container fluid> 
+            <Container fluid className="my-2"> 
             {this.state.conversations.map((conservation) => {
                 return (
                 <Row className="my-1" >
-                    <Col xs={12} md={{span: 8, offset: 2}}>
-                        <Row 
-                        className="chatEntry" 
-                        style={{backgroundColor: conservation.conversationType == 'date' ? "#fe3c72" : "#2979FF", color: 'white'}}
-                        onClick={()=> this.handleClick(conservation)}
-                        >
-                            <Col xs={2} md={{span: 2}}>
-                            <Image src={base64Icon} 
-                            fluid
-                            roundedCircle
-                            />
-                            </Col>
-                            <Col xs={10} md={{span: 10}}>
-                                <h3>{this.otherName(conservation)}</h3>
-                            </Col>
-                        </Row>
+                    <Col xs={12}>
+                        {isWide ? (
+                            <Row 
+                            className="chatEntry" 
+                            style={{backgroundColor: conservation.conversationType == 'date' ? "#fe3c72" : "#2979FF", color: 'white'}}
+                            onClick={()=> this.handleClick(conservation)}
+                            >
+                                <Col md={5}>
+                                <Image src={base64Icon} 
+                                className="imgFluid"
+                                roundedCircle
+                                />
+                                </Col>
+                                <Col md={7}>
+                                    <h3>{this.otherName(conservation)}</h3>
+                                </Col>
+                            </Row>
+                            ) : (
+                                <Image src={base64Icon} 
+                                className="imgFluid mx-auto"
+                                onClick={()=> this.handleClick(conservation)}
+                                roundedCircle
+                                style={{borderColor: conservation.conversationType == 'date' ? "#fe3c72" : "#2979FF", color: 'white', 
+                                borderWidth: 3,
+                                borderStyle: "solid"}}
+                                />
+                            )}
+
                     </Col>
                 </Row>
                 )
             })}
             </Container>
-        </div>
         );
     }
   }
