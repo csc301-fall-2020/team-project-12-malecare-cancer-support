@@ -25,58 +25,70 @@ class Matching extends React.Component {
       showToast: false,
       toastText: "Woohoo, you're reading this text in a Toast!",
       displayedMatch: undefined,
+      upcomingMatches: [],
     };
   }
 
-  async componentDidMount() {
+  getNewMatchRecomendations = async (mode) => {
     try {
-      let { responseData, errorMessage } = await getMatchRecommendations(
-        "dating",
+      const { responseData, errorMessage } = await getMatchRecommendations(
+        mode,
         this.context.getCurrentUser().userId
       );
       if (!responseData) {
-        this.setState({
-          showToast: true,
-          toastText: "An error occurred: " + errorMessage,
-        });
         return;
       }
       console.log(responseData);
-      if (responseData.length === 0) {
-      } else {
-        ({ responseData, errorMessage } = await getUser(responseData[0]));
-        if (!responseData) {
-          this.setState({
-            showToast: true,
-            toastText: "An error occurred: " + errorMessage,
-          });
-          return;
-        }
-        console.log(responseData);
-        // Temporary setting below as a placeholder during development
-        responseData.user.images = [
-          "https://upload.wikimedia.org/wikipedia/commons/c/c2/Rihanna_Fenty_2018.png",
-          "https://www.incimages.com/uploaded_files/image/1920x1080/getty_1157882721_200013432000928078_414319.jpg",
-          "https://media1.popsugar-assets.com/files/thumbor/GwrkdTP4PmYn0v4dBkX1ulwT83s/1196x242:2764x1810/fit-in/500x500/filters:format_auto-!!-:strip_icc-!!-/2019/09/04/006/n/1922398/fe7006935d7044366c8982.50946989_/i/Rihanna.jpg",
-        ];
-        this.setState({ displayedMatch: responseData.user }); // TODO: edit this based on server return
+      // Carousel supports multiple images, but we currently just have 1 profile image per user
+      for (let user of responseData) {
+        user.images = [user.profileImage];
       }
+      // Extend array of current matches by the response we got from server
+      this.state.upcomingMatches.push(...responseData);
+      this.setState({ upcomingMatches: this.state.upcomingMatches });
+      return true;
     } catch (error) {
+      console.log(error);
       this.setState({
         showToast: true,
         toastText:
           "We were unable to connect to the server," +
           " please make sure you have a working internet connection.",
       });
+      return false;
+    }
+  };
+
+  async componentDidMount() {
+    try {
+      await this.getNewMatchRecomendations("date");
+      this.moveToNextMatch();
+    } catch (error) {
+      console.log(error);
     }
   }
+
+  moveToNextMatch = async () => {
+    if (this.state.upcomingMatches.length > 0) {
+      const displayedMatch = this.state.upcomingMatches.shift();
+      this.setState({
+        displayedMatch: displayedMatch,
+        upcomingMatches: this.state.upcomingMatches,
+      });
+    } else {
+      const success = await this.getNewMatchRecomendations("date");
+      if (success) {
+        this.moveToNextMatch();
+      }
+    }
+  };
 
   handleConnect = async () => {
     try {
       const { responseData, errorMessage } = await matchRecommendationConnect(
-        "dating",
+        "date",
         this.context.getCurrentUser().userId,
-        "targetUserId" // TODO: replace this
+        this.state.displayedMatch._id
       );
       if (!responseData) {
         this.setState({
@@ -84,7 +96,7 @@ class Matching extends React.Component {
           toastText: "An error occurred: " + errorMessage,
         });
       } else {
-        // Next recommendation
+        this.moveToNextMatch();
       }
     } catch (error) {
       this.setState({
@@ -97,21 +109,26 @@ class Matching extends React.Component {
   };
 
   handlePass = async () => {
+    console.log("got inside handlePass")
     try {
       const { responseData, errorMessage } = await matchRecommendationPass(
-        "dating",
+        "date",
         this.context.getCurrentUser().userId,
-        "targetUserId" // TODO: replace this
+        this.state.displayedMatch._id
       );
+      console.log("pass: ", responseData, errorMessage)
       if (!responseData) {
         this.setState({
           showToast: true,
           toastText: "An error occurred: " + errorMessage,
         });
       } else {
-        // Next recommendation
+        console.log("pass before move to next match")
+        this.moveToNextMatch();
+        console.log("pass after move to next match")
       }
     } catch (error) {
+      console.log(error)
       this.setState({
         showToast: true,
         toastText:
@@ -137,7 +154,11 @@ class Matching extends React.Component {
         {displayedMatch === undefined ? null : (
           <Row className="no-gutters bioAndPhoto">
             <Col xs={12} lg={6} className="flex">
-              <Carousel className="carousel" interval={null}>
+              <Carousel
+                className="carousel"
+                interval={null}
+                controls={displayedMatch.images.length > 1}
+              >
                 {displayedMatch.images.map((imageLink, index) => {
                   return (
                     <Carousel.Item key={index} className="carouselItem">
@@ -173,7 +194,8 @@ class Matching extends React.Component {
                 {displayedMatch.firstname + " " + displayedMatch.lastname}
               </text>{" "}
               <br></br>
-              <text class="ageAndLocation">25</text>  {/* TODO: update this based on server return */}
+              <text class="ageAndLocation">25</text>{" "}
+              {/* TODO: update this based on server return */}
               <img class="middleDot" src={dotIcon}></img>
               <img class="locationIcon" src={locationIcon}></img>
               <text class="ageAndLocation">
@@ -182,7 +204,9 @@ class Matching extends React.Component {
                   displayedMatch.location.region}
               </text>{" "}
               <br></br>
-              <text class="cancerType">Cancer Type: {displayedMatch.cancer_types.join(", ")}</text>
+              <text class="cancerType">
+                Cancer Type: {displayedMatch.cancer_types.join(", ")}
+              </text>
               <br></br>
               <br></br>
               <text class="bio">
