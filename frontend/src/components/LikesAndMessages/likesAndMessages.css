@@ -1,7 +1,8 @@
 .likesOrMessages {
   background-color: #f6f6f6;
-  height: 10%;
   font-size: calc(0.7rem + 1vw);
+  padding-bottom: 1vw;
+  padding-top: 10px;
 }
 .center {
   display: flex;
@@ -15,7 +16,8 @@
 }
 .likesMessages {
   background-color: white;
-  height: 90%;
+  /* padding-top: 4vh; */
+  height: 100%;
 }
 .numLikes {
   margin-left: 5px !important;

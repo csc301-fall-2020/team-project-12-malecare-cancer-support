@@ -2,4 +2,4 @@
    conveniently import components in other locations. Might need to add to  the
    file later. */
 
-   export { default } from "./matching.js";
+export { default } from "./matching.js";

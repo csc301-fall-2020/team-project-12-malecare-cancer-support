@@ -17,15 +17,15 @@ import { CurUserContext } from "../../curUserContext";
 
 
 const MenuButton = props => {
-    return <button onClick={props.openMenu} className="menuButton"><img class="menuIcon ml-4" src={menuIcon} /></button>
+  return <button onClick={props.openMenu} className="menuButton"><img class="menuIcon ml-4" src={menuIcon} /></button>
 }
 
 /* Landing page component */
 class Landing extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state = {isEmptyState: true, isOpenMenuState: false}
+    this.state = { isEmptyState: true, isOpenMenuState: false }
   }
 
   triggerOpenMenu = () => {
@@ -45,11 +45,10 @@ class Landing extends React.Component {
               <MenuButton openMenu={this.triggerOpenMenu} />
             </Row>
             <Row className="bottom no-gutters">
-            {/* Switch this Col with Menu if user presses menu button.*/}
+              {/* Switch this Col with Menu if user presses menu button.*/}
               {this.state.isEmptyState && <LikesAndMessages />}
               {this.state.isOpenMenuState && <Menu />}
             </Row>
-
           </Col>
           <Col xs={9} className="bigLeftBorder">
             <Row className="top no-gutters topRightNavigation">
