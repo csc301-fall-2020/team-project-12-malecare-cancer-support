@@ -152,16 +152,16 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
 
 app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
     // When current user passes another user (liked) we update both of their arrays/ properties
-    const currentUser = User.findById({_id: mongoose.Types.ObjectId(req.params.currentUser)})
-    const passedUser = User.findById({_id: mongoose.Types.ObjectId(req.params.UserthatwasPassed)})
-    let likesindex = currentUser.likes.indexOf(passedUser)
-    let matchindex = currentUser.matched.indexOf(passedUser)
-    let passedindex = currentUser.passed.indexOf(passedUser)
-
+    const currentUser = await User.findById({_id: mongoose.Types.ObjectId(req.params.currentUser)}).exec()
+    const passedUser = await User.findById({_id: mongoose.Types.ObjectId(req.params.UserthatwasPassed)}).exec()
+    console.log(currentUser.id, passedUser.id)
+    let likesindex = currentUser.likes.indexOf(passedUser.id)
+    let matchindex = currentUser.matched.indexOf(passedUser.id)
+    let passedindex = currentUser.passed.indexOf(passedUser.id)
     if (matchindex <= -1){
         if (passedindex <= -1){
             // User not already passed
-            currentUser.passed.push(passedUser)
+            currentUser.passed.push(passedUser.id)
         }
         if (likesindex > -1){
             // If user was previously liked, then pass on them now and remove them from the likes list
