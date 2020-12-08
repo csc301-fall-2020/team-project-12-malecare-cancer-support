@@ -105,7 +105,6 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
         console.log(currentUser.id);
         console.log(likedUser.id);
         // const likedUser = User.findById(req.params.currentUser);
-        //console.log(currentUser);
         //console.log(likedUser);
         //console.log(currentUser.liked_by);
         //console.log(currentUser.liked_by.contains(likedUser));
