@@ -11,10 +11,9 @@ import { login } from "../../actions/serverRequests";
 
 /* Login page component */
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log(this.props)
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   componentDidMount() {
     if (this.context.isLoggedIn()) {
@@ -30,24 +29,30 @@ class Login extends React.Component {
       email: formData.inputEmail.value,
       password: formData.inputPassword.value,
     };
-   
-    const { response, errorMessage } = await login(payload);
-    console.log(response);
-    console.log("abc");
-    console.log(errorMessage);
-    
-    if (!response) {
-      console.log("An error occurred: ", errorMessage);
-    } else {
-      // successfully logged in
-      this.context.setCurrentUser({
-        accessToken: response.data.accessToken,
-        userId: response.data.userId,
-      });
-      if (formData.inputStayLoggedIn.checked) {
-        // User wants to stay logged in
+
+    try {
+      const { responseData, errorMessage } = await login(payload);
+      // console.log(responseData);
+      if (!responseData) {
+        console.log("An error occurred: ", errorMessage);
+        // Server response indicates error with the user login information
+      } else {
+        // successfully logged in
+        this.context.setCurrentUser({
+          accessToken: responseData.accessToken,
+          userId: responseData.userId,
+        });
+        if (formData.inputStayLoggedIn.checked) {
+          // TODO: User wants to stay logged in
+        }
+        this.props.history.push("/landing");
+
       }
-      this.props.history.push("/landing");
+    } catch (error) {
+      alert(
+        "An error occurred connecting to the server," +
+          " please make sure you have a working internet connect"
+      );
     }
   };
 

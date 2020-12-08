@@ -4,13 +4,15 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import Select from "react-dropdown-select";
 import { withRouter } from "react-router-dom";
-
 import GeoSearchBar from "../GeoSearchBar";
 import { CurUserContext } from "../../curUserContext";
-import { signup } from "../../actions/serverRequests";
-
-import CancerData from "./cancer_data.json";
-import InterestsData from "./interests.json";
+import {
+  signup,
+  getCancerData,
+  getInterestsData,
+} from "../../actions/serverRequests";
+import { Container, Col, Row, Button, Form, Image } from "react-bootstrap";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 /* Registration page component */
 class Registration extends React.Component {
@@ -22,6 +24,7 @@ class Registration extends React.Component {
       last_name: null,
       birthday: null,
       phone_number: null,
+      profileImage: null,
       locations: null,
       gender: null,
       password: null,
@@ -37,33 +40,49 @@ class Registration extends React.Component {
       bio: null,
       location: null,
     };
+    this.loading = false;
+    this.cancerTypes = [];
+    this.sexualOrientationOptions = [];
+    this.genderOptions = [];
+    this.medications = [];
+    this.treatmentTypes = [];
+    this.interests = [];
+    this.curr_location = null;
+    this.search_results = [];
+  }
 
-    for (let key in CancerData) {
-      this[key] = CancerData[key].map((entry) => {
+  componentDidMount = async () => {
+    if (this.context.isLoggedIn()) {
+      this.props.history.replace("/landing");
+    }
+    const cancerData = await getCancerData();
+    const interestsData = await getInterestsData();
+    for (let key in cancerData) {
+      this[key] = cancerData[key].map((entry) => {
         return {
           value: entry,
           label: entry,
         };
       });
     }
-
-    this.interests = InterestsData.interests.map((entry) => {
+    this.interests = interestsData.interests.map((entry) => {
       return {
         value: entry,
         label: entry,
       };
     });
-
-    this.curr_location = null;
-    this.search_results = [];
-    this.data_source = ["sacasc", "sacsacas"];
-  }
-
-  componentDidMount = () => {
-    if (this.context.isLoggedIn()) {
-      // If user is already logged in, go to the landing page
-      this.props.history.replace("/landing");
-    }
+    await this.setState((prev) => {
+      return {
+        ...prev,
+        email: "ascasc",
+      };
+    });
+    await this.setState((prev) => {
+      return {
+        ...prev,
+        email: null,
+      };
+    });
     const checkbox = document.querySelector("#mentee");
     checkbox.setCustomValidity("At least one checkbox must be checked");
   };
@@ -257,9 +276,26 @@ class Registration extends React.Component {
     });
   };
 
+  handleOnChangeImage = async (imgFile) => {
+    this.loading = true;
+    let reader = new FileReader();
+    await reader.readAsDataURL(imgFile);
+    reader.onload = () => {
+      this.setState((prev) => {
+        return {
+          ...prev,
+          profileImage: reader.result,
+        };
+      });
+      this.loading = false;
+    };
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
+    };
+  };
+
   handOnInputBio = (e) => {
     const textarea = e.target;
-    // Count rows by counting '\n' characters, but have at least 5 rows
     const num_rows = Math.max(
       5,
       1 + (textarea.value.match(/\n/g) || []).length
@@ -276,32 +312,20 @@ class Registration extends React.Component {
     });
   };
 
-  // handleOnSubmit = (e) => {
-  //   e.preventDefault();
-  //   const state_copy = this.state;
-  //   if (state_copy.phone_number && state_copy.date) {
-  //     console.log(state_copy);
-  //   } else if (!state_copy.phone_number && !state_copy.date) {
-  //     const { phone_number, interests, ...data_to_submit } = state_copy;
-  //     console.log(data_to_submit);
-  //   } else if (!state_copy.phone_number) {
-  //     const { phone_number, ...data_to_submit } = state_copy;
-  //     console.log(data_to_submit);
-  //   } else {
-  //     const { interests, ...data_to_submit } = state_copy;
-  //     console.log(data_to_submit);
-  //   }
-
   handleSubmit = async (event) => {
-    // console.log("abcdd");
-    event.preventDefault();
-    const formElements = event.target.children;
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      console.log("cas");
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
     const payload = {
-      email: formElements.namedItem("email").value,
-      password: formElements.namedItem("password").value,
-      firstname: formElements.namedItem("first_name").value,
-      lastname: formElements.namedItem("last_name").value,
-      birthday: formElements.namedItem("birthday").value,
+      email: this.state.email,
+      password: this.state.password,
+      firstname: this.state.first_name,
+      lastname: this.state.last_name,
+      birthday: this.state.birthday,
       phone: this.state.phone_number,
       gender: this.state.gender,
       sexual_orientation: this.state.sexual_orientation,
@@ -313,218 +337,277 @@ class Registration extends React.Component {
       is_mentee: this.state.mentee,
       is_partner: this.state.date,
       interests: this.state.interests,
-      bio: formElements.namedItem("bio").value,
+      profileImage: this.state.profileImage,
+      bio: this.state.bio,
     };
-    console.log(payload);
-    if (payload["phone"] == undefined) {
+    if (payload["phone"] === undefined) {
       delete payload["phone"];
     }
     if (payload["interests"].length === 0) {
       delete payload["interests"];
     }
 
-    const { response, errorMessage } = await signup(payload);
-    console.log(response);
-    console.log(errorMessage);
+    try {
+      const { responseData, errorMessage } = await signup(payload);
+      console.log(responseData);
 
-    if (!response) {
-      console.log("An error occurred: ", errorMessage);
-      // TODO: display error message in the browser in some way
-    } else {
-      // successfully logged in
-      this.context.setCurrentUser({
-        accessToken: response.data.accessToken,
-        userId: response.data.userId,
-      });
-      // TODO: could instead go to a custom introduction page?
-      this.props.history.push("/landing");
+      if (!responseData) {
+        alert(errorMessage);
+      } else {
+        // successfully logged in
+        this.context.setCurrentUser({
+          accessToken: responseData.accessToken,
+          userId: responseData.userId,
+        });
+        // TODO: could instead go to a custom introduction page?
+        this.props.history.push("/landing");
+      }
+    } catch (error) {
+      alert(
+        "An error occurred connecting to the server," +
+          " please make sure you have a working internet connect"
+      );
     }
   };
 
   render() {
     const isDateInterested = this.state.date;
+    const profileImg = this.state.profileImage;
+    const loading = this.loading;
     let interests_selection;
+    let img_preview;
     if (isDateInterested) {
       interests_selection = (
         <Select
           multi
           required={true}
+          className="my-2"
           placeholder="Select your interests"
           options={this.interests}
           onChange={this.handleOnChangeInterests}
         />
       );
     } else {
-      interests_selection = <span></span>;
+      interests_selection = null;
+    }
+
+    if (profileImg) {
+      img_preview = (
+        <Col>
+          <Image
+            src={profileImg}
+            className="d-block mx-auto text-center"
+            style={{ maxWidth: "100%" }}
+          />
+        </Col>
+      );
+    } else if (loading) {
+      img_preview = (
+        <Col>
+          <CircularProgress
+            className="d-block mx-auto text-center"
+            style={{ maxWidth: "100%" }}
+          />
+        </Col>
+      );
+    } else {
+      img_preview = null;
     }
 
     return (
-      <div>
-        <div>Join the CancerChat community</div>
-        <form
-          id="registration-form"
-          className="registration-form"
-          onSubmit={this.handleSubmit}
-        >
-          <input
-            className="registrtion-input registration-email"
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={(e) => this.handleOnChangeEmail(e.target.value)}
-            required
-          />
-          <br />
-          <input
-            className="registration-input registration-password"
-            type="password"
-            name="password"
-            placeholder="Password"
-            minLength="6"
-            onChange={(e) => this.handleOnChangePassword(e.target.value)}
-            //required
-          />
-          <br />
-          <input
-            className="registration-input registration-confirm-password"
-            type="password"
-            name="confirm_password"
-            placeholder="Confirm password"
-            minLength="6"
-            onChange={(e) => this.handleOnChangeConfirmPassword(e.target.value)}
-            //required
-          />
-          <br />
-          <input
-            className="registration-input registration-first-name"
-            type="text"
-            name="first_name"
-            placeholder="Your first name"
-            onChange={(e) => this.handleOnChangeFirstName(e.target.value)}
-            //required
-          />
-          <br />
-          <input
-            className="registration-input registration-last-name"
-            type="text"
-            name="last_name"
-            placeholder="Your last name"
-            onChange={(e) => this.handleOnChangeLastName(e.target.value)}
-            //required
-          />
-          <br />
-          <input
-            className="registration-input registration-birthday"
-            type="date"
-            name="birthday"
-            placeholder="Select your birthday"
-            onChange={(e) => this.handleOnChangeBirthday(e.target.value)}
-            //required
-          />
-          <br />
-          <PhoneInput
-            placeholder="Enter your phone number (optional)"
-            value={this.state.phone_number}
-            onChange={(phone_number) =>
-              this.handleOnChangePhoneNumber(phone_number)
-            }
-          />
-          <br />
-          <GeoSearchBar handleOnChangeLocation={this.handleOnChangeLocation} />
-          <br />
-          <Select
-            //required={true}
-            placeholder="Select your gender"
-            options={this.genderOptions}
-            onChange={this.handleOnChangeGender}
-          />
-          <br />
-          <Select
-            //required={true}
-            placeholder="Select your sexual orientation"
-            options={this.sexualOrientationOptions}
-            onChange={this.handleOnChangeSexualOrientation}
-          />
-          <br />
-          <Select
-            multi
-            //required={true}
-            placeholder="Select your cancer types"
-            options={this.cancerTypes}
-            onChange={this.handleOnChangeCancerTypes}
-          />
-          <br />
-          <Select
-            multi
-            //required={true}
-            placeholder="Select your treatments"
-            options={this.treatmentTypes}
-            onChange={this.handleOnChangeTreatments}
-          />
-          <br />
-          <Select
-            multi
-            //required={true}
-            placeholder="Select your medications"
-            options={this.medications}
-            onChange={this.handleOnChangeMedications}
-          />
-          <br />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <label htmlFor="mentee">Looking for a mentor</label>
-            <input
-              id="mentee"
-              className="registration-mentee"
-              type="checkbox"
-              name="mentee"
-              onChange={(e) => this.handleOnChangeMentee(e.target.checked)}
-            />
-          </div>
-          <br />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <label htmlFor="mentor">Looking to be a mentor</label>
-            <input
-              id="mentor"
-              className="registration-mentor"
-              type="checkbox"
-              name="mentor"
-              onChange={(e) => this.handleOnChangeMentor(e.target.checked)}
-            />
-          </div>
-          <br />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <label htmlFor="date">Looking for a date</label>
-            <input
-              id="date"
-              className="registration-date"
-              type="checkbox"
-              name="date"
-              onChange={(e) => this.handleOnChangeDate(e.target.checked)}
-            />
-          </div>
-          <br />
-          {interests_selection}
-          <br />
-          <textarea
-            className="registration-input registration-bio"
-            placeholder="Enter your bio"
-            name="bio"
-            rows="5"
-            onInput={this.handOnInputBio}
-            onChange={(e) => this.handleOnChangeBio(e.target.value)}
-            // required
-          ></textarea>
-          <br />
-          <button
-            className="registration-submit"
-            type="submit"
-            value="Register"
+      <Container>
+        <Row>
+          <Col
+            xs={12}
+            md={{ span: 8, offset: 2 }}
+            className="text-center my-3 display-4 mx-auto"
           >
-            Register
-          </button>
-          <br />
-        </form>
-      </div>
+            Join the CancerChat community
+          </Col>
+        </Row>
+        <Row>
+          <Col md={{ span: 8, offset: 2 }}>
+            <Form.Group
+              id="registration-form"
+              className="mx-auto"
+              onSubmit={this.handleSubmit}
+            >
+              <Form.Control
+                className="my-3 mx-auto"
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={(e) => this.handleOnChangeEmail(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="password"
+                name="password"
+                placeholder="Password"
+                minLength="6"
+                onChange={(e) => this.handleOnChangePassword(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm password"
+                minLength="6"
+                onChange={(e) =>
+                  this.handleOnChangeConfirmPassword(e.target.value)
+                }
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="text"
+                name="first_name"
+                placeholder="Your first name"
+                onChange={(e) => this.handleOnChangeFirstName(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="text"
+                name="last_name"
+                placeholder="Your last name"
+                onChange={(e) => this.handleOnChangeLastName(e.target.value)}
+                required
+              />
+              <Form.Control
+                className="my-3"
+                type="date"
+                name="birthday"
+                placeholder="Select your birthday"
+                onChange={(e) => this.handleOnChangeBirthday(e.target.value)}
+                required
+              />
+              <PhoneInput
+                className="my-4 mx-auto"
+                placeholder="Enter your phone number (optional)"
+                value={this.state.phone_number}
+                onChange={(phone_number) =>
+                  this.handleOnChangePhoneNumber(phone_number)
+                }
+              />
+              <GeoSearchBar
+                className="my-3"
+                handleOnChangeLocation={this.handleOnChangeLocation}
+              />
+              <Select
+                className="my-3"
+                required={true}
+                placeholder="Select your gender"
+                options={this.genderOptions}
+                onChange={this.handleOnChangeGender}
+              />
+              <Select
+                className="my-3"
+                required={true}
+                placeholder="Select your sexual orientation"
+                options={this.sexualOrientationOptions}
+                onChange={this.handleOnChangeSexualOrientation}
+              />
+              <Select
+                multi
+                className="my-3"
+                required={true}
+                placeholder="Select your cancer types"
+                options={this.cancerTypes}
+                onChange={this.handleOnChangeCancerTypes}
+              />
+              <Select
+                multi
+                className="my-3"
+                required={true}
+                placeholder="Select your treatments"
+                options={this.treatmentTypes}
+                onChange={this.handleOnChangeTreatments}
+              />
+              <Select
+                multi
+                className="my-3"
+                required={true}
+                placeholder="Select your medications"
+                options={this.medications}
+                onChange={this.handleOnChangeMedications}
+              />
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="my-3"
+              >
+                <label htmlFor="mentee">Looking for a mentor</label>
+                <input
+                  id="mentee"
+                  className="registration-mentee"
+                  type="checkbox"
+                  name="mentee"
+                  onChange={(e) => this.handleOnChangeMentee(e.target.checked)}
+                />
+              </div>
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="my-3"
+              >
+                <label htmlFor="mentor">Looking to be a mentor</label>
+                <input
+                  id="mentor"
+                  className="registration-mentor"
+                  type="checkbox"
+                  name="mentor"
+                  onChange={(e) => this.handleOnChangeMentor(e.target.checked)}
+                />
+              </div>
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="my-3"
+              >
+                <label htmlFor="date">Looking for a date</label>
+                <input
+                  id="date"
+                  className="registration-date"
+                  type="checkbox"
+                  name="date"
+                  onChange={(e) => this.handleOnChangeDate(e.target.checked)}
+                />
+              </div>
+              {interests_selection}
+              <Form.Control
+                className="my-3 border border-dark"
+                type="file"
+                name="birthday"
+                placeholder="Select your profile image"
+                accept="image/png, image/jpeg"
+                onChange={(e) => this.handleOnChangeImage(e.target.files[0])}
+                required
+              />
+              {img_preview}
+              <div class="form-group">
+                <textarea
+                  className="my-1 registration-bio form-control"
+                  placeholder="Enter your bio"
+                  name="bio"
+                  rows="5"
+                  onInput={this.handOnInputBio}
+                  onChange={(e) => this.handleOnChangeBio(e.target.value)}
+                  required
+                ></textarea>
+              </div>
+              <Button
+                className="my-3 d-block mx-auto"
+                variant="customOrange"
+                type="submit"
+                value="Register"
+                onClick={(e) => this.handleSubmit(e)}
+              >
+                Register
+              </Button>
+            </Form.Group>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
