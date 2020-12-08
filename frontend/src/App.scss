@@ -1,6 +1,21 @@
 $theme-colors: (
-  "customOrange": #e95d31
+  "customOrange": #e74b1a,
 );
 // $primary:  #e95d31;
 
 @import "~bootstrap/scss/bootstrap";
+
+/* Custom button variants */
+.btn-outline-rounded-customOrange {
+  border-radius: 30px;
+  border-width: 3px;
+  background-color: white;
+  @include button-outline-variant(#e74b1a, #FFFFFF);
+}
+
+.btn-outline-rounded-customGray {
+  border-radius: 30px;
+  border-width: 3px;
+  background-color: white;
+  @include button-outline-variant($gray-600, #FFFFFF);
+}

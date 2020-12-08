@@ -39,7 +39,7 @@ export const getUser = (targetUserId) => {
 };
 
 /* Get the profile information of the user with targetUserId */
-export const getMatchRecommendations = (curUserId) => {
+export const getMatchRecommendations = (mode, curUserId) => {
   const returnVal = axiosRequest("GET", "/matches/" + curUserId);
   return returnVal;
 };
@@ -64,7 +64,7 @@ export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
   const payload = { mode: mode };
   const returnVal = axiosRequest(
     "POST",
-    "/matches/connect" + curUserId + "&" + targetUserId,
+    "/matches/connect/" + curUserId + "&" + targetUserId,
     payload
   );
   return returnVal;

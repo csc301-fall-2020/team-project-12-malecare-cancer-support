@@ -3,17 +3,25 @@ import "./login.css";
 
 import { Link, withRouter } from "react-router-dom";
 
-import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Toast from "react-bootstrap/Toast";
 
 import { CurUserContext } from "../../curUserContext";
 import { login } from "../../actions/serverRequests";
 
 /* Login page component */
 class Login extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      showAlert: false,
+      loginErrorMessage: "",
+      showToast: false,
+      toastText: "",
+    };
+  }
 
   componentDidMount() {
     if (this.context.isLoggedIn()) {
@@ -34,8 +42,11 @@ class Login extends React.Component {
       const { responseData, errorMessage } = await login(payload);
       // console.log(responseData);
       if (!responseData) {
-        console.log("An error occurred: ", errorMessage);
         // Server response indicates error with the user login information
+        this.setState({
+          showAlert: true,
+          loginErrorMessage: "An error occurred: " + errorMessage,
+        });
       } else {
         // successfully logged in
         this.context.setCurrentUser({
@@ -46,13 +57,14 @@ class Login extends React.Component {
           // TODO: User wants to stay logged in
         }
         this.props.history.push("/landing");
-
       }
     } catch (error) {
-      alert(
-        "An error occurred connecting to the server," +
-          " please make sure you have a working internet connect"
-      );
+      this.setState({
+        showToast: true,
+        toastText:
+          "We were unable to connect to the server," +
+          " please make sure you have a working internet connection.",
+      });
     }
   };
 
@@ -60,6 +72,14 @@ class Login extends React.Component {
     const formLabelClasses = "h4 font-weight-normal";
     return (
       <div>
+        <Toast
+          show={this.state.showToast}
+          className="matchingToast"
+          onClose={() => this.setState({ showToast: false })}
+        >
+          <Toast.Header className="matchingToastHeader" />
+          <Toast.Body>{this.state.toastText}</Toast.Body>
+        </Toast>
         <h1 className="text-center m-5 text-customOrange">CancerChat</h1>
         <Form className="login-form mx-auto" onSubmit={this.handleSubmit}>
           <Form.Group controlId="inputEmail">
@@ -88,6 +108,14 @@ class Login extends React.Component {
               custom
             />
           </Form.Group>
+          <Alert
+            variant={"warning"}
+            show={this.state.showAlert}
+            dismissible
+            onClose={() => this.setState({ showAlert: false })}
+          >
+            {this.state.loginErrorMessage}
+          </Alert>
           <Button
             size="lg"
             variant="customOrange"
