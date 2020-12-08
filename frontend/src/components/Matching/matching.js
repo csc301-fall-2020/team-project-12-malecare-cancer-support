@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Carousel from "react-bootstrap/Carousel";
 import Image from "react-bootstrap/Image";
+import dotIcon from "../../images/dotIcon.svg";
+import locationIcon from "../../images/locationIcon.svg";
 
 class Matching extends React.Component {
   constructor(props) {
@@ -51,32 +53,23 @@ class Matching extends React.Component {
           </Carousel>
         </Col>
         <Col xs={12} lg={6} className="bioContainer">
+          <text class="name">Rihanna</text> <br></br>
+          <text class="ageAndLocation">25</text>
+          <img class="middleDot" src={dotIcon}></img>
+          <img class="locationIcon" src={locationIcon}></img>
+          <text class="ageAndLocation">Toronto, ON</text> <br></br>
+          <text class="cancerType">Cancer Type: Prostate</text>
+          <br></br>
+          <br></br>
           <text class="bio">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-            faucibus nec quam non viverra. Vivamus ultrices augue a velit
-            ullamcorper placerat. Ut vel lectus tortor. Vestibulum consequat dui
-            a condimentum pulvinar. Vestibulum ac congue mi. Sed iaculis luctus
-            placerat. Sed nec mauris condimentum, lobortis purus et, bibendum
-            ex. Mauris scelerisque rhoncus quam, et lobortis libero dictum sit
-            amet. Vivamus scelerisque est sem, a elementum est bibendum et.
-            Aenean sit amet ornare arcu. Aliquam id enim neque. Nulla blandit,
-            enim vitae dignissim sagittis, sapien nisl finibus diam, ac
-            convallis nisi arcu ut lorem. Curabitur viverra a urna non faucibus.
-            Mauris eu enim mattis, commodo nibh non, posuere felis. Nulla
-            facilisi. Proin sagittis neque a ligula efficitur, vel malesuada
-            massa commodo. Phasellus iaculis, sem ut auctor sollicitudin, elit
-            risus dictum quam, et volutpat augue lacus ut lectus. Mauris
-            dignissim pretium fermentum. Morbi fermentum erat ac velit tincidunt
-            sollicitudin. Donec gravida ipsum elit, at luctus massa aliquam sed.
-            Ut tristique magna vitae magna consectetur, sed congue leo
-            consectetur. Quisque in viverra justo. Etiam vestibulum dolor eu
-            odio suscipit, ac sodales augue tincidunt. Proin porta, purus non
-            hendrerit volutpat, lacus eros gravida sapien, nec aliquam sapien
-            quam fringilla lectus. Nullam non mauris nibh. Suspendisse efficitur
-            eros non turpis vestibulum commodo. Donec venenatis neque vel
-            dapibus efficitur.
+            Most people that know me would say I am outgoing, spontaneous,
+            funny and sometimes a little bit crazy.{'\n'} {'\n'}
+            I am the type of woman who wears her heart on her sleeve. I truly
+            am very passionate in a relationship and I am looking for someone who has
+            the same values. I can be vulnerable and share my feelings easily. I am looking
+            for someone who can do the same by opening up and who is able to express themselves.
+
           </text>
-          Row
         </Col>
       </Row>
     );

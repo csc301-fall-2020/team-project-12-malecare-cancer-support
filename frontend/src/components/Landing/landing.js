@@ -24,19 +24,19 @@ class Landing extends React.Component {
             <Row className="bottom no-gutters">
               <Col className="no-gutters w-100">
                 <Row className="no-gutters likesOrMessages">
-                  <Col xs={12} md={6} className="no-gutters">
+                  <Col xs={12} xl={6} className="no-gutters">
                     <text class="center bold">
-                      Likes<text class="numLikes">1</text>
+                      Likes<text class="numLikes">99+</text>
                     </text>
                   </Col>
-                  <Col xs={12} md={6} className="no-gutters bigLeftBorder">
+                  <Col xs={12} xl={6} className="no-gutters bigLeftBorder">
                     <text class="center">
                       Messages <text class="numLikes">99+</text>
                     </text>
                   </Col>
                 </Row>
                 <Row className="likesMessages no-gutters">
-                  Space for Likes and Messages
+                  {/* Space for Likes and Messages */}
                 </Row>
               </Col>
             </Row>
