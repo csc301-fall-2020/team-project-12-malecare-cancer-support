@@ -58,18 +58,24 @@ app.get('/user/:userId', async(req,res) => {
 app.get('/matches/:userId', async(req,res) => {
     try {
         const currentUser = await User.findById({_id: req.params.userId}).exec()
-        let arr = [currentUser.id]
-        const dont_find = arr.concat(currentUser.passed)
+        const dont_find = []
+            .concat([currentUser.id],currentUser.passed, currentUser.liked_by, currentUser.likes, currentUser.matched)
+            .filter((item, i, arr) => item && arr.indexOf(item) === i);
         const all_users = await User.find({ _id: { $nin: dont_find}}).exec()
-        let options = []
-        options = options.concat(currentUser.liked_by, all_users, currentUser.passed)
+        const options = []
+            .concat(currentUser.liked_by, all_users, currentUser.passed)
+            .filter((item, i, arr) => item && arr.indexOf(item) === i);
         let ret_users;
         if (options.length >= 5) {
             ret_users = options.slice(0, 5);
         } else{
             ret_users = options.slice(0, options.length);
         }
-        res.send(ret_users)
+        let ids = [];
+        for (let i = 0; i < ret_users.length; i++){
+            ids.push(ret_users[i].id);
+        }
+        res.send(ids)
         // if (currentUser.liked_by.length !== 0){
         //     for (let i = 0; i < currentUser.liked_by.length; i++){
         //         if (!currentUser.passed.includes(currentUser.liked_by[i])){
