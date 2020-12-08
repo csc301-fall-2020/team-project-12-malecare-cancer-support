@@ -19,11 +19,13 @@ class Chats extends React.Component {
     
     componentDidMount = async () => {
         console.log(this.context);
-        const response = await getConversations(this.context.getCurrentUser().userId);
-        const userConversations = response;
+        const { responseData } = await getConversations(
+          this.context.getCurrentUser().userId
+        );
+        const userConversations = responseData;
         console.log(userConversations);
-        this.setState({conversations: userConversations});
-    }
+        this.setState({ conversations: userConversations });
+      };
 
     handleClick = (conversation) => {
         const chatURI = '/chat/' + conversation._id;

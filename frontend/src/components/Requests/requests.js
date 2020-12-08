@@ -4,9 +4,7 @@ import {Card, Container, Button, Row, Col} from "react-bootstrap";
 import SideBar from '../SideBar';
 import {withRouter} from 'react-router-dom';
 
-
 class Requests extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -73,6 +71,4 @@ class Requests extends React.Component {
     }
   }
 
-
-  
 export default withRouter(Requests);

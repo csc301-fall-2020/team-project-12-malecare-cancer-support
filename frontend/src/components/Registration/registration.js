@@ -332,22 +332,33 @@ class Registration extends React.Component {
       profileImage: this.state.profileImage,
       bio: this.state.bio,
     };
-    if (payload["phone"] == undefined) {
+    if (payload["phone"] === undefined) {
       delete payload["phone"];
     }
     if (payload["interests"].length === 0) {
       delete payload["interests"];
     }
 
-    const { response, errorMessage } = await signup(payload);
-    if (!response) {
-      alert(errorMessage);
-    } else {
-      this.context.setCurrentUser({
-        accessToken: response.data.accessToken,
-        userId: response.data.userId,
-      });
-      this.props.history.push("/landing");
+    try {
+      const { responseData, errorMessage } = await signup(payload);
+      console.log(responseData);
+
+      if (!responseData) {
+        alert(errorMessage);
+      } else {
+        // successfully logged in
+        this.context.setCurrentUser({
+          accessToken: responseData.accessToken,
+          userId: responseData.userId,
+        });
+        // TODO: could instead go to a custom introduction page?
+        this.props.history.push("/landing");
+      }
+    } catch (error) {
+      alert(
+        "An error occurred connecting to the server," +
+          " please make sure you have a working internet connect"
+      );
     }
   };
 
