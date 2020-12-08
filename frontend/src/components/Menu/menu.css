@@ -6,11 +6,11 @@
   border-radius: 50%;
 }
 .menu {
-  height: 100%;
+  height: 100vh !important;
   background-color: white;
 }
 .displayContents {
-  display: contents;
+  display: contents !important;
 }
 .buttons {
   height: 100%;
@@ -21,6 +21,7 @@
   font-size: calc(1rem + 0.9vw);
   height: 10vw;
   max-height: 10%;
+  width: 100%;
 }
 .nameUser {
   font-size: calc(0.8rem + 0.5vw);

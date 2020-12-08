@@ -17,7 +17,7 @@
 .likesMessages {
   background-color: white;
   /* padding-top: 4vh; */
-  height: 100%;
+  display: contents !important;
 }
 .numLikes {
   margin-left: 5px !important;
