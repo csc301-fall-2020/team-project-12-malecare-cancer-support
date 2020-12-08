@@ -14,16 +14,18 @@ import { CurUserContext } from "../../curUserContext";
 import {
   getUser,
   getMatchRecommendations,
-  matchRecommendationConnect,
   matchRecommendationPass,
+  matchRecommendationConnect,
+  createConversation,
 } from "../../actions/serverRequests";
 
 class Matching extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      mode: "date",
       showToast: false,
-      toastText: "Woohoo, you're reading this text in a Toast!",
+      toastText: "",
       displayedMatch: undefined,
       upcomingMatches: [],
     };
@@ -36,7 +38,7 @@ class Matching extends React.Component {
         this.context.getCurrentUser().userId
       );
       if (!responseData) {
-        return;
+        return false;
       }
       console.log(responseData);
       // Carousel supports multiple images, but we currently just have 1 profile image per user
@@ -59,14 +61,19 @@ class Matching extends React.Component {
     }
   };
 
-  async componentDidMount() {
-    try {
-      await this.getNewMatchRecomendations("date");
+  getNewMatchesAndMove = async () => {
+    const success = await this.getNewMatchRecomendations(this.state.mode);
+    if (success && this.state.upcomingMatches.length > 0) {
       this.moveToNextMatch();
-    } catch (error) {
-      console.log(error);
+    } else if (success) {
+      // we got an empty array back from the server
+      this.setState({
+        showToast: true,
+        toastText:
+          "There are no more matches for now, please come back at a later time!",
+      });
     }
-  }
+  };
 
   moveToNextMatch = async () => {
     if (this.state.upcomingMatches.length > 0) {
@@ -76,17 +83,18 @@ class Matching extends React.Component {
         upcomingMatches: this.state.upcomingMatches,
       });
     } else {
-      const success = await this.getNewMatchRecomendations("date");
-      if (success) {
-        this.moveToNextMatch();
-      }
+      await this.getNewMatchesAndMove();
     }
   };
 
+  async componentDidMount() {
+    this.getNewMatchesAndMove();
+  }
+
   handleConnect = async () => {
     try {
-      const { responseData, errorMessage } = await matchRecommendationConnect(
-        "date",
+      let { responseData, errorMessage } = await matchRecommendationConnect(
+        this.state.mode,
         this.context.getCurrentUser().userId,
         this.state.displayedMatch._id
       );
@@ -95,9 +103,26 @@ class Matching extends React.Component {
           showToast: true,
           toastText: "An error occurred: " + errorMessage,
         });
-      } else {
-        this.moveToNextMatch();
+        return;
       }
+      if (typeof responseData === "string") {
+        // TODO: edit this based on server response
+        // TODO: we got a match, responseData is the id of the target user as string
+        ({ responseData, errorMessage } = await createConversation(
+          this.state.mode,
+          this.context.getCurrentUser().userId,
+          responseData
+        ));
+        if (!responseData) {
+          this.setState({
+            showToast: true,
+            toastText: "An error occurred: " + errorMessage,
+          });
+          return;
+        }
+        console.log(responseData);
+      }
+      this.moveToNextMatch();
     } catch (error) {
       this.setState({
         showToast: true,
@@ -109,26 +134,22 @@ class Matching extends React.Component {
   };
 
   handlePass = async () => {
-    console.log("got inside handlePass")
+    console.log("got inside handlePass");
     try {
       const { responseData, errorMessage } = await matchRecommendationPass(
-        "date",
+        this.state.mode,
         this.context.getCurrentUser().userId,
         this.state.displayedMatch._id
       );
-      console.log("pass: ", responseData, errorMessage)
       if (!responseData) {
         this.setState({
           showToast: true,
           toastText: "An error occurred: " + errorMessage,
         });
       } else {
-        console.log("pass before move to next match")
         this.moveToNextMatch();
-        console.log("pass after move to next match")
       }
     } catch (error) {
-      console.log(error)
       this.setState({
         showToast: true,
         toastText:

@@ -75,6 +75,18 @@ export const getConversations = (userId) => {
   return returnVal;
 };
 
+export const createConversation = (mode, curUserId, targetUserId) => {
+  // conversationType should be "mentor" or "date"
+  const payload = {
+    userIdOne: curUserId,
+    userIdTwo: targetUserId,
+    messages: [],
+    conversationType: mode,
+  };
+  const returnVal = axiosRequest("POST", "/conversations", payload);
+  return returnVal;
+};
+
 export const getCancerData = () => {
   const returnVal = axios
     .get("/data/cancer-data")
@@ -98,4 +110,3 @@ export const getInterestsData = () => {
     });
   return returnVal;
 };
-
