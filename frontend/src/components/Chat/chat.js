@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { CurUserContext } from "../../curUserContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {Container, Image, Row, Col, Text} from 'react-bootstrap';
 
 const ENDPOINT = "http://localhost:5000";
 let socket;
@@ -19,8 +20,8 @@ class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.messagesEnd = false
-    this.loading = true;
-    this.hasMore = true;
+    this.loading = false;
+    this.hasMore = false;
     this.state = {
       message: {
         author: "",
@@ -72,8 +73,11 @@ class Chat extends React.Component {
     }
   };
 
+
+
   componentDidMount = async () => {
     const conversationData = this.props.location.conversationData;
+    console.log(conversationData);
     this.setState((prev) => {
       const messages = this.state.conversation.messages;
       console.log("currNamse mount", conversationData.currUserName);
@@ -138,7 +142,7 @@ class Chat extends React.Component {
   };
 
   handleBackButton = () => {
-    const chatURI = "/chats-test";
+    const chatURI = "/landing";
     const { history } = this.props;
     history.push(chatURI);
   };
@@ -152,7 +156,6 @@ class Chat extends React.Component {
   };
 
   fetchMoreData = async () => {
-    if(this.hasMore) {
       this.loading = true;
         await socket.emit(
         "latestMessages",
@@ -164,7 +167,6 @@ class Chat extends React.Component {
       }
     );
         this.loading = false;
-    }
   };
 
 
@@ -206,23 +208,30 @@ class Chat extends React.Component {
     return (
       <div className="outerContainer">
         <div className="chatContainer">
-          <div className="chatBar" 
-        style={{background: this.isConversationDate() ? "#fe3c72" : "#2979FF"}}
-          >
-            <div className="leftChatContainer">
-              <img
-                className="img-fluid rounded-circle col-lg-2 col-md-3 col-6 col-xs-4 col-sm-4"
-                src={base64Icon}
-                alt="profile icon"
-              />
-              <h5>{this.state.conversation.otherUserName}</h5>
-            </div>
+
+        <Container fluid style={{background: this.isConversationDate() ? "#fe3c72" : "#2979FF"}}>
+          <Row>
+            <Col xs={8}>
+              <div className="leftChatContainer">
+                <img
+                  className="rounded-circle"
+                  style={{maxWidth: "30%", maxHeight: "30%", marginRight: "5%"}}
+                  src={this.state.conversation.profileImage}
+                  alt="profile icon"
+                />
+                <h3>{this.state.conversation.otherUserName}</h3>
+              </div>
+            </Col>
+            <Col xs={4}>
             <div className="rightChatContainer">
               <a onClick={() => this.handleBackButton()}>
                 <BiExit size={"3em"} color="white" />
               </a>
             </div>
-          </div>
+            </Col>
+          </Row>
+        </Container>
+
 
             <div
             id="scrollableDiv"

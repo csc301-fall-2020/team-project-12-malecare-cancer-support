@@ -39,13 +39,13 @@ export const getUser = (targetUserId) => {
 };
 
 /* Get the profile information of the user with targetUserId */
-export const getMatchRecommendations = (curUserId) => {
+export const getMatchRecommendations = (mode, curUserId) => {
   const returnVal = axiosRequest("GET", "/matches/" + curUserId);
   return returnVal;
 };
 
 /* When the current user wants to "pass" a match recommendation.
- * "mode" is one of ("dating", "mentor") */
+ * "mode" is one of ("date", "mentor") */
 export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
   // Include authToken in payload, or pass along as cookie?
   const payload = { mode: mode };
@@ -58,13 +58,13 @@ export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
 };
 
 /* When the current user wants to "connect" with a match recommendation.
- * "mode" is one of ("dating", "mentor") */
+ * "mode" is one of ("date", "mentor") */
 export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
   // Include authToken in payload?
   const payload = { mode: mode };
   const returnVal = axiosRequest(
     "POST",
-    "/matches/connect" + curUserId + "&" + targetUserId,
+    "/matches/connect/" + curUserId + "&" + targetUserId,
     payload
   );
   return returnVal;
@@ -72,6 +72,18 @@ export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
 
 export const getConversations = (userId) => {
   const returnVal = axiosRequest("GET", "/conversations/" + userId);
+  return returnVal;
+};
+
+export const createConversation = (mode, curUserId, targetUserId) => {
+  // conversationType should be "mentor" or "date"
+  const payload = {
+    userIdOne: curUserId,
+    userIdTwo: targetUserId,
+    messages: [],
+    conversationType: mode,
+  };
+  const returnVal = axiosRequest("POST", "/conversations", payload);
   return returnVal;
 };
 
@@ -98,4 +110,3 @@ export const getInterestsData = () => {
     });
   return returnVal;
 };
-

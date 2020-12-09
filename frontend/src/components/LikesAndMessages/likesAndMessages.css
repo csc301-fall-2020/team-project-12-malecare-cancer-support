@@ -1,0 +1,33 @@
+.likesOrMessages {
+  background-color: #f6f6f6;
+  font-size: calc(0.6rem + 1vw);
+  padding-bottom: 1vw;
+  padding-top: 10px;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  font-weight: 550;
+}
+.bigLeftBorder {
+  border-left: 4px solid #e74b1a !important;
+}
+.likesMessages {
+  background-color: white;
+  /* padding-top: 4vh; */
+  display: contents !important;
+}
+.numLikes {
+  margin-left: 5px !important;
+  text-align: center;
+  border: 1px solid red;
+  border-radius: 50% !important;
+  background-color: #e74b1a;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  height: calc(2.3rem + 1vw);
+  width: calc(2.3rem + 1vw);
+  color: white;
+}
