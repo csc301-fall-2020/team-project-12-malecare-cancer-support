@@ -7,34 +7,48 @@ import Row from "react-bootstrap/Row";
 import menuIcon from "../../images/menuIcon.svg";
 import mentorIcon from "../../images/mentorIcon.svg";
 import heartIcon from "../../images/heartIcon.svg";
-import SideBar from '../SideBar'
-import LikesAndMessages from '../LikesAndMessages';
+import SideBar from "../SideBar";
+import LikesAndMessages from "../LikesAndMessages";
 import Button from "react-bootstrap/Button";
 import Menu from "../Menu";
 
 import Matching from "../Matching";
+import { getUser } from "../../actions/serverRequests";
 import { CurUserContext } from "../../curUserContext";
 
-
-const MenuButton = props => {
-  return <button onClick={props.openMenu} className="menuButton"><img class="menuIcon ml-4" src={menuIcon} /></button>
-}
+const MenuButton = (props) => {
+  return (
+    <button onClick={props.openMenu} className="menuButton">
+      <img class="menuIcon ml-4" src={menuIcon} />
+    </button>
+  );
+};
 
 /* Landing page component */
 class Landing extends React.Component {
-
   constructor(props) {
-    super(props)
-    this.state = { isEmptyState: true, isOpenMenuState: false }
+    super(props);
+    this.state = { isEmptyState: true, isOpenMenuState: false, userData: {} };
+  }
+
+  async componentDidMount() {
+    const { responseData, errorMessage } = await getUser(
+      this.context.getCurrentUser().userId
+    );
+    if (!responseData) {
+      console.log("An error occurred: " + errorMessage);
+    }
+    console.log(responseData);
+    this.setState({ userData: responseData.user });
   }
 
   triggerOpenMenu = () => {
     this.setState({
       ...this.state,
       isEmptyState: !this.state.isEmptyState,
-      isOpenMenuState: !this.state.isOpenMenuState
-    })
-  }
+      isOpenMenuState: !this.state.isOpenMenuState,
+    });
+  };
 
   render() {
     return (
@@ -47,7 +61,9 @@ class Landing extends React.Component {
             <Row className="bottom no-gutters">
               {/* Switch this Col with Menu if user presses menu button.*/}
               {this.state.isEmptyState && <LikesAndMessages />}
-              {this.state.isOpenMenuState && <Menu />}
+              {this.state.isOpenMenuState && (
+                <Menu userData={this.state.userData} />
+              )}
             </Row>
           </Col>
           <Col xs={9} className="bigLeftBorder">
@@ -64,7 +80,7 @@ class Landing extends React.Component {
               </Col>
               <Col xs={2}></Col>
             </Row>
-            <Row xs={10} className="bottom no-gutters bottomRightPane" >
+            <Row xs={10} className="bottom no-gutters bottomRightPane">
               <Matching />
             </Row>
           </Col>
