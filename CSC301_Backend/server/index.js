@@ -12,7 +12,7 @@ const user = require('../Routers/users');
 const data = require('../Routers/data');
 const conversations = require('../Routers/conversations');
 const messages = require('../Routers/messages');
-
+const auth = require('../middleware/is-auth');
 
 mongoose.connect('mongodb://localhost:27017/cancer',
     {useNewUrlParser: true, useUnifiedTopology: true},
@@ -61,83 +61,81 @@ app.get('/all-users', auth, async (req, res) => {
 
 //match when somebody likes someone
 app.post('/match-by-like/:likedUserId/:userWhoLikedId', auth, async (req, res) => {
- let {likedUserId, userWhoLikedId} = req.params
-
- if((likedUserId.length === 12 || likedUserId.length === 24) && (userWhoLikedId.length === 12 || userWhoLikedId.length === 24 )) {
- try {
- //we are pushing userWholiked into liked user array
- const updatedLikedUser = await User.findByIdAndUpdate(likedUserId, {$push:{liked_by: userWhoLikedId}}, {new: true})
- //we are pushing likedUser into likes user array
- const updatedUserWhoLiked = await User.findByIdAndUpdate(userWhoLikedId, {$push:{likes: likedUserId}}, {new: true})
- //getting new user
- const userWhoLiked = await User.findById(userWhoLikedId)
- //checking match
- const checkMatch = userWhoLiked.liked_by.find(like => like === likedUserId)
- if(checkMatch !== undefined && checkMatch.length > 0) {
- return res.json({match: true, updatedLikedUser, updatedUserWhoLiked })
- } else {
- return res.json({match: false, updatedLikedUser, updatedUserWhoLiked})
- }
- } catch (error) {
- return res.json({error})
- }
- } else {
- return res.json("Invalid Id's. Only Mongo Object id is acceptable")
- }
-
-})
+    let {likedUserId, userWhoLikedId} = req.params;
+    if((likedUserId.length === 12 || likedUserId.length === 24) && (userWhoLikedId.length === 12 || userWhoLikedId.length === 24 )) {
+    try {
+        //we are pushing userWholiked into liked user array
+        const updatedLikedUser = await User.findByIdAndUpdate(likedUserId, {$push:{liked_by: userWhoLikedId}}, {new: true});
+        //we are pushing likedUser into likes user array
+        const updatedUserWhoLiked = await User.findByIdAndUpdate(userWhoLikedId, {$push:{likes: likedUserId}}, {new: true});
+        //getting new user
+        const userWhoLiked = await User.findById(userWhoLikedId);
+        //checking match
+        const checkMatch = userWhoLiked.liked_by.find(like => like === likedUserId);
+        if(checkMatch !== undefined && checkMatch.length > 0) {
+            return res.json({match: true, updatedLikedUser, updatedUserWhoLiked });
+        } else {
+            return res.json({match: false, updatedLikedUser, updatedUserWhoLiked})
+        }
+    } catch (error) {
+        return res.json({error});
+    }
+    } else {
+        return res.json("Invalid Id's. Only Mongo Object id is acceptable");
+    }
+});
 
 
 //match by location
 app.post('/match-by-location', auth, async (req, res) => {
- const {location : {latitude, longitude}, radius} = req.body
- try {
- let nearbyUsers = []
- //getting all users
- const users = await User.find()
- console.log('req', latitude, longitude)
- console.log('user loc', (users[0].location.toJSON()))
- //filtering users on the basis of latitude and longitude
- users.map(user => {
- //calculating the distance bw the given latitudes and longitudes
- let distance = getDistanceFromLatLonInKm(
- latitude,
- longitude,
- user.location.toJSON().latitude,
- user.location.toJSON().longitude
- )
- console.log('distance is : ', distance)
- if (distance <= radius) {
- //pushing to array if user has distance within the radius
- nearbyUsers.push(user)
- }
- })
- return res.json( nearbyUsers )
- } catch (error) {
- return res.json({error})
- }
+    const {location : {latitude, longitude}, radius} = req.body
+    try {
+        let nearbyUsers = [];
+        //getting all users
+        const users = await User.find()
+        console.log('req', latitude, longitude)
+        console.log('user loc', (users[0].location.toJSON()))
+        //filtering users on the basis of latitude and longitude
+        users.map(user => {
+        //calculating the distance bw the given latitudes and longitudes
+            let distance = getDistanceFromLatLonInKm(
+            latitude,
+            longitude,
+            user.location.toJSON().latitude,
+            user.location.toJSON().longitude);
+            console.log('distance is : ', distance);
+            if (distance <= radius) {
+            //pushing to array if user has distance within the radius
+                nearbyUsers.push(user);
+            }
+        });
+        return res.json(nearbyUsers);
+    } catch (error) {
+        return res.json({error});
+    }
 
-})
+});
 
 
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
- const R = 6371 // Radius of the earth in km
- const Latitude = deg2rad(lat2 - lat1) // deg2rad below
- const Longitude = deg2rad(lon2 - lon1)
- const a =
- Math.sin(Latitude / 2) * Math.sin(Latitude / 2) +
- Math.cos(deg2rad(lat1)) *
- Math.cos(deg2rad(lat2)) *
- Math.sin(Longitude / 2) *
- Math.sin(Longitude / 2);
- const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
- return R * c; // Distance in km
+    const R = 6371 // Radius of the earth in km
+    const Latitude = deg2rad(lat2 - lat1) // deg2rad below
+    const Longitude = deg2rad(lon2 - lon1)
+    const a =
+    Math.sin(Latitude / 2) * Math.sin(Latitude / 2) +
+    Math.cos(deg2rad(lat1)) *
+    Math.cos(deg2rad(lat2)) *
+    Math.sin(Longitude / 2) *
+    Math.sin(Longitude / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
 }
 
 //converts degrees to radians
 const deg2rad = (degree) => {
- return degree * (Math.PI / 180);
+    return degree * (Math.PI / 180);
 }
+
 server = app.listen(5000, () => console.log('Success, Server is up and running!'));
 
 
