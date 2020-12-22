@@ -37,152 +37,107 @@ app.use('/auth', user);
 app.use('/data', data);
 app.use('/conversations', conversations);
 app.use('/messages', messages);
-app.get('/user/:userId', async(req,res) => {
+
+app.get('/user/:userId', auth, async(req,res) => {
     // const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
     const oid = mongoose.Types.ObjectId(req.params.userId);
-    console.log(oid)
     try {
         const user = await User.findById({_id: oid});
-        user.password = undefined
-        console.log('abc')
         res.status(200).json({user: user});
 
     }
     catch (err) {
-        console.log("abcd")
         res.status(400).json({error: "Error in finding user"});
     }
 });
 
-app.get('/matches/:userId', async(req,res) => {
-    try {
-        const currentUser = await User.findById({_id: req.params.userId}).exec()
-        const dont_find = []
-            .concat([currentUser.id],currentUser.passed, currentUser.liked_by, currentUser.likes, currentUser.matched)
-            .filter((item, i, arr) => item && arr.indexOf(item) === i);
-        const all_users = await User.find({ _id: { $nin: dont_find}}).exec()
-        let liked_by = []
-        let passed = []
-        if (currentUser.liked_by.length > 0){
-            liked_by = await User.find({_id: {$in: currentUser.liked_by}}).exec();
-        }
-        if (currentUser.passed.length > 0){
-            passed = await User.find({_id: {$in: currentUser.passed}}).exec();
-        }
-        const options = []
-            .concat(liked_by, all_users, passed)
-            .filter((item, i, arr) => item && arr.indexOf(item) === i);
-        let ret_users;
-        if (options.length >= 5) {
-            ret_users = options.slice(0, 5);
-        } else{
-            ret_users = options.slice(0, options.length);
-        }
-        let ids = [];
-        for (let i = 0; i < ret_users.length; i++){
-            ret_users[i].password = undefined;
-            ids.push(ret_users[i]);
-        }
-        res.send(ids)
-        // if (currentUser.liked_by.length !== 0){
-        //     for (let i = 0; i < currentUser.liked_by.length; i++){
-        //         if (!currentUser.passed.includes(currentUser.liked_by[i])){
-        //             ret_users.push(currentUser.liked_by[i])
-        //         }
-        //     }
-        // }
-        // if (ret_users.length < 5){
-        //     const all_users = await User.find({}).exec()
-        //     let count = 0
-        //     do {
-        //         console.log(currentUser.id)
-        //         console.log(all_users[count].id)
-        //         if (!currentUser.passed.includes(all_users[count]) || !currentUser.id === all_users[count].id){
-        //             ret_users.push(all_users[count])
-        //             all_users.splice(count, 1);
-        //         }
-        //         console.log(all_users)
-        //         count++
-        //     } while (ret_users.length < 5 && count < all_users.length || all_users.length > 0)
-        //     console.log("out")
-        //     count = 0
-        //     if (ret_users.length < 5 || currentUser.passed.length !== 0){
-        //         do{
-        //             ret_users.push(currentUser.passed[count])
-        //             count += 1
-        //         }while(ret_users.length < 5 && count < currentUser.passed.length)
-        //     }
-        // }
-    }
-    catch (err) {
-        res.status(400).json({error: "Error in matches"});
-    }
-});
 
 
-app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => {
+app.get('/all-users', auth, async (req, res) => {
+ const users = await User.find()
+ res.json({users})
+})
 
-    // When current user likes another user (liked) we update both of their arrays/ properties
-    // if both of them like each other then match (remove each other from liked arrays
-    // if at least one of them doesn't like the other, then add this user
-    try {
-        let matched = false;
-        const currentUser = await User.findById({_id: req.params.currentUser}).exec()
-        const likedUser = await User.findById({_id:req.params.UserthatwasLiked}).exec()
-        if (currentUser.liked_by.includes(likedUser.id)){
-            // When Liked User already liked current user -> results in a match
-            let index = currentUser.liked_by.indexOf(likedUser.id);
-            currentUser.liked_by.splice(index, 1);
-            index = likedUser.likes.indexOf(currentUser);
-            likedUser.likes.splice(index, 1);
-            currentUser.matched.push(likedUser.id);
-            likedUser.matched.push(currentUser.id);
-            matched = true;
-            currentUser.save();
-            likedUser.save();
-        } else{
-            // When liked user hasn't liked current user -> add current to likedby list of liked user,
-            // and add liked to likes of current user
-            currentUser.likes.push(likedUser.id)
-            likedUser.liked_by.push(currentUser.id)
-            currentUser.save()
-            likedUser.save()
-        }
-        if (matched){
-            res.status(200).json(likedUser.id)
-        }else{
-            res.status(200).json({})
-        }
-    }
-    catch (err) {
-        res.status(400).json({error: "Error in finding user"});
-    }
-});
 
-app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
-    // When current user passes another user (liked) we update both of their arrays/ properties
-    const currentUser = await User.findById({_id: mongoose.Types.ObjectId(req.params.currentUser)}).exec()
-    const passedUser = await User.findById({_id: mongoose.Types.ObjectId(req.params.UserthatwasPassed)}).exec()
-    console.log(currentUser.id, passedUser.id)
-    let likesindex = currentUser.likes.indexOf(passedUser.id)
-    let matchindex = currentUser.matched.indexOf(passedUser.id)
-    let passedindex = currentUser.passed.indexOf(passedUser.id)
-    if (matchindex <= -1){
-        if (passedindex <= -1){
-            // User not already passed
-            currentUser.passed.push(passedUser.id)
-        }
-        if (likesindex > -1){
-            // If user was previously liked, then pass on them now and remove them from the likes list
-            currentUser.likes.splice(likesindex, 1)
-        }
-        currentUser.save()
-        res.status(200).json({});
-    } else {
-        res.status(400).json({error: "User is matched, cannot pass"});
-    }
-});
+//match when somebody likes someone
+app.post('/match-by-like/:likedUserId/:userWhoLikedId', auth, async (req, res) => {
+ let {likedUserId, userWhoLikedId} = req.params
 
+ if((likedUserId.length === 12 || likedUserId.length === 24) && (userWhoLikedId.length === 12 || userWhoLikedId.length === 24 )) {
+ try {
+ //we are pushing userWholiked into liked user array
+ const updatedLikedUser = await User.findByIdAndUpdate(likedUserId, {$push:{liked_by: userWhoLikedId}}, {new: true})
+ //we are pushing likedUser into likes user array
+ const updatedUserWhoLiked = await User.findByIdAndUpdate(userWhoLikedId, {$push:{likes: likedUserId}}, {new: true})
+ //getting new user
+ const userWhoLiked = await User.findById(userWhoLikedId)
+ //checking match
+ const checkMatch = userWhoLiked.liked_by.find(like => like === likedUserId)
+ if(checkMatch !== undefined && checkMatch.length > 0) {
+ return res.json({match: true, updatedLikedUser, updatedUserWhoLiked })
+ } else {
+ return res.json({match: false, updatedLikedUser, updatedUserWhoLiked})
+ }
+ } catch (error) {
+ return res.json({error})
+ }
+ } else {
+ return res.json("Invalid Id's. Only Mongo Object id is acceptable")
+ }
+
+})
+
+
+//match by location
+app.post('/match-by-location', auth, async (req, res) => {
+ const {location : {latitude, longitude}, radius} = req.body
+ try {
+ let nearbyUsers = []
+ //getting all users
+ const users = await User.find()
+ console.log('req', latitude, longitude)
+ console.log('user loc', (users[0].location.toJSON()))
+ //filtering users on the basis of latitude and longitude
+ users.map(user => {
+ //calculating the distance bw the given latitudes and longitudes
+ let distance = getDistanceFromLatLonInKm(
+ latitude,
+ longitude,
+ user.location.toJSON().latitude,
+ user.location.toJSON().longitude
+ )
+ console.log('distance is : ', distance)
+ if (distance <= radius) {
+ //pushing to array if user has distance within the radius
+ nearbyUsers.push(user)
+ }
+ })
+ return res.json( nearbyUsers )
+ } catch (error) {
+ return res.json({error})
+ }
+
+})
+
+
+const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+ const R = 6371 // Radius of the earth in km
+ const Latitude = deg2rad(lat2 - lat1) // deg2rad below
+ const Longitude = deg2rad(lon2 - lon1)
+ const a =
+ Math.sin(Latitude / 2) * Math.sin(Latitude / 2) +
+ Math.cos(deg2rad(lat1)) *
+ Math.cos(deg2rad(lat2)) *
+ Math.sin(Longitude / 2) *
+ Math.sin(Longitude / 2);
+ const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+ return R * c; // Distance in km
+}
+
+//converts degrees to radians
+const deg2rad = (degree) => {
+ return degree * (Math.PI / 180);
+}
 server = app.listen(5000, () => console.log('Success, Server is up and running!'));
 
 
