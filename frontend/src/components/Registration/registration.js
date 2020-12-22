@@ -584,7 +584,7 @@ class Registration extends React.Component {
                 required
               />
               {img_preview}
-              <div class="form-group">
+              <div className="form-group">
                 <textarea
                   className="my-1 registration-bio form-control"
                   placeholder="Enter your bio"

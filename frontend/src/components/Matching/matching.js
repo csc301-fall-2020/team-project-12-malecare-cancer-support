@@ -12,7 +12,6 @@ import dotIcon from "../../images/dotIcon.svg";
 import locationIcon from "../../images/locationIcon.svg";
 import { CurUserContext } from "../../curUserContext";
 import {
-  getUser,
   getMatchRecommendations,
   matchRecommendationPass,
   matchRecommendationConnect,
@@ -33,7 +32,7 @@ class Matching extends React.Component {
 
   getNewMatchRecomendations = async (mode) => {
     try {
-      const { responseData, errorMessage } = await getMatchRecommendations(
+      const { responseData /*, errorMessage*/ } = await getMatchRecommendations(
         mode,
         this.context.getCurrentUser().userId
       );
@@ -211,26 +210,26 @@ class Matching extends React.Component {
               </Carousel>
             </Col>
             <Col xs={12} lg={6} className="bioContainer">
-              <text class="name">
+              <text className="name">
                 {displayedMatch.firstname + " " + displayedMatch.lastname}
               </text>{" "}
               <br></br>
-              <text class="ageAndLocation">25</text>{" "}
+              <text className="ageAndLocation">25</text>{" "}
               {/* TODO: update this based on server return */}
-              <img class="middleDot" src={dotIcon}></img>
-              <img class="locationIcon" src={locationIcon}></img>
-              <text class="ageAndLocation">
+              <img className="middleDot" src={dotIcon} alt=""></img>
+              <img className="locationIcon" src={locationIcon} alt=""></img>
+              <text className="ageAndLocation">
                 {displayedMatch.location.city +
                   ", " +
                   displayedMatch.location.region}
               </text>{" "}
               <br></br>
-              <text class="cancerType">
+              <text className="cancerType">
                 Cancer Type: {displayedMatch.cancer_types.join(", ")}
               </text>
               <br></br>
               <br></br>
-              <text class="bio">
+              <text className="bio">
                 {displayedMatch.bio}
                 {/*Most people that know me would say I am outgoing, spontaneous,
                 funny and sometimes a little bit crazy.{"\n"} {"\n"}I am the
