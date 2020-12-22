@@ -53,6 +53,7 @@ class Registration extends React.Component {
 
   componentDidMount = async () => {
     if (this.context.isLoggedIn()) {
+      // If a user is already logged in, redirect to the user's landing page
       this.props.history.replace("/landing");
     }
     const cancerData = await getCancerData();
@@ -365,7 +366,7 @@ class Registration extends React.Component {
     } catch (error) {
       alert(
         "An error occurred connecting to the server," +
-          " please make sure you have a working internet connect"
+          " please make sure you have a working internet connection."
       );
     }
   };
