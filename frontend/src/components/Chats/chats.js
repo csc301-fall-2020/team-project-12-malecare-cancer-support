@@ -1,12 +1,13 @@
 import React from 'react';
 import './chats.css';
+import io from "socket.io-client";
 import {Container, Image, Row, Col, Text} from 'react-bootstrap';
 import { CurUserContext } from "../../curUserContext";
 import { withRouter } from "react-router-dom";
 import { getConversations, getUser} from "../../actions/serverRequests";
 
-var base64Icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAnUlEQVR42u3RQREAAAQAMP70j0sN57YKy66e4IwUIgQhQhAiBCFCECJEiBCECEGIEIQIQYgQhCBECEKEIEQIQoQgBCFCECIEIUIQIgQhCBGCECEIEYIQIQhBiBCECEGIEIQIQQhChCBECEKEIEQIQhAiBCFCECIEIUIQghAhCBGCECEIEYIQhAhBiBCECEGIEIQIESIEIUIQIgQh3y2QM3LZVgIpFAAAAABJRU5ErkJggg==';
-
+const ENDPOINT = "http://localhost:5000";
+let socket;
 class Chats extends React.Component {
     static contextType = CurUserContext;
     constructor(props) {
@@ -18,9 +19,8 @@ class Chats extends React.Component {
     }
     
     componentDidMount = async () => {
-        const { responseData } = await getConversations(
-          this.context.getCurrentUser().userId
-        );
+        const userId = this.context.getCurrentUser().userId
+        const { responseData } = await getConversations(userId);
         this.updatePredicate();
         window.addEventListener("resize", this.updatePredicate);
         let userConversations = [];
@@ -30,7 +30,28 @@ class Chats extends React.Component {
             userConversations.push({...conversation, profileImage});
         }
         this.setState((prev) => {return {...prev, conversations: userConversations }});
-      };
+
+        socket = io(ENDPOINT);
+
+        socket.emit("joinUserSocket", {userId});
+    
+        socket.on("sendMatch", async (data) => {
+            console.log("new match added")
+            this.addNewConversation({...data.conversation});
+        });
+    };
+
+    addNewConversation = async (newConversation) => {
+        const otherId = this.otherId(newConversation);
+        const profileImage = await this.getUserProfileImage(otherId);
+        this.setState((prev) => {
+            let prevConversations = prev.conversations
+            return {
+                ...prev,
+                conversations: [...prevConversations, {...newConversation, profileImage}]
+            };
+        })
+    }
 
     updatePredicate = () => {
         const isWide = window.innerWidth > 768; 
@@ -44,6 +65,7 @@ class Chats extends React.Component {
 
     componentWillUnmount = () => {
         window.removeEventListener("resize", this.updatePredicate);
+        socket.off();
     }
 
     handleClick = (conversation) => {

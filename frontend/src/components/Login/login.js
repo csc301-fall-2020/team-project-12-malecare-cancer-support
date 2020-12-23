@@ -72,6 +72,8 @@ class Login extends React.Component {
     const formLabelClasses = "h4 font-weight-normal";
     return (
       <div>
+        {/* A Toast to display error messages related to the user's internet
+            connection, when necessary */}
         <Toast
           show={this.state.showToast}
           className="matchingToast"
@@ -81,6 +83,7 @@ class Login extends React.Component {
           <Toast.Body>{this.state.toastText}</Toast.Body>
         </Toast>
         <h1 className="text-center m-5 text-customOrange">CancerChat</h1>
+        {/* Login form below uses React-bootstrap Form components */}
         <Form className="login-form mx-auto" onSubmit={this.handleSubmit}>
           <Form.Group controlId="inputEmail">
             <Form.Label className={formLabelClasses}>Email address</Form.Label>
@@ -108,6 +111,8 @@ class Login extends React.Component {
               custom
             />
           </Form.Group>
+          {/* The Alert below displays error messages returned by the server on
+              an unsuccesful login attempt */}
           <Alert
             variant={"warning"}
             show={this.state.showAlert}
@@ -125,6 +130,7 @@ class Login extends React.Component {
             Login
           </Button>
         </Form>
+        {/* Link to the registration page */}
         <Link to="/register" className="d-block mx-auto text-center mt-4">
           Don't have an account? Sign up now!
         </Link>

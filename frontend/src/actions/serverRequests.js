@@ -10,21 +10,39 @@ const axiosRequest = (method, url, data) => {
   return axios
     .request(config)
     .then((response) => {
+      // successful response from server
       return { responseData: response.data, errorMessage: "" };
     })
     .catch((error) => {
-      return { responseData: null, errorMessage: error.response.data.error };
+      // an error occurred
+      const returnObject = {
+        responseData: null,
+        errorMessage: "No response from the server",
+      };
+      if (error.response) {
+        // we got a response from the server
+        Object.assign(returnObject, {
+          errorMessage: error.response.data.error,
+          errorData: error.response.data,
+        });
+      }
+      return returnObject;
     });
 };
 
+/* Note: the following functions in this file assume that the input is valid and
+   properly formatted by the caller. */
+
 /*** HTTP requests related to authentication */
-/* payload must contain fields "email" and "password" */
+/* Helper used to login a user; payload must contain fields "email" and
+ * "password" */
 export const login = (payload) => {
   const returnVal = axiosRequest("POST", "/auth/login", payload);
   return returnVal;
 };
 
-/* payload must contain the fields required for registration */
+/* Helper used to register a user; payload must contain the fields required for
+ * registration (defined by the server) */
 export const signup = (payload) => {
   // For this function, assume the payload is properly formatted by the caller
   const returnVal = axiosRequest("POST", "/auth/signup", payload);
@@ -32,19 +50,19 @@ export const signup = (payload) => {
 };
 
 /*** HTTP requests related to user information */
-/* Get the profile information of the user with targetUserId */
+/* Helper used to get the profile information of the user with targetUserId */
 export const getUser = (targetUserId) => {
   const returnVal = axiosRequest("GET", "/user/" + targetUserId);
-  return returnVal;
+  return returnVal; // this should be a user object
 };
 
-/* Get the profile information of the user with targetUserId */
+/* Helper used to get the next match recommendations of the user with targetUserId */
 export const getMatchRecommendations = (mode, curUserId) => {
   const returnVal = axiosRequest("GET", "/matches/" + curUserId);
-  return returnVal;
+  return returnVal; // this should be an array of user objects
 };
 
-/* When the current user wants to "pass" a match recommendation.
+/* Helper used when the current user wants to "pass" a match recommendation.
  * "mode" is one of ("date", "mentor") */
 export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
   // Include authToken in payload, or pass along as cookie?
@@ -57,7 +75,8 @@ export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
   return returnVal;
 };
 
-/* When the current user wants to "connect" with a match recommendation.
+/* Helper used when the current user wants to "connect" with a match
+ * recommendation.
  * "mode" is one of ("date", "mentor") */
 export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
   // Include authToken in payload?
@@ -72,18 +91,6 @@ export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
 
 export const getConversations = (userId) => {
   const returnVal = axiosRequest("GET", "/conversations/" + userId);
-  return returnVal;
-};
-
-export const createConversation = (mode, curUserId, targetUserId) => {
-  // conversationType should be "mentor" or "date"
-  const payload = {
-    userIdOne: curUserId,
-    userIdTwo: targetUserId,
-    messages: [],
-    conversationType: mode,
-  };
-  const returnVal = axiosRequest("POST", "/conversations", payload);
   return returnVal;
 };
 

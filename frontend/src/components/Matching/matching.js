@@ -1,6 +1,6 @@
 import React from "react";
 import "./matching.css";
-
+import io from "socket.io-client";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Carousel from "react-bootstrap/Carousel";
@@ -12,13 +12,13 @@ import dotIcon from "../../images/dotIcon.svg";
 import locationIcon from "../../images/locationIcon.svg";
 import { CurUserContext } from "../../curUserContext";
 import {
-  getUser,
   getMatchRecommendations,
   matchRecommendationPass,
   matchRecommendationConnect,
-  createConversation,
 } from "../../actions/serverRequests";
 
+const ENDPOINT = "http://localhost:5000";
+let socket;
 class Matching extends React.Component {
   constructor(props) {
     super(props);
@@ -31,9 +31,10 @@ class Matching extends React.Component {
     };
   }
 
+  // Get new match recommendations from the server
   getNewMatchRecomendations = async (mode) => {
     try {
-      const { responseData, errorMessage } = await getMatchRecommendations(
+      const { responseData /*, errorMessage*/ } = await getMatchRecommendations(
         mode,
         this.context.getCurrentUser().userId
       );
@@ -61,6 +62,7 @@ class Matching extends React.Component {
     }
   };
 
+  // Get new matches by calling the helper, and move to the next match
   getNewMatchesAndMove = async () => {
     const success = await this.getNewMatchRecomendations(this.state.mode);
     if (success && this.state.upcomingMatches.length > 0) {
@@ -75,6 +77,8 @@ class Matching extends React.Component {
     }
   };
 
+  // Display the next match of this user; this method is called when the user
+  // clicks "pass" or "connect" on the previously displayed match
   moveToNextMatch = async () => {
     if (this.state.upcomingMatches.length > 0) {
       const displayedMatch = this.state.upcomingMatches.shift();
@@ -89,8 +93,15 @@ class Matching extends React.Component {
 
   async componentDidMount() {
     this.getNewMatchesAndMove();
+    socket = io(ENDPOINT);
   }
 
+  componentWillUnmount = () => {
+    socket.off();
+  };
+
+  // Handler for when the user presses the "connect" button on a match
+  // recommendation.
   handleConnect = async () => {
     try {
       let { responseData, errorMessage } = await matchRecommendationConnect(
@@ -105,14 +116,12 @@ class Matching extends React.Component {
         });
         return;
       }
-      if (typeof responseData === "string") {
-        // TODO: edit this based on server response
-        // TODO: we got a match, responseData is the id of the target user as string
-        ({ responseData, errorMessage } = await createConversation(
-          this.state.mode,
-          this.context.getCurrentUser().userId,
-          responseData
-        ));
+      if ("conversation" in responseData) {
+        socket.emit("newConversation", {...responseData.conversation}, ({error}) => {
+          if(error) {
+            alert(error)
+          }
+        })
         if (!responseData) {
           this.setState({
             showToast: true,
@@ -133,8 +142,9 @@ class Matching extends React.Component {
     }
   };
 
+  // Handler for when the user presses the "pass" button on a match
+  // recommendation.
   handlePass = async () => {
-    console.log("got inside handlePass");
     try {
       const { responseData, errorMessage } = await matchRecommendationPass(
         this.state.mode,
@@ -146,9 +156,9 @@ class Matching extends React.Component {
           showToast: true,
           toastText: "An error occurred: " + errorMessage,
         });
-      } else {
-        this.moveToNextMatch();
+        return;
       }
+      this.moveToNextMatch();
     } catch (error) {
       this.setState({
         showToast: true,
@@ -162,7 +172,7 @@ class Matching extends React.Component {
   render() {
     const { displayedMatch } = this.state;
     return (
-      // The parent element of this component must be a Row element
+      // The parent element of this component should be a Row element
       <>
         <Toast
           show={this.state.showToast}
@@ -175,6 +185,8 @@ class Matching extends React.Component {
         {displayedMatch === undefined ? null : (
           <Row className="no-gutters bioAndPhoto">
             <Col xs={12} lg={6} className="flex">
+              {/* React-bootstrap Carousel to display the other user's profile
+                  pictures */}
               <Carousel
                 className="carousel"
                 interval={null}
@@ -211,35 +223,26 @@ class Matching extends React.Component {
               </Carousel>
             </Col>
             <Col xs={12} lg={6} className="bioContainer">
-              <text class="name">
+              <text className="name">
                 {displayedMatch.firstname + " " + displayedMatch.lastname}
-              </text>{" "}
+              </text>
               <br></br>
-              <text class="ageAndLocation">25</text>{" "}
-              {/* TODO: update this based on server return */}
-              <img class="middleDot" src={dotIcon}></img>
-              <img class="locationIcon" src={locationIcon}></img>
-              <text class="ageAndLocation">
+              <text className="ageAndLocation">25</text>
+              {/* TODO: update the line age (user age) based on server return */}
+              <img className="middleDot" src={dotIcon} alt=""></img>
+              <img className="locationIcon" src={locationIcon} alt=""></img>
+              <text className="ageAndLocation">
                 {displayedMatch.location.city +
                   ", " +
                   displayedMatch.location.region}
-              </text>{" "}
+              </text>
               <br></br>
-              <text class="cancerType">
+              <text className="cancerType">
                 Cancer Type: {displayedMatch.cancer_types.join(", ")}
               </text>
               <br></br>
               <br></br>
-              <text class="bio">
-                {displayedMatch.bio}
-                {/*Most people that know me would say I am outgoing, spontaneous,
-                funny and sometimes a little bit crazy.{"\n"} {"\n"}I am the
-                type of woman who wears her heart on her sleeve. I truly am very
-                passionate in a relationship and I am looking for someone who
-                has the same values. I can be vulnerable and share my feelings
-                easily. I am looking for someone who can do the same by opening
-                up and who is able to express themselves.*/}
-              </text>
+              <text className="bio">{displayedMatch.bio}</text>
             </Col>
           </Row>
         )}
@@ -250,7 +253,3 @@ class Matching extends React.Component {
 Matching.contextType = CurUserContext;
 
 export default Matching;
-
-// Fonts - I used Roboto
-// Between Roboto light - Roboto medium
-// Colors: #E74B1A and #C4C4C4

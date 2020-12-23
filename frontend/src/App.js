@@ -1,37 +1,41 @@
 import React from "react";
 
 // import "./App.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
 
-// Use Sass to allow overriding/adding to the bootstrap variables/classes
+// import "bootstrap/dist/css/bootstrap.min.css";
+// Use Sass instead of the line above, to allow overriding/adding to the
+// bootstrap variables/classes
 import "./App.scss";
 
-// Check out an intro to react-bootstrap:
+// An introduction to react-bootstrap:
 // https://react-bootstrap.github.io/getting-started/introduction/
 
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { CurUserContext } from "./curUserContext";
-
+import Admin from "./components/Admin";
+import Chat from "./components/Chat";
+import Chats from "./components/Chats";
 import CheckLogin from "./components/CheckLogin";
-import Login from "./components/Login";
-import Landing from "./components/Landing";
-import Registration from "./components/Registration";
-import Matching from "./components/Matching";
-import Requests from './components/Requests';
-import Chat from './components/Chat';
-import Chats from './components/Chats';
-import Menu from './components/Menu';
-import LikesAndMessages from './components/LikesAndMessages'
 import HomePage from "./components/HomePage";
+import Landing from "./components/Landing";
+import LikesAndMessages from "./components/LikesAndMessages";
+import Login from "./components/Login";
+import Matching from "./components/Matching";
+import Menu from "./components/Menu";
+import Registration from "./components/Registration";
+import Requests from "./components/Requests";
+import { CurUserContext } from "./curUserContext";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // checkSession(this);
     this.state = {
       currentUser: null,
       contextValue: {
+        // Set the value of the context object to be used thoughout the app.
+        // The context object is stored in the App component's state, and is
+        // used to store the current user's login state and some information
+        // about the current user.
         getCurrentUser: () => {
           return this.state.currentUser;
         },
@@ -80,18 +84,20 @@ class App extends React.Component {
                 <Matching />
               </Route>
               <Route exact path="/chats-test">
-                <Chats/>
+                <Chats />
               </Route>
-              <Route exact path='/contacts-test'>
-                <Requests/>
+              <Route exact path="/contacts-test">
+                <Requests />
               </Route>
-              <Route path='/chat/:id' component={Chat}>
-              </Route>
+              <Route path="/chat/:id" component={Chat}></Route>
               <Route exact path="/menu-test">
                 <Menu />
               </Route>
               <Route exact path="/likesAndMessages-test">
                 <LikesAndMessages />
+              </Route>
+              <Route exact path="/admin-test">
+                <Admin />
               </Route>
               <Route>
                 <div>404 Not found</div>

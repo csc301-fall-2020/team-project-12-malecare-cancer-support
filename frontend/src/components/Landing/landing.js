@@ -9,7 +9,6 @@ import mentorIcon from "../../images/mentorIcon.svg";
 import heartIcon from "../../images/heartIcon.svg";
 import SideBar from "../SideBar";
 import LikesAndMessages from "../LikesAndMessages";
-import Button from "react-bootstrap/Button";
 import Menu from "../Menu";
 
 import Matching from "../Matching";
@@ -19,7 +18,7 @@ import { CurUserContext } from "../../curUserContext";
 const MenuButton = (props) => {
   return (
     <button onClick={props.openMenu} className="menuButton">
-      <img class="menuIcon ml-4" src={menuIcon} />
+      <img className="menuIcon ml-4" src={menuIcon} alt="button to open menu" />
     </button>
   );
 };
@@ -73,10 +72,10 @@ class Landing extends React.Component {
               </Col>
               <Col xs={1}></Col>
               <Col xs={1}>
-                <img class="mentorIcon" src={mentorIcon} />
+                <img className="mentorIcon" src={mentorIcon} alt="Switch to mentoring mode"/>
               </Col>
               <Col xs={1}>
-                <img class="heartIcon" src={heartIcon} />
+                <img className="heartIcon" src={heartIcon} alt="Switch to dating mode" />
               </Col>
               <Col xs={2}></Col>
             </Row>

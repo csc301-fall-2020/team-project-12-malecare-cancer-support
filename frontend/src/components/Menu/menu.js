@@ -10,10 +10,11 @@ class Menu extends React.Component {
         <Row className="menu no-gutters displayContents">
           <Col className="col-12 no-gutters text-center">
             <img
-              class="image d-block mx-auto"
+              className="image d-block mx-auto"
               src={this.props.userData.profileImage}
+              alt="profile"
             ></img>
-            <text class="nameUser">
+            <text className="nameUser">
               {this.props.userData.firstname +
                 " " +
                 this.props.userData.lastname}
