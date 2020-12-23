@@ -6,13 +6,11 @@ import { withRouter } from "react-router-dom";
 import { CurUserContext } from "../../curUserContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {Container, Image, Row, Col, Text} from 'react-bootstrap';
+import {Container, Row, Col} from 'react-bootstrap';
 
 const ENDPOINT = "http://localhost:5000";
 let socket;
 
-var base64Icon =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAnUlEQVR42u3RQREAAAQAMP70j0sN57YKy66e4IwUIgQhQhAiBCFCECJEiBCECEGIEIQIQYgQhCBECEKEIEQIQoQgBCFCECIEIUIQIgQhCBGCECEIEYIQIQhBiBCECEGIEIQIQQhChCBECEKEIEQIQhAiBCFCECIEIUIQghAhCBGCECEIEYIQhAhBiBCECEGIEIQIESIEIUIQIgQh3y2QM3LZVgIpFAAAAABJRU5ErkJggg==";
 
 class Chat extends React.Component {
   static contextType = CurUserContext;
@@ -39,7 +37,6 @@ class Chat extends React.Component {
 
 
   scrollToBottom = () => {
-    console.log('scroll');
     if(this.messagesEnd && !this.loading) {
         this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }
@@ -80,7 +77,6 @@ class Chat extends React.Component {
     console.log(conversationData);
     this.setState((prev) => {
       const messages = this.state.conversation.messages;
-      console.log("currNamse mount", conversationData.currUserName);
       return {
         message: {
           author: conversationData.currUserName,

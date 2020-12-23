@@ -1,6 +1,6 @@
 import React from "react";
 import "./matching.css";
-
+import io from "socket.io-client";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Carousel from "react-bootstrap/Carousel";
@@ -15,9 +15,10 @@ import {
   getMatchRecommendations,
   matchRecommendationPass,
   matchRecommendationConnect,
-  createConversation,
 } from "../../actions/serverRequests";
 
+const ENDPOINT = "http://localhost:5000";
+let socket;
 class Matching extends React.Component {
   constructor(props) {
     super(props);
@@ -92,7 +93,12 @@ class Matching extends React.Component {
 
   async componentDidMount() {
     this.getNewMatchesAndMove();
+    socket = io(ENDPOINT);
   }
+
+  componentWillUnmount = () => {
+    socket.off();
+  };
 
   // Handler for when the user presses the "connect" button on a match
   // recommendation.
@@ -110,16 +116,12 @@ class Matching extends React.Component {
         });
         return;
       }
-      if (typeof responseData === "string") {
-        // responseData is a string only when the target user previously wanted
-        // to "connect" with this user, thus now both users want to connect.
-        // responseData is the id of the target user, as a string
-        // TODO: properly set up the conversation between the two users
-        ({ responseData, errorMessage } = await createConversation(
-          this.state.mode,
-          this.context.getCurrentUser().userId,
-          responseData
-        ));
+      if ("conversation" in responseData) {
+        socket.emit("newConversation", {...responseData.conversation}, ({error}) => {
+          if(error) {
+            alert(error)
+          }
+        })
         if (!responseData) {
           this.setState({
             showToast: true,
