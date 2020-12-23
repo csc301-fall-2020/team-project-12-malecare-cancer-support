@@ -70,7 +70,7 @@ app.get('/users/:userId', auth, async(req, res) => {
 
 
 
-app.get('/all-users', auth, async (req, res) => {
+app.get('/all-users', async (req, res) => {
  const users = await User.find()
  res.json({users})
 });
@@ -186,7 +186,6 @@ app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
     } else {
         res.status(400).json({error: "User is matched, cannot pass"});
     }
-
 });
 
 
@@ -216,7 +215,7 @@ app.get('/matches/:userId', auth, async (req, res) => {
 
 
 //match when somebody likes someone
-app.post('/match-by-like/:likedUserId/:userWhoLikedId', auth, async (req, res) => {
+app.post('/match-by-like/:likedUserId/:userWhoLikedId', async (req, res) => {
     let {likedUserId, userWhoLikedId} = req.params;
     if((likedUserId.length === 12 || likedUserId.length === 24) && (userWhoLikedId.length === 12 || userWhoLikedId.length === 24 )) {
     try {
@@ -243,31 +242,50 @@ app.post('/match-by-like/:likedUserId/:userWhoLikedId', auth, async (req, res) =
 
 
 //match by location
-app.post('/match-by-location', auth, async (req, res) => {
-    const {location : {latitude, longitude}, radius} = req.body
-    try {
-        let nearbyUsers = [];
-        //getting all users
-        const users = await User.find();
-        console.log('req', latitude, longitude);
-        console.log('user loc', (users[0].location.toJSON()));
-        //filtering users on the basis of latitude and longitude
-        users.map(user => {
-        //calculating the distance bw the given latitudes and longitudes
-            let distance = getDistanceFromLatLonInKm(
-            latitude,
-            longitude,
-            user.location.toJSON().latitude,
-            user.location.toJSON().longitude);
-            console.log('distance is : ', distance);
-            if (distance <= radius) {
-            //pushing to array if user has distance within the radius
-                nearbyUsers.push(user);
+app.post('/match-by-location/:uid', async (req, res) => {
+    const {uid} = req.params;
+    const {location : {latitude, longitude}} = req.body;
+    let radius = 30;
+
+    if((uid.length === 12 || uid.length === 24) && (uid.length === 12 || uid.length === 24 )) {
+        try {
+            //getting matched users
+            //const userLookingForMatch = await User.findOne({_id: uid})
+            const userLookingForMatch = await User.findOne({_id: uid})
+            let allMatchedUsers = []
+            if(userLookingForMatch) {
+                const allMatchedIds = userLookingForMatch.liked_by;
+                //const allMatchedIds = userLookingForMatch.matched;
+                const allMatchedUsersCalls = []
+                allMatchedIds.map(id => allMatchedUsersCalls.push(User.findById(id)))
+                allMatchedUsers = await Promise.all(allMatchedUsersCalls)
             }
-        });
-        return res.json(nearbyUsers);
-    } catch (error) {
-        return res.json({error});
+            let nearbyUsers = [];
+            //getting all users
+            const users = await User.find();
+            console.log('req', latitude, longitude);
+            console.log('user loc', (users[0].location.toJSON()));
+            //filtering users on the basis of latitide and longitude
+            users.map(user => {
+                //calculating the distance bw the given latitudes and longitudes
+                let distance = getDistanceFromLatLonInKm(
+                    latitude,
+                    longitude,
+                    user.location.toJSON().latitude,
+                    user.location.toJSON().longitude
+                )
+                console.log('distance is : ', distance)
+                if (distance <= radius) {
+                //pushing to array if user has distance within the radius
+                    nearbyUsers.push(user)
+                }
+            })
+            return res.json( [...allMatchedUsers, ...nearbyUsers] )
+        } catch (error) {
+            return res.json({error})
+        }
+    } else {
+        return res.json("Invalid Id's. Only Mongo Object id is acceptable")
     }
 });
 
@@ -389,3 +407,32 @@ io.on('connection', socket => {
     })
 
 });
+
+
+
+/*
+
+http://localhost:5000/match-by-location
+    req body : {
+    "radius" : 100,
+        "location": {
+        "city": "Toronto",
+            "region": "New South Wales",
+            "country": "Australia",
+            "latitude": -33.11357,
+            "longitude": 151.59373
+    }
+}
+*/
+
+/*
+* {
+*   headers: {
+*       Authorization: 'Bearer ' + this.props.token
+*   }
+*
+* }
+*
+*
+* */
+
