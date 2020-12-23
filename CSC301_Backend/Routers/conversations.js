@@ -18,23 +18,6 @@ router.get('/:user_id', async (req, res) => {
 
 
 
-router.post('/', async (req, res) => {
-    try {
-        const {userIdOne, userIdTwo} = req.body;
-        let conversation = await Conversation.create(req.body);
-        let user_one = await User.findById(userIdOne);
-        let user_two = await User.findById(userIdTwo);
-        await user_one.conversations.push(conversation._id);
-        await user_two.conversations.push(conversation._id);
-        await user_one.save();
-        await user_two.save();
-        return res.status(201).json({msg: "New conversation was succesfully created"});
-    } catch (e) {
-        return res.status(500).json({errors: [ {msg: "Something went wrong, try again."}]})
-    }
-})
-
-
 
 router.delete('/:conversation_id', async (req, res) => {
     try {

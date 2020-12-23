@@ -16,6 +16,7 @@ import Admin from "./components/Admin";
 import Chat from "./components/Chat";
 import Chats from "./components/Chats";
 import CheckLogin from "./components/CheckLogin";
+import HomePage from "./components/HomePage";
 import Landing from "./components/Landing";
 import LikesAndMessages from "./components/LikesAndMessages";
 import Login from "./components/Login";
@@ -58,8 +59,8 @@ class App extends React.Component {
         <CurUserContext.Provider value={this.state.contextValue}>
           <BrowserRouter>
             <Switch>
-              <Route exact path={["/", "/login"]}>
-                <Login />
+              <Route exact path={["/", "/home"]}>
+                <HomePage />
               </Route>
               <Route exact path="/register">
                 <Registration />
@@ -70,7 +71,7 @@ class App extends React.Component {
               </Route>
 
               {/* TEMPORARY ROUTES BELOW FOR DEVELOPMENT TESTING */}
-              <Route exact path="/login-test">
+              <Route exact path={["/login-test", "/login"]}>
                 <Login />
               </Route>
               <Route exact path="/registration-test">

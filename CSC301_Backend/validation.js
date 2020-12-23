@@ -74,7 +74,9 @@ const registerValidation = (data) => {
             .array(),
         profileImage: joi
             .string()
-            .required()
+            .required(),
+        conversations: joi
+            .array()
     });
     return UserSchema.validate(data)
 }
