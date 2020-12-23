@@ -289,6 +289,38 @@ app.post('/match-by-location/:uid', async (req, res) => {
     }
 });
 
+//     ageRange: this.state.ageRange, // calculate
+//     genders: this.state.genders,
+//     sexualOrientations: this.state.sexualOrientations,
+//     cancerTypes: this.state.cancerTypes,
+//     treatments: this.state.treatments,
+//     medications: this.state.medications,
+//     isMentor: this.state.isMentor,
+//     isMentee: this.state.isMentee,
+//     isPartner: this.state.isDate,
+
+app.post('/admin', async (req, res) => {
+    const results = await User.find({
+            gender: req.body.genders,
+            is_mentor: req.body.isMentor,
+            is_mentee: req.body.isMentee,
+            is_partner: req.body.isPartner,
+            medications: {$in: req.body.medications},
+            treatments: {$in: req.body.treatments}
+        }
+    )
+    let emails = []
+    for (let i = 0; i < results.length; i++){
+        // const date = new Date()
+        // calculate age
+        // const age = results[i].birthday - date
+        // if age > .. && age < ...
+        emails.push(results[i]["email"]);
+    }
+    res.send(emails)
+});
+
+
 //location formula
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     const R = 6371 // Radius of the earth in km
