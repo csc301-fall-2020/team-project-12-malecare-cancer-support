@@ -12,6 +12,7 @@ import "./App.scss";
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
+import Admin from "./components/Admin";
 import Chat from "./components/Chat";
 import Chats from "./components/Chats";
 import CheckLogin from "./components/CheckLogin";
@@ -93,6 +94,9 @@ class App extends React.Component {
               </Route>
               <Route exact path="/likesAndMessages-test">
                 <LikesAndMessages />
+              </Route>
+              <Route exact path="/admin-test">
+                <Admin />
               </Route>
               <Route>
                 <div>404 Not found</div>
