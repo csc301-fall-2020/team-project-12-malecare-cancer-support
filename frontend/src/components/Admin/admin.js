@@ -1,5 +1,7 @@
 import React from "react";
 // import "./admin.css";
+
+import Slider from "@material-ui/core/Slider";
 import Select from "react-dropdown-select";
 import { getCancerData } from "../../actions/serverRequests";
 import { requestEmails } from "../../actions/adminServerRequests";
@@ -9,10 +11,11 @@ import { Container, Col, Row, Button, Form, Spinner } from "react-bootstrap";
 class Admin extends React.Component {
   constructor(props) {
     super(props);
+    this.ageRangeMinAge = 0;
+    this.ageRangeMaxAge = 120;
     this.state = {
       // Fields to send to the server
-      //fieldSelections: {
-      ageRange: [], // [minAge, maxAge]
+      ageRange: [30, this.ageRangeMaxAge], // [minAge, maxAge]
       genders: [],
       sexualOrientations: [],
       cancerTypes: [],
@@ -21,7 +24,6 @@ class Admin extends React.Component {
       isMentor: false,
       isMentee: false,
       isDate: false,
-      //},
       // Fields for possible options to select
       fieldPossibilities: {
         cancerTypes: [],
@@ -31,7 +33,7 @@ class Admin extends React.Component {
         treatmentTypes: [],
       },
     };
-    this.checkBox = React.createRef();  // ref to the checkbox
+    this.checkBox = React.createRef(); // ref to the checkbox
   }
 
   componentDidMount = async () => {
@@ -47,7 +49,9 @@ class Admin extends React.Component {
       });
     }
     this.setState({ fieldPossibilities: fieldPossibilities });
-    this.checkBox.current.setCustomValidity("At least one checkbox must be checked");
+    this.checkBox.current.setCustomValidity(
+      "At least one checkbox must be checked"
+    );
   };
 
   validateCheckBoxes = () => {
@@ -61,53 +65,49 @@ class Admin extends React.Component {
     this.checkBox.current.setCustomValidity(errorMessage);
   };
 
-  // handleOnChangeBirthday = (newDate) => {
-  //   this.setState((state) => {
-  //     return {
-  //       birthday: newDate,
-  //     };
-  //   });
-  // };
+  handleOnChangeAgeRange = (event, values) => {
+    this.setState({ ageRange: values });
+  };
 
-  handleOnChangeGenders = (e) => {
+  handleOnChangeGenders = (event) => {
     this.setState((state) => {
-      const gendersCopy = e.map((entry) => entry.label);
+      const gendersCopy = event.map((entry) => entry.label);
       return {
         genders: gendersCopy,
       };
     });
   };
 
-  handleOnChangeSexualOrientations = (e) => {
+  handleOnChangeSexualOrientations = (event) => {
     this.setState((state) => {
-      const sexualOrientationsCopy = e.map((entry) => entry.label);
+      const sexualOrientationsCopy = event.map((entry) => entry.label);
       return {
         sexualOrientations: sexualOrientationsCopy,
       };
     });
   };
 
-  handleOnChangeCancerTypes = (e) => {
+  handleOnChangeCancerTypes = (event) => {
     this.setState((state) => {
-      const cancerTypesCopy = e.map((entry) => entry.label);
+      const cancerTypesCopy = event.map((entry) => entry.label);
       return {
         cancerTypes: cancerTypesCopy,
       };
     });
   };
 
-  handleOnChangeTreatments = (e) => {
+  handleOnChangeTreatments = (event) => {
     this.setState((state) => {
-      const treatmentsCopy = e.map((entry) => entry.label);
+      const treatmentsCopy = event.map((entry) => entry.label);
       return {
         treatments: treatmentsCopy,
       };
     });
   };
 
-  handleOnChangeMedications = (e) => {
+  handleOnChangeMedications = (event) => {
     this.setState((state) => {
-      const medicationsCopy = e.map((entry) => entry.label);
+      const medicationsCopy = event.map((entry) => entry.label);
       return {
         medications: medicationsCopy,
       };
@@ -149,16 +149,23 @@ class Admin extends React.Component {
     }
     const payload = {
       ageRange: this.state.ageRange,
-      genders: this.state.genders,
-      sexualOrientations: this.state.sexualOrientations,
-      cancerTypes: this.state.cancerTypes,
-      treatments: this.state.treatments,
-      medications: this.state.medications,
       isMentor: this.state.isMentor,
       isMentee: this.state.isMentee,
       isPartner: this.state.isDate,
     };
-    console.log(payload);
+    // Only send filters for which the user made selections
+    for (const field of [
+      "genders",
+      "sexualOrientations",
+      "cancerTypes",
+      "treatments",
+      "medications",
+    ]) {
+      if (this.state[field].length > 0) {
+        payload[field] = this.state[field];
+      }
+    }
+    // console.log(payload);
 
     try {
       const { responseData, errorMessage } = await requestEmails(payload);
@@ -188,27 +195,46 @@ class Admin extends React.Component {
           <Col
             xs={12}
             md={{ span: 8, offset: 2 }}
-            className="text-center my-3 display-4 mx-auto"
+            className="text-center my-4 mx-auto"
           >
-            CancerChat Admin Page
+            <h3>CancerChat Admin Page</h3>
           </Col>
         </Row>
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
+            <h5>
+              Select the types of users by using the filters below. Filters can
+              be left blank to avoid filtering based on those attributes.
+            </h5>
             <Form className="mx-auto" onSubmit={this.handleSubmit}>
               <Form.Group id="registration-form">
-                {/* <Form.Control
-                className="my-3"
-                type="date"
-                name="birthday"
-                placeholder="Select birthday"
-                onChange={(e) => this.handleOnChangeBirthday(e.target.value)}
-                required
-              /> */}
+                <Form.Label className={"mt-5 h6 font-weight-normal"}>
+                  Age Range
+                </Form.Label>
+                <Slider
+                  id="ageFilter"
+                  // defaultValue={[30, this.ageRangeMaxAge]}
+                  value={this.state.ageRange}
+                  min={this.ageRangeMinAge}
+                  max={this.ageRangeMaxAge}
+                  marks={[
+                    { value: this.ageRangeMinAge, label: this.ageRangeMinAge },
+                    { value: this.ageRangeMaxAge, label: this.ageRangeMaxAge },
+                  ]}
+                  step={1}
+                  valueLabelDisplay="on"
+                  getAriaLabel={(index) => {
+                    return index === 0 ? "minimum age" : "maximum age";
+                  }}
+                  onChangeCommitted={this.handleOnChangeAgeRange}
+                  // getAriaValueText={(value, index) => {
+                  //   return (index === 0 ? "min age " : "max age ") + value + "years old";
+                  // }}
+                />
                 <Select
+                  id="genderFilter"
                   multi
-                  className="my-3"
-                  required={true}
+                  className="mt-2 mb-3"
                   placeholder="Select gender"
                   options={this.state.fieldPossibilities.genderOptions}
                   onChange={this.handleOnChangeGenders}
@@ -216,9 +242,9 @@ class Admin extends React.Component {
                   separator
                 />
                 <Select
+                  id="sexualOrientationFilter"
                   multi
                   className="my-3"
-                  required={true}
                   placeholder="Select sexual orientation"
                   options={
                     this.state.fieldPossibilities.sexualOrientationOptions
@@ -228,9 +254,9 @@ class Admin extends React.Component {
                   separator
                 />
                 <Select
+                  id="cancerTypeFilter"
                   multi
                   className="my-3"
-                  required={true}
                   placeholder="Select cancer types"
                   options={this.state.fieldPossibilities.cancerTypes}
                   onChange={this.handleOnChangeCancerTypes}
@@ -238,9 +264,9 @@ class Admin extends React.Component {
                   separator
                 />
                 <Select
+                  id="treatmentFilter"
                   multi
                   className="my-3"
-                  required={true}
                   placeholder="Select treatments"
                   options={this.state.fieldPossibilities.treatmentTypes}
                   onChange={this.handleOnChangeTreatments}
@@ -248,9 +274,9 @@ class Admin extends React.Component {
                   separator
                 />
                 <Select
+                  id="medicationFilter"
                   multi
                   className="my-3"
-                  required={true}
                   placeholder="Select medications"
                   options={this.state.fieldPossibilities.medications}
                   onChange={this.handleOnChangeMedications}

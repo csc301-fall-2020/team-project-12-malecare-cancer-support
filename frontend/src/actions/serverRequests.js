@@ -15,11 +15,18 @@ const axiosRequest = (method, url, data) => {
     })
     .catch((error) => {
       // an error occurred
-      return {
+      const returnObject = {
         responseData: null,
-        errorMessage: error.response.data.error,
-        errorData: error.response.data,
+        errorMessage: "No response from the server",
       };
+      if (error.response) {
+        // we got a response from the server
+        Object.assign(returnObject, {
+          errorMessage: error.response.data.error,
+          errorData: error.response.data,
+        });
+      }
+      return returnObject;
     });
 };
 
