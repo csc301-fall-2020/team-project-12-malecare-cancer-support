@@ -14,7 +14,7 @@ const conversations = require('../Routers/conversations');
 const messages = require('../Routers/messages');
 const auth = require('../middleware/is-auth');
 
-mongoose.connect('mongodb://localhost:27017/cancer',
+mongoose.connect('mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority',
     {useNewUrlParser: true, useUnifiedTopology: true},
     () => console.log('connected to db')
     );
@@ -116,7 +116,6 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
         // const likedstring = req.params.UserthatwasLiked
         const currentUser = await User.findById({ _id: req.params.currentUser}).exec();
         const likedUser = await User.findById({ _id: req.params.UserthatwasLiked}).exec();
-
         if (currentUser.liked_by.includes(likedUser.id)) {
             // When Liked User already liked current user -> results in a match
             let index = currentUser.liked_by.indexOf(likedUser.id)
@@ -127,6 +126,29 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
             likedUser.matched.push(currentUser.id)
             currentUser.save()
             likedUser.save()
+
+            conversation = await Conversation.create({
+                userIdOne: req.params.currentUser,
+                userIdTwo: req.params.UserthatwasLiked,
+                userNameOne: currentUser.firstname + ", " + currentUser.lastname,
+                userNameTwo: likedUser.firstname + ", " + likedUser.lastname,
+                conversationType: "date",
+                messages: []
+            });
+            await currentUser.conversations.push(conversation._id);
+            await likedUser.conversations.push(conversation._id);
+            await currentUser.save();
+            await likedUser.save();
+
+            return res.status(200).json({conversation: {
+                _id: conversation._id,
+                userIdOne: conversation.userIdOne,
+                userIdTwo: conversation.userIdTwo,
+                userNameOne: conversation.userNameOne,
+                userNameTwo: conversation.userNameTwo,
+                conversationType: "date",
+            }})
+
         } else {
             // When liked user hasn't liked current user -> add current to likedby list of liked user,
             // and add liked to likes of current user
@@ -135,7 +157,7 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
             currentUser.save()
             likedUser.save()
         }
-         res.status(200).json({user: user});
+         res.status(200).json({});
     }
     catch (err) {
         res.status(400).json({ error: "Error in finding user" });
@@ -279,6 +301,19 @@ const io = socket(server, {
 })
 
 io.on('connection', socket => {
+    socket.on('joinUserSocket', ({userId}) => {
+        socket.join(userId);
+    })
+
+    socket.on('newConversation', (conversationData, callback) => {
+        try {
+            io.to(conversationData.userIdOne).to(conversationData.userIdTwo).emit("sendMatch", {conversation: conversationData})
+            callback({error: false})
+        } catch (e) {
+            callback({error: e});
+        }
+    })
+
     socket.on('join', async ({conversationId, userId}, callback) => {
         try {
             let conversation = await Conversation.findById(conversationId);
@@ -354,18 +389,3 @@ io.on('connection', socket => {
     })
 
 });
-
-/*
-
-http://localhost:5000/match-by-location
-    req body : {
-    "radius" : 100,
-        "location": {
-        "city": "Toronto",
-            "region": "New South Wales",
-            "country": "Australia",
-            "latitude": -33.11357,
-            "longitude": 151.59373
-    }
-}
-*/
