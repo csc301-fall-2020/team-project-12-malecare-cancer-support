@@ -56,7 +56,31 @@ app.get('/user/:userId', auth, async(req,res) => {
 app.get('/all-users', auth, async (req, res) => {
  const users = await User.find()
  res.json({users})
-})
+});
+
+app.get('/matches/:userId', auth, async (req, res) => {
+    try {
+        const oid = mongoose.Types.ObjectId(req.params.userId);
+        // get the user by id
+        const user = await User.findById({ _id: oid });
+        //get all liked id list
+        const id_list = [];
+        //filter the passed profiles by user (in any case user id is in likes but also passed by the user)
+        user.likes.forEach(id => {
+            if (!user.passed.includes(id)) {
+                id_list.push(mongoose.Types.ObjectId(id))
+            }
+        });
+        //get all profiles with ids in liked list, they also like this user and user not passed by them (matched users)
+        let ret_users = await User.find({ _id: { $in: user.likes }, likes: req.params.userId, passed: { $ne: req.params.userId } },
+            { _id: 1, firstname: 1, lastname: 1, cancer_types: 1, location: 1 })
+        res.status(200).json({ users: ret_users });
+    }
+    catch (err) {
+        res.status(400).json({ error: "Error in matches" });
+    }
+});
+
 
 
 //match when somebody likes someone
@@ -92,9 +116,9 @@ app.post('/match-by-location', auth, async (req, res) => {
     try {
         let nearbyUsers = [];
         //getting all users
-        const users = await User.find()
-        console.log('req', latitude, longitude)
-        console.log('user loc', (users[0].location.toJSON()))
+        const users = await User.find();
+        console.log('req', latitude, longitude);
+        console.log('user loc', (users[0].location.toJSON()));
         //filtering users on the basis of latitude and longitude
         users.map(user => {
         //calculating the distance bw the given latitudes and longitudes
@@ -113,9 +137,7 @@ app.post('/match-by-location', auth, async (req, res) => {
     } catch (error) {
         return res.json({error});
     }
-
 });
-
 
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     const R = 6371 // Radius of the earth in km
@@ -221,3 +243,18 @@ io.on('connection', socket => {
     })
 
 });
+
+/*
+
+http://localhost:5000/match-by-location
+    req body : {
+    "radius" : 100,
+        "location": {
+        "city": "Toronto",
+            "region": "New South Wales",
+            "country": "Australia",
+            "latitude": -33.11357,
+            "longitude": 151.59373
+    }
+}
+*/
