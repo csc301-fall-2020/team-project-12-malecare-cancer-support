@@ -21,14 +21,14 @@ mongoose.connect('mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9
 
 //---------------------------------------------------------------------
 // for communication between front end & backend from different servers
-/*
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
-*/
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
