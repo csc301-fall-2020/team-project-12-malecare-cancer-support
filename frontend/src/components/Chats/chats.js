@@ -95,7 +95,7 @@ class Chats extends React.Component {
     }
 
     getUserProfileImage = async (userId) => {
-        const response = await getUser(userId);
+        const response = await getUser(this.context.getCurrentUser().accessToken, userId);
         const data = response.responseData;
         const profileImage = data.user.profileImage;
         return profileImage;

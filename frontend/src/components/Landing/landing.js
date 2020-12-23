@@ -31,8 +31,10 @@ class Landing extends React.Component {
   }
 
   async componentDidMount() {
+    const curUser = this.context.getCurrentUser();
     const { responseData, errorMessage } = await getUser(
-      this.context.getCurrentUser().userId
+      curUser.accessToken,
+      curUser.userId
     );
     if (!responseData) {
       console.log("An error occurred: " + errorMessage);
@@ -73,10 +75,18 @@ class Landing extends React.Component {
               </Col>
               <Col xs={1}></Col>
               <Col xs={1}>
-                <img className="mentorIcon" src={mentorIcon} alt="Switch to mentoring mode"/>
+                <img
+                  className="mentorIcon"
+                  src={mentorIcon}
+                  alt="Switch to mentoring mode"
+                />
               </Col>
               <Col xs={1}>
-                <img className="heartIcon" src={heartIcon} alt="Switch to dating mode" />
+                <img
+                  className="heartIcon"
+                  src={heartIcon}
+                  alt="Switch to dating mode"
+                />
               </Col>
               <Col xs={2}></Col>
             </Row>

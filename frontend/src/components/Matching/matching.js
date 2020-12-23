@@ -35,6 +35,7 @@ class Matching extends React.Component {
   getNewMatchRecomendations = async (mode) => {
     try {
       const { responseData /*, errorMessage*/ } = await getMatchRecommendations(
+        this.context.getCurrentUser().accessToken,
         mode,
         this.context.getCurrentUser().userId
       );
@@ -105,6 +106,7 @@ class Matching extends React.Component {
   handleConnect = async () => {
     try {
       let { responseData, errorMessage } = await matchRecommendationConnect(
+        this.context.getCurrentUser().accessToken,
         this.state.mode,
         this.context.getCurrentUser().userId,
         this.state.displayedMatch._id
@@ -117,11 +119,15 @@ class Matching extends React.Component {
         return;
       }
       if ("conversation" in responseData) {
-        socket.emit("newConversation", {...responseData.conversation}, ({error}) => {
-          if(error) {
-            alert(error)
+        socket.emit(
+          "newConversation",
+          { ...responseData.conversation },
+          ({ error }) => {
+            if (error) {
+              alert(error);
+            }
           }
-        })
+        );
         if (!responseData) {
           this.setState({
             showToast: true,
@@ -147,6 +153,7 @@ class Matching extends React.Component {
   handlePass = async () => {
     try {
       const { responseData, errorMessage } = await matchRecommendationPass(
+        this.context.getCurrentUser().accessToken,
         this.state.mode,
         this.context.getCurrentUser().userId,
         this.state.displayedMatch._id

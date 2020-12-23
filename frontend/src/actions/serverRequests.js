@@ -1,12 +1,19 @@
 import axios from "axios";
 
 // The SERVER_BASE_URL environment variable should be defined when deploying
-axios.defaults.baseURL = process.env.SERVER_BASE_URL || "http://localhost:5000";
+axios.defaults.baseURL =
+  process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 
 /* Helper function (not exported) to make requests and return the result in a
  * uniform format. */
-const axiosRequest = (method, url, data) => {
-  const config = { method: method, url: url, data: data };
+const baseAxiosRequest = (method, url, data, headers) => {
+  const config = { method: method, url: url };
+  if (data) {
+    config.data = data;
+  }
+  if (headers) {
+    config.headers = headers;
+  }
   return axios
     .request(config)
     .then((response) => {
@@ -30,6 +37,16 @@ const axiosRequest = (method, url, data) => {
     });
 };
 
+const axiosRequest = (method, url, data) => {
+  return baseAxiosRequest(method, url, data, null);
+};
+
+const axiosRequestProtectedRoute = (accessToken, method, url, data) => {
+  return baseAxiosRequest(method, url, data, {
+    Authorization: "Bearer " + accessToken,
+  });
+};
+
 /* Note: the following functions in this file assume that the input is valid and
    properly formatted by the caller. */
 
@@ -51,23 +68,36 @@ export const signup = (payload) => {
 
 /*** HTTP requests related to user information */
 /* Helper used to get the profile information of the user with targetUserId */
-export const getUser = (targetUserId) => {
-  const returnVal = axiosRequest("GET", "/user/" + targetUserId);
+export const getUser = (accessToken, targetUserId) => {
+  const returnVal = axiosRequestProtectedRoute(
+    accessToken,
+    "GET",
+    "/user/" + targetUserId
+  );
   return returnVal; // this should be a user object
 };
 
 /* Helper used to get the next match recommendations of the user with targetUserId */
-export const getMatchRecommendations = (mode, curUserId) => {
-  const returnVal = axiosRequest("GET", "/matches/" + curUserId);
+export const getMatchRecommendations = (accessToken, mode, curUserId) => {
+  const returnVal = axiosRequestProtectedRoute(
+    accessToken,
+    "GET",
+    "/matches/" + curUserId
+  );
   return returnVal; // this should be an array of user objects
 };
 
 /* Helper used when the current user wants to "pass" a match recommendation.
  * "mode" is one of ("date", "mentor") */
-export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
-  // Include authToken in payload, or pass along as cookie?
+export const matchRecommendationPass = (
+  accessToken,
+  mode,
+  curUserId,
+  targetUserId
+) => {
   const payload = { mode: mode };
-  const returnVal = axiosRequest(
+  const returnVal = axiosRequestProtectedRoute(
+    accessToken,
     "POST",
     "/matches/pass/" + curUserId + "&" + targetUserId,
     payload
@@ -78,10 +108,15 @@ export const matchRecommendationPass = (mode, curUserId, targetUserId) => {
 /* Helper used when the current user wants to "connect" with a match
  * recommendation.
  * "mode" is one of ("date", "mentor") */
-export const matchRecommendationConnect = (mode, curUserId, targetUserId) => {
-  // Include authToken in payload?
+export const matchRecommendationConnect = (
+  accessToken,
+  mode,
+  curUserId,
+  targetUserId
+) => {
   const payload = { mode: mode };
-  const returnVal = axiosRequest(
+  const returnVal = axiosRequestProtectedRoute(
+    accessToken,
     "POST",
     "/matches/connect/" + curUserId + "&" + targetUserId,
     payload
