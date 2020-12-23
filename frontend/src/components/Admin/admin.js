@@ -173,9 +173,9 @@ class Admin extends React.Component {
 
       if (!responseData) {
         alert(errorMessage);
-      } else {
-        // Success
+        return;
       }
+      // Otherwise success
     } catch (error) {
       alert(
         "An error occurred connecting to the server," +

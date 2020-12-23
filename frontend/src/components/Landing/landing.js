@@ -36,6 +36,7 @@ class Landing extends React.Component {
     );
     if (!responseData) {
       console.log("An error occurred: " + errorMessage);
+      return;
     }
     console.log(responseData);
     this.setState({ userData: responseData.user });
