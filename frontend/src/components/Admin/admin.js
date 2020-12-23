@@ -226,7 +226,7 @@ class Admin extends React.Component {
                   getAriaLabel={(index) => {
                     return index === 0 ? "minimum age" : "maximum age";
                   }}
-                  onChangeCommitted={this.handleOnChangeAgeRange}
+                  onChange={this.handleOnChangeAgeRange}
                   // getAriaValueText={(value, index) => {
                   //   return (index === 0 ? "min age " : "max age ") + value + "years old";
                   // }}
