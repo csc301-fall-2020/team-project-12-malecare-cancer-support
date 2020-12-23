@@ -30,6 +30,8 @@ During the early stages of development, we only had one group “CSC301 4.0 Gang
 * Backend Dev “CSC301 4.0 BackEnd Gang”
 * Frontend Dev “CSC301 4.0 Frontend Gang”
 
+![alt text](../images/csc301.png)
+
 This decision turned out well because it helped us save a lot of time and made many complex discussions easier. We were then able to communicate more efficiently.
 
 2. Making a Taskboard
@@ -37,6 +39,8 @@ This decision turned out well because it helped us save a lot of time and made m
 After assigning different tasks to different members, we were pretty sure that we would complete every task smoothly, but that wasn’t the case. When we actually started working on different features, we realised that there were many tasks that were dependent on each other, that is, some tasks needed to be finished before starting the next one. This halted the progress for many members multiple times.
 
 To overcome this problem we decide that we should make separate task boards for the frontend and backend team, and work in unison on sorting that task board. Using these task boards gave us a clear idea of our progress in relation to other members, and helped us to prioritize our tasks accordingly.
+
+![alt text](../images/task.png)
 
 3. Always working in Pairs
 
@@ -67,6 +71,8 @@ Almost everyone in our team was taking 6 courses, which made it difficult to all
 
 When we started the project we thought that it would be better for us to work together, instead of maintaining a Hierarchical structure within our group. We decided that there should be no single person assuming the position of a manager/leader/spokesperson, instead we should all just directly communicate with each other all the time. 
 
+![alt text](../images/nohr.png)
+
 (imagine that each circle represents a member)
 This decision turned out to be way worse than expected because no one was able to keep up with all the details of the project and we faced multiple instances where we missed out on some major details/features. This led to confusion amongst the members and wasted a lot of time and effort.
 
@@ -91,6 +97,8 @@ List any **process-related** (i.e. team organization and how you work) changes y
 As mentioned before, we were facing multiple problems due to the lack of structure within our group. To solve this problem, we came to a conclusion that there would be two members looking over the backend and frontend separately. These two members would head the backend and frontend team, and keep the other members within their own teams posted about any details that are essential to maintain a fluid workflow.
 
 These two members are also responsible for communicating with each other and share details that are required to integrate the backend and the frontend efficiently. We planned this change to improve our speed and save time.
+
+![alt text](../images/hier.png)
 
 (circles are team members and wires are communication links)
 
