@@ -19,9 +19,8 @@ class Chats extends React.Component {
     }
     
     componentDidMount = async () => {
-        const { responseData } = await getConversations(
-          this.context.getCurrentUser().userId
-        );
+        const userId = this.context.getCurrentUser().userId
+        const { responseData } = await getConversations(userId);
         this.updatePredicate();
         window.addEventListener("resize", this.updatePredicate);
         let userConversations = [];
