@@ -25,7 +25,7 @@ mongoose.connect('mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Headers',  'X-Requested-With, Content-Type, Accept, Authorization');
     next();
 });
 
