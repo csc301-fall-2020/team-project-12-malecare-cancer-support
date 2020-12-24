@@ -6,6 +6,12 @@ import { CurUserContext } from '../../curUserContext';
 
 export const SidebarData = [
   {
+    title: 'Home',
+    path: '/matching',
+    icon: <IoIcons.IoMdHome/>,
+    cName: 'nav-text'
+  },
+  {
     title: 'Profile',
     path: '/profile-test',
     icon: <IoIcons.IoIosPerson />,
@@ -13,7 +19,7 @@ export const SidebarData = [
   },
   {
     title: 'Chats',
-    path: '/chats-test',
+    path: '/chats',
     icon: <IoIcons.IoMdChatboxes />,
     cName: 'nav-text'
   },

@@ -1,7 +1,7 @@
 import React from 'react';
 import './chats.css';
 import io from "socket.io-client";
-import {Container, Image, Row, Col, Text} from 'react-bootstrap';
+import {Container, Image, Row, Col} from 'react-bootstrap';
 import { CurUserContext } from "../../curUserContext";
 import { withRouter } from "react-router-dom";
 import { getConversations, getUser} from "../../actions/serverRequests";

@@ -9,32 +9,46 @@ import mentorIcon from "../../images/mentorIcon.svg";
 import heartIcon from "../../images/heartIcon.svg";
 import {CurUserContext} from "../../curUserContext";
 import {getUser} from "../../actions/serverRequests";
+import {Image} from 'react-bootstrap';
 
 class SideBar extends React.Component {
     static contextType= CurUserContext;
     constructor(props) {
         super(props);
         this.state = {
-            sidebar: false
+            sidebar: false,
+            profileImage: null,
+            userName: null
         }
     }
   
     showSidebar = () => {
         this.setState((prev) => {
             return {
+                ...prev,
                 sidebar: !prev.sidebar
             }
         })
     }
 
-    getUserProfileImage = async (userId) => {
-        const response = await getUser(this.context.getCurrentUser().accessToken, userId);
+    componentDidMount = async () => {
+        const {accessToken, userId} = this.context.getCurrentUser();
+        const response = await getUser(accessToken, userId);
         const data = response.responseData;
+        console.log(response);
         const profileImage = data.user.profileImage;
-        return profileImage;
+        const userName = data.user.firstname + ", " + data.user.lastname;
+        this.setState((prev) => {
+            return {
+                ...prev,
+                profileImage,
+                userName
+            }
+        })
     }
-  
+
     render () {
+
         return (
         <>
             <IconContext.Provider value={{ color: '#e74b1a'}}>
@@ -71,7 +85,22 @@ class SideBar extends React.Component {
                     <AiIcons.AiOutlineClose />
                     </Link>
                 </li>
-                <img src={this.getUserProfileImage(this.context.getCurrentUser().userId)}></img>
+                <li className="nav-img img-fluid-container"
+                    // style={{
+                    //     position: "relative",
+                    //     height: 0,
+                    //     paddingBottom: "100%",
+                    //     overflow: "hidden",
+                    //     borderRadius: "50%"  
+                    // }}
+                >
+                    <Image src={this.state.profileImage} 
+                        className="img-fluid"
+                    />
+                </li>
+                <li className="nav-text">
+                    <h4>{this.state.userName}</h4>
+                </li>
                 {SidebarData.map((item, index) => {
                 if (item.title == 'Logout'){
                     return (
