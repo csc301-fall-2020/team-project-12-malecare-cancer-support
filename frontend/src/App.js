@@ -47,9 +47,9 @@ class App extends React.Component {
         },
         logout: () => {
           this.setState({ currentUser: null });
-          this.props.history.push("/login");
         },
       },
+
     };
   }
 
