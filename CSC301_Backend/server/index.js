@@ -287,37 +287,57 @@ app.get('/match-by-location/:uid', async (req, res) => {
     }
 });
 
-//     ageRange: this.state.ageRange, // calculate
-//     genders: this.state.genders,
-//     sexualOrientations: this.state.sexualOrientations,
-//     cancerTypes: this.state.cancerTypes,
-//     treatments: this.state.treatments,
-//     medications: this.state.medications,
-//     isMentor: this.state.isMentor,
-//     isMentee: this.state.isMentee,
-//     isPartner: this.state.isDate,
 
 app.post('/admin', async (req, res) => {
-    const results = await User.find({
-            gender: req.body.genders,
-            is_mentor: req.body.isMentor,
-            is_mentee: req.body.isMentee,
-            is_partner: req.body.isPartner,
-            medications: {$in: req.body.medications},
-            treatments: {$in: req.body.treatments}
-        }
-    )
+    filterjson = {}
+    if (req.body.genders){
+        filterjson.gender = checkList(req.body.genders)
+    }
+    if (req.body.sexualOrientations){
+        filterjson.sexual_orientation = checkList(req.body.sexualOrientations)
+    }
+    if (req.body.cancerTypes){
+        filterjson.cancer_types = checkList(req.body.cancerTypes)
+    }
+    if (req.body.treatments){
+        filterjson.treatments = checkList(req.body.treatments)
+    }
+    if (req.body.medications){
+        filterjson.medications = checkList(req.body.medications)
+    }
+    if (req.body.isMentor){
+        filterjson.is_mentor = checkList(req.body.isMentor)
+    }
+    if (req.body.isMentee){
+        filterjson.is_mentee = checkList(req.body.isMentee)
+    }
+    if (req.body.isPartner){
+        filterjson.is_partner = checkList(req.body.isPartner)
+    }
+    const results = await User.find(filterjson)
     let emails = []
     for (let i = 0; i < results.length; i++){
-        // const date = new Date()
-        // calculate age
-        // const age = results[i].birthday - date
-        // if age > .. && age < ...
-        emails.push(results[i]["email"]);
+        const diff = Date.now() - new Date(results[i]["birthday"])
+        const dt = new Date(diff)
+        const age = Math.abs(dt.getUTCFullYear() - 1970)
+        if (req.body.ageRange){
+            if (age >= req.body.ageRange[0] && age <= req.body.ageRange[1]){
+                emails.push(results[i]["email"]);
+            }
+        } else{
+            emails.push(results[i]["email"])
+        }
     }
     res.send(emails)
 });
 
+function checkList(item){
+    if (typeof item == "object"){
+        return {$in: item}
+    } else{
+        return {$in: [item]}
+    }
+}
 
 //location formula
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
