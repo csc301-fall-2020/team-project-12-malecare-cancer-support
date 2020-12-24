@@ -265,6 +265,7 @@ app.get('/match-by-location/:uid', async (req, res) => {
             let matched = []
             let passed = []
             let likes = []
+            let liked_by = []
             if (userLookingForMatch.passed.length > 0){
                 passed = await User.find({_id: {$in: userLookingForMatch.passed}}).exec();
             }
@@ -274,8 +275,11 @@ app.get('/match-by-location/:uid', async (req, res) => {
             if (userLookingForMatch.likes.length > 0){
                 likes = await User.find({_id: {$in: userLookingForMatch.likes}}).exec();
             }
+            if (userLookingForMatch.liked_by.length > 0){
+                liked_by = await User.find({_id: {$in: userLookingForMatch.liked_by}}).exec();
+            }
             const dontinclude = []
-                .concat(passed, matched, [uid], likes)
+                .concat(passed, matched, [uid], likes, liked_by)
             const users = await User.find({_id: {$nin : dontinclude}});
             //filtering users on the basis of latitide and longitude
             users.map(user => {
