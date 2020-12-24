@@ -95,7 +95,7 @@ class SideBar extends React.Component {
                     // }}
                 >
                     <Image src={this.state.profileImage} 
-                        className="img-fluid"
+                        className="img-fluid-sidebar"
                     />
                 </li>
                 <li className="nav-text">
