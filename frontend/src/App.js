@@ -65,13 +65,21 @@ class App extends React.Component {
               <Route exact path="/register">
                 <Registration />
               </Route>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+              {/* The admin route should be behind a login eventually */}
+              <Route exact path="/admin">
+                <Admin />
+              </Route>
               {/* The rest of the routes require login to access */}
               <Route exact path="/landing">
                 <CheckLogin requestedComponent={Landing} />
               </Route>
+              
 
               {/* TEMPORARY ROUTES BELOW FOR DEVELOPMENT TESTING */}
-              <Route exact path={["/login-test", "/login"]}>
+              <Route exact path={"/login-test"}>
                 <Login />
               </Route>
               <Route exact path="/registration-test">
@@ -99,8 +107,9 @@ class App extends React.Component {
               <Route exact path="/admin-test">
                 <Admin />
               </Route>
+
               <Route>
-                <div>404 Not found</div>
+                <div className="mt-3 text-center">Error: There is no webpage at this link</div>
               </Route>
             </Switch>
           </BrowserRouter>
