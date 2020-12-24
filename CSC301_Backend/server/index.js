@@ -13,8 +13,9 @@ const data = require('../Routers/data');
 const conversations = require('../Routers/conversations');
 const messages = require('../Routers/messages');
 const auth = require('../middleware/is-auth');
-    // 'mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority'
-mongoose.connect('mongodb://localhost:27017/cancer',
+// 'mongodb://localhost:27017/cancer'
+// 'mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority'
+mongoose.connect('mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority',
     {useNewUrlParser: true, useUnifiedTopology: true},
     () => console.log('connected to db')
     );
