@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 // Good for private routes
 
 const auth = (req, res, next) => {
-    const header = req.header.authorization;
+    const header = req.headers.authorization;
     let decodedToken;
 
     //Authorization:

@@ -242,9 +242,9 @@ app.post('/match-by-like/:likedUserId/:userWhoLikedId', async (req, res) => {
 
 
 //match by location
-app.post('/match-by-location/:uid', async (req, res) => {
+app.get('/match-by-location/:uid', async (req, res) => {
     const {uid} = req.params;
-    const {location : {latitude, longitude}} = req.body;
+    // const {location : {latitude, longitude}} = req.body;
     let radius = 30;
 
     if((uid.length === 12 || uid.length === 24) && (uid.length === 12 || uid.length === 24 )) {
@@ -252,6 +252,7 @@ app.post('/match-by-location/:uid', async (req, res) => {
             //getting matched users
             //const userLookingForMatch = await User.findOne({_id: uid})
             const userLookingForMatch = await User.findOne({_id: uid})
+            const {latitude, longitude} = userLookingForMatch.location.toJSON();
             let allMatchedUsers = []
             if(userLookingForMatch) {
                 const allMatchedIds = userLookingForMatch.liked_by;
@@ -263,8 +264,6 @@ app.post('/match-by-location/:uid', async (req, res) => {
             let nearbyUsers = [];
             //getting all users
             const users = await User.find();
-            console.log('req', latitude, longitude);
-            console.log('user loc', (users[0].location.toJSON()));
             //filtering users on the basis of latitide and longitude
             users.map(user => {
                 //calculating the distance bw the given latitudes and longitudes
@@ -274,7 +273,6 @@ app.post('/match-by-location/:uid', async (req, res) => {
                     user.location.toJSON().latitude,
                     user.location.toJSON().longitude
                 )
-                console.log('distance is : ', distance)
                 if (distance <= radius) {
                 //pushing to array if user has distance within the radius
                     nearbyUsers.push(user)
@@ -326,12 +324,9 @@ const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     const R = 6371 // Radius of the earth in km
     const Latitude = deg2rad(lat2 - lat1) // deg2rad below
     const Longitude = deg2rad(lon2 - lon1)
-    const a =
-    Math.sin(Latitude / 2) * Math.sin(Latitude / 2) +
-    Math.cos(deg2rad(lat1)) *
-    Math.cos(deg2rad(lat2)) *
-    Math.sin(Longitude / 2) *
-    Math.sin(Longitude / 2);
+    const a = Math.sin(Latitude / 2) * Math.sin(Latitude / 2) + 
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(Longitude / 2) * Math.sin(Longitude / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c; // Distance in km
 }

@@ -102,7 +102,7 @@ router.post('/login', async (req, res) => {
     if (!validPassword)
         return res.status(400).json({error: 'Email address or password is incorrect'});
 
-    const accessToken = jwt.sign({userId: user}, 'SECRET_TOKEN');//should be user._Id?
+    const accessToken = jwt.sign({userId: user._id}, 'SECRET_TOKEN');//should be user._Id?
     res.header('auth-token', accessToken).json({accessToken: accessToken, userId: user._id});
 });
 
