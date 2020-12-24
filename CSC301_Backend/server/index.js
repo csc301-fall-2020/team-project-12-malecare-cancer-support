@@ -13,7 +13,7 @@ const data = require('../Routers/data');
 const conversations = require('../Routers/conversations');
 const messages = require('../Routers/messages');
 const auth = require('../middleware/is-auth');
-
+    // 'mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority'
 mongoose.connect('mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority',
     {useNewUrlParser: true, useUnifiedTopology: true},
     () => console.log('connected to db')
@@ -250,20 +250,29 @@ app.get('/match-by-location/:uid', async (req, res) => {
     if((uid.length === 12 || uid.length === 24) && (uid.length === 12 || uid.length === 24 )) {
         try {
             //getting matched users
-            //const userLookingForMatch = await User.findOne({_id: uid})
+            console.log("in")
             const userLookingForMatch = await User.findOne({_id: uid})
             const {latitude, longitude} = userLookingForMatch.location.toJSON();
             let allMatchedUsers = []
             if(userLookingForMatch) {
                 const allMatchedIds = userLookingForMatch.liked_by;
-                //const allMatchedIds = userLookingForMatch.matched;
-                const allMatchedUsersCalls = []
+                let allMatchedUsersCalls = []
                 allMatchedIds.map(id => allMatchedUsersCalls.push(User.findById(id)))
                 allMatchedUsers = await Promise.all(allMatchedUsersCalls)
             }
             let nearbyUsers = [];
             //getting all users
-            const users = await User.find();
+            let matched = []
+            let liked_by = []
+            if (userLookingForMatch.liked_by.length > 0){
+                liked_by = await User.find({_id: {$in: userLookingForMatch.liked_by}}).exec();
+            }
+            if (userLookingForMatch.matched.length > 0){
+                matched = await User.find({_id: {$in: userLookingForMatch.matched}}).exec();
+            }
+            const dontinclude = []
+                .concat(liked_by, matched, [uid])
+            const users = await User.find({_id: {$nin : dontinclude}});
             //filtering users on the basis of latitide and longitude
             users.map(user => {
                 //calculating the distance bw the given latitudes and longitudes
