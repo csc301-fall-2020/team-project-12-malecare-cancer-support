@@ -14,7 +14,7 @@ const conversations = require('../Routers/conversations');
 const messages = require('../Routers/messages');
 const auth = require('../middleware/is-auth');
     // 'mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority'
-mongoose.connect('mongodb+srv://Arnur:thefuckingpasswordretard137@cluster0.cqtt9.mongodb.net/cancer?retryWrites=true&w=majority',
+mongoose.connect('mongodb://localhost:27017/cancer',
     {useNewUrlParser: true, useUnifiedTopology: true},
     () => console.log('connected to db')
     );
@@ -150,12 +150,14 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
             }})
 
         } else {
+            if (!currentUser.likes.includes(likedUser.id)){
+                currentUser.likes.push(likedUser.id)
+                likedUser.liked_by.push(currentUser.id)
+                currentUser.save()
+                likedUser.save()
+            }
             // When liked user hasn't liked current user -> add current to likedby list of liked user,
             // and add liked to likes of current user
-            currentUser.likes.push(likedUser.id)
-            likedUser.liked_by.push(currentUser.id)
-            currentUser.save()
-            likedUser.save()
         }
          res.status(200).json({});
     }
@@ -250,7 +252,6 @@ app.get('/match-by-location/:uid', async (req, res) => {
     if((uid.length === 12 || uid.length === 24) && (uid.length === 12 || uid.length === 24 )) {
         try {
             //getting matched users
-            console.log("in")
             const userLookingForMatch = await User.findOne({_id: uid})
             const {latitude, longitude} = userLookingForMatch.location.toJSON();
             let allMatchedUsers = []
