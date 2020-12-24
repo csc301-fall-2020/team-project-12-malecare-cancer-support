@@ -182,7 +182,7 @@ app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
             currentUser.likes.splice(likesindex, 1)
         }
         currentUser.save()
-        // res.status(200).json({user: user});
+        res.status(200).json({});
     } else {
         res.status(400).json({error: "User is matched, cannot pass"});
     }
