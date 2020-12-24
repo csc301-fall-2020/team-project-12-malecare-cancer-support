@@ -2,12 +2,25 @@ import React from 'react';
 
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
+import { CurUserContext } from '../../curUserContext';
 
 export const SidebarData = [
   {
     title: 'Home',
-    path: '/matching-test',
-    icon: <AiIcons.AiFillHome />,
+    path: '/matching',
+    icon: <IoIcons.IoMdHome/>,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Profile',
+    path: '/profile-test',
+    icon: <IoIcons.IoIosPerson />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Chats',
+    path: '/chats',
+    icon: <IoIcons.IoMdChatboxes />,
     cName: 'nav-text'
   },
   {
@@ -17,15 +30,9 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Chats',
-    path: '/chats-test',
-    icon: <IoIcons.IoMdChatboxes />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Contacts',
-    path: '/contacts-test',
-    icon: <IoIcons.IoIosPersonAdd />,
+    title: 'Logout',
+    icon: <IoIcons.IoIosLogOut />,
+    path: '/login',
     cName: 'nav-text'
   }
 ];

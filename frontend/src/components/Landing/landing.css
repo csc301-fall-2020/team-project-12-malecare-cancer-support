@@ -46,16 +46,12 @@
   font-size: 35px;
   text-align: right;
 }
-.heartIcon {
-  height: 30px;
-  background-color: #fbe2da;
-}
-.mentorIcon {
-  height: 30px;
-}
 .menuIcon {
   max-height: 30px;
 }
 .bottomRightPane {
   position: "relative";
+}
+.sidebar{
+  margin-bottom: 79px;
 }

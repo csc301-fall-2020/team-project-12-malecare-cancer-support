@@ -55,42 +55,22 @@ class Landing extends React.Component {
   render() {
     return (
       <div className="main no-gutters">
+      <SideBar className='sidebar'></SideBar>
         <Row className="no-gutters h-100">
-          <Col xs={3} className="navigation w-100 no-gutters">
+          {/* <Col xs={3} className="navigation w-100 no-gutters">
             <Row className="top no-gutters topLeftNavigation">
               <MenuButton openMenu={this.triggerOpenMenu} />
             </Row>
             <Row className="bottom no-gutters">
-              {/* Switch this Col with Menu if user presses menu button.*/}
+               Switch this Col with Menu if user presses menu button.
               {this.state.isEmptyState && <LikesAndMessages />}
               {this.state.isOpenMenuState && (
                 <Menu userData={this.state.userData} />
               )}
             </Row>
-          </Col>
-          <Col xs={9} className="bigLeftBorder">
-            <Row className="top no-gutters topRightNavigation">
-              <Col xs={7} className="logo">
-                CancerChat
-              </Col>
-              <Col xs={1}></Col>
-              <Col xs={1}>
-                <img
-                  className="mentorIcon"
-                  src={mentorIcon}
-                  alt="Switch to mentoring mode"
-                />
-              </Col>
-              <Col xs={1}>
-                <img
-                  className="heartIcon"
-                  src={heartIcon}
-                  alt="Switch to dating mode"
-                />
-              </Col>
-              <Col xs={2}></Col>
-            </Row>
-            <Row xs={10} className="bottom no-gutters bottomRightPane">
+          </Col> */}
+          <Col>
+            <Row className="bottom no-gutters bottomRightPane">
               <Matching />
             </Row>
           </Col>
