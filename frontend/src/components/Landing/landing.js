@@ -40,7 +40,7 @@ class Landing extends React.Component {
       console.log("An error occurred: " + errorMessage);
       return;
     }
-    console.log(responseData);
+    // console.log("landing page get currentUser : ", responseData);
     this.setState({ userData: responseData.user });
   }
 

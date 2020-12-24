@@ -42,7 +42,7 @@ class Matching extends React.Component {
       if (!responseData) {
         return false;
       }
-      console.log(responseData);
+      console.log("get match recommendations: ", responseData);
       // Carousel supports multiple images, but we currently just have 1 profile image per user
       for (let user of responseData) {
         user.images = [user.profileImage];
@@ -118,6 +118,7 @@ class Matching extends React.Component {
         });
         return;
       }
+      // console.log("matching 'connect' server call response: ", responseData);
       if ("conversation" in responseData) {
         socket.emit(
           "newConversation",
@@ -165,6 +166,7 @@ class Matching extends React.Component {
         });
         return;
       }
+      // console.log("matching 'pass' server call response: ", responseData);
       this.moveToNextMatch();
     } catch (error) {
       this.setState({

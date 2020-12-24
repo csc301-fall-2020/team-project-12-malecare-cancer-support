@@ -82,7 +82,8 @@ export const getMatchRecommendations = (accessToken, mode, curUserId) => {
   const returnVal = axiosRequestProtectedRoute(
     accessToken,
     "GET",
-    "/matches/" + curUserId
+    // "/matches/" + curUserId
+    "/match-by-location/" + curUserId
   );
   return returnVal; // this should be an array of user objects
 };
