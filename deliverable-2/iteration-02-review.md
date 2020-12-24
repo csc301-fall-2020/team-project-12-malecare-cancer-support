@@ -48,6 +48,15 @@ The other decision that turned out to be well was working in pairs whenever poss
 
 This decision helped us save some time in decision making and we were able to write code with minimal errors. It not only helped the members to get familiar with each other but also helped understand each other’s code better.
 
+4. Separating out the branches for the frontend team and the backend team
+
+![alt text](../images/gitflow.png)
+
+In all our previous group coding assignments, the one thing that all of us never liked  were the merge conflicts. Therefore, before starting the work for this project, our team decided to have separate branches for the frontend and the backend. In the picture above the black branch is master (with least frequent and most important commits), the blue branch is frontend-develop (the branch for frontend team), the green branch is frontend-connect (the branch for the backend team). In addition to these branches, whenever it was possible we chose to work on a new branch (purple branches) for a new feature which made the workflow as smooth as possible. 
+
+This decision turned out well because it gave us fewer merge conflicts and allowed us to work efficiently without breaking each other’s code. In the end, we think it helped us save a lot of time.
+
+
 
 
 
@@ -76,9 +85,16 @@ When we started the project we thought that it would be better for us to work to
 (imagine that each circle represents a member)
 This decision turned out to be way worse than expected because no one was able to keep up with all the details of the project and we faced multiple instances where we missed out on some major details/features. This led to confusion amongst the members and wasted a lot of time and effort.
 
-3. Splitting the team into two halves
+3. Splitting the team into two equal halves
 
-One of the other naive decisions that we made during Deliverable 1 was to split the team into two halves, backend and frontend. This decision seemed to be quite fair when we started working but as the project progressed we realised that the backend tasks were comparatively heavy and required more support. For our website, the backend development involved things like making a matching algorithm and an in-app chatting feature on top of the other APIs used for authentication and storing user data. By the time we realised our mistake, we had already wasted a lot of time. When we tried to shift one member from the frontend to backend, it took extra time for that member to get familiar with backend code. Therefore, the decision to split the team into two halves was not a good idea.
+One of the other naive decisions that we made during Deliverable 1 was to split the team into two halves, backend and frontend. This decision seemed to be quite fair when we started working but as the project progressed we realised that the backend tasks were comparatively heavy and required more support. For our website, the backend development involved things like making a matching algorithm and an in-app chatting feature on top of the other APIs used for authentication and storing user data. By the time we realised our mistake, we had already wasted a lot of time. When we tried to shift one member from the frontend to backend, it took extra time for that member to get familiar with backend code. Therefore, the decision to split the team into two equal halves was not a good idea.
+
+4. Not using github issues
+
+During Deliverable 1, we decided not to use github issues for keeping track of our tasks as we thought it would be time consuming. This decision did not turn out well because towards the end of the project we realised that we are missing some major details in our code which happened due to lack of communication, as everyone was not on the same page. 
+
+If we had used Github Issues to keep track of the tasks, enhancements, and bugs for the project, all of us would have known about each other’s progress. Github Issues are sort of a bug tracker on Github and they can be shared and discussed with the rest of the team easily. Not using Github Issues to manage ourselves made the project more complex as we progressed because everyone was not on the same page.
+
 
 
  
