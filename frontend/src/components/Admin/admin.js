@@ -1,6 +1,7 @@
 import React from "react";
 // import "./admin.css";
 
+import { CSVLink, CSVDownload } from "react-csv";
 import Slider from "@material-ui/core/Slider";
 import Select from "react-dropdown-select";
 import { getCancerData } from "../../actions/serverRequests";
@@ -30,7 +31,7 @@ class Admin extends React.Component {
       isMentee: false,
       isMentor: false,
       isDate: false,
-      // Fields for possible options to select
+      // Possible options to select for certain filters
       fieldPossibilities: {
         cancerTypes: [],
         sexualOrientationOptions: [],
@@ -38,6 +39,11 @@ class Admin extends React.Component {
         medications: [],
         treatmentTypes: [],
       },
+      // other state
+      showNumEntriesText: false,
+      numEntries: 0,
+      showCsvDownload: false,
+      csvData: null,
     };
   }
 
@@ -150,13 +156,27 @@ class Admin extends React.Component {
 
     try {
       const { responseData, errorMessage } = await requestEmails(payload);
-      console.log(responseData);
+      // console.log(responseData);
 
       if (!responseData) {
         alert(errorMessage);
         return;
       }
-      // Otherwise success
+      this.setState({
+        showNumEntriesText: true,
+        numEntries: responseData.length,
+      });
+      // Only generate download if there any users selected by the filters
+      if (responseData.length > 0) {
+        this.setState((state) => {
+          return {
+            showCsvDownload: true,
+            csvData: responseData.map((email) => {
+              return { email: email };
+            }),
+          };
+        });
+      }
     } catch (error) {
       alert(
         "An error occurred connecting to the server," +
@@ -166,10 +186,6 @@ class Admin extends React.Component {
   };
 
   render() {
-    /* <CircularProgress
-            className="d-block mx-auto text-center"
-            style={{ maxWidth: "100%" }}
-          /> */
     return (
       <Container>
         <Row>
@@ -184,16 +200,18 @@ class Admin extends React.Component {
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
             <p className="h5">
-              For the dropdown filters below, users matching at least one category in each <i>nonempty</i> filter will be included in the generated list (filters left blank will not affect the generated list).
+              For the dropdown filters below, users matching at least one
+              category in each <i>nonempty</i> filter will be included in the
+              generated list (filters left blank will not affect the generated
+              list).
             </p>
-            <Form className="mx-auto" onSubmit={this.handleSubmit}>
+            <Form className="mx-auto mb-5" onSubmit={this.handleSubmit}>
               <Form.Group id="registration-form">
                 <Form.Label className={"mt-5 h6 font-weight-normal"}>
                   Age Range
                 </Form.Label>
                 <Slider
                   id="ageFilter"
-                  // defaultValue={[30, this.ageRangeMaxAge]}
                   value={this.state.ageRange}
                   min={this.ageRangeMinAge}
                   max={this.ageRangeMaxAge}
@@ -274,13 +292,37 @@ class Admin extends React.Component {
                   separator
                 />
               </Form.Group>
-              <Button
-                className="mt-3 mb-5 d-block mx-auto"
-                variant="customOrange"
-                type="submit"
-              >
-                Generate Email List
-              </Button>
+              <div className="d-flex justify-content-center mt-4 mx-auto">
+                <Button
+                  className="d-block mx-1"
+                  variant="customOrange"
+                  type="submit"
+                >
+                  Generate Email List
+                </Button>
+                {this.state.showCsvDownload && (
+                  <Button
+                    className="mx-2 d-block"
+                    onClick={() => {
+                      this.setState({ showCsvDownload: false });
+                    }}
+                  >
+                    <CSVLink
+                      className="text-light text-decoration-none"
+                      data={this.state.csvData}
+                      filename={"filtered_emails.csv"}
+                      target="_blank"
+                    >
+                      Download Email List File
+                    </CSVLink>
+                  </Button>
+                )}
+              </div>
+              {this.state.showNumEntriesText && (
+                <p className="mx-auto mt-3 text-center">
+                  {this.state.numEntries} users matched the given filters
+                </p>
+              )}
             </Form>
           </Col>
         </Row>
