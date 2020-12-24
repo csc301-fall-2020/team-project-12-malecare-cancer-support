@@ -2,8 +2,14 @@ import React from "react";
 import "./menu.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { CurUserContext } from "../../curUserContext";
+
 
 class Menu extends React.Component {
+  handleLogout = () => {
+    this.context.logout();
+  }
+
   render() {
     return (
       <Col className="no-gutters w-100 displayContents">
@@ -31,5 +37,6 @@ class Menu extends React.Component {
     );
   }
 }
+Menu.contextType = CurUserContext;
 
 export default Menu;
