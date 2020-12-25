@@ -1,1 +1,0 @@
-console.log("Hello Class"),[1,2,3].map((function(l){return l+5}));

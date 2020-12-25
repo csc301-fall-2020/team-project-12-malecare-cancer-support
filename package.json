@@ -1,7 +1,7 @@
 {
-  "name": "cancerchat_backend",
+  "name": "cancerchat",
   "version": "1.0.0",
-  "main": "server/index.js",
+  "main": "CSC301_Backend/server/index.js",
   "license": "MIT",
   "dependencies": {
     "@babel/node": "^7.12.6",
@@ -16,7 +16,8 @@
     "socket.io": "^3.0.4"
   },
   "scripts": {
-    "start-server": "nodemon server/index.js"
+    "start": "node CSC301_Backend/server/index.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.12.7",
