@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import { getConversations, getUser} from "../../actions/serverRequests";
 import SideBar from "../SideBar";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 let socket;
 class Chats extends React.Component {
     static contextType = CurUserContext;

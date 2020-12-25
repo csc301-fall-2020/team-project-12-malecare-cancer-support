@@ -17,7 +17,7 @@ import {
   matchRecommendationConnect,
 } from "../../actions/serverRequests";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 let socket;
 class Matching extends React.Component {
   constructor(props) {

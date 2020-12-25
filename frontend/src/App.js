@@ -22,6 +22,7 @@ import Login from "./components/Login";
 import Registration from "./components/Registration";
 import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./components/NotFound";
+import Profile from "./components/Profile";
 import { CurUserContext } from "./curUserContext";
 
 class App extends React.Component {
@@ -96,7 +97,7 @@ class App extends React.Component {
                 <PrivateRoute exact path="/landing" component={Landing} />
                 <PrivateRoute exact path="/chats" component={Chats} />
                 <PrivateRoute path="/chat/:id" component={Chat} />
-
+                <PrivateRoute exact path="/profile" component={Profile} />
                 {/* 404 page for if the link is not valid */}
                 <Route>
                   <NotFound />
