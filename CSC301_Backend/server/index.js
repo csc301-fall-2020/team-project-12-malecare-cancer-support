@@ -34,10 +34,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/auth', user);
-app.use('/data', data);
-app.use('/conversations', conversations);
-app.use('/messages', messages);
+app.use('/api/auth', user);
+app.use('/api/data', data);
+app.use('/api/conversations', conversations);
+app.use('/api/messages', messages);
 
 // Helper function that removes the password field and adds an age field when
 // a user's info needs to be sent to a client (modifying 'user' directly).
@@ -50,7 +50,7 @@ processUser = (user) => {
     user.age = Math.abs(dt.getUTCFullYear() - 1970);
 }
 
-app.get('/user/:userId', auth, async(req,res) => {
+app.get('/api/user/:userId', auth, async(req,res) => {
     // const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
     const oid = mongoose.Types.ObjectId(req.params.userId);
     try {
@@ -67,7 +67,7 @@ app.get('/user/:userId', auth, async(req,res) => {
 
 // Here we get 10 random user and its details.
 // the auth middle here enforces that the user is authenticated
-app.get('/users/:userId', auth, async(req, res) => {
+app.get('/api/users/:userId', auth, async(req, res) => {
     const oid = mongoose.Types.ObjectId(req.params.userId);
     try {
         // const user = await User.find( {_id : { $ne : oid }});
@@ -90,7 +90,7 @@ app.get('/users/:userId', auth, async(req, res) => {
 // });
 
 // suggestions of users
-app.get('/suggestions/:userId', async (req, res) => {
+app.get('/api/suggestions/:userId', async (req, res) => {
     try {
         const oid = mongoose.Types.ObjectId(req.params.userId);
         // get the user by id
@@ -120,7 +120,7 @@ app.get('/suggestions/:userId', async (req, res) => {
     }
 });
 
-app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => {
+app.post('/api/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => {
 
     // When current user likes another user (liked) we update both of their arrays/ properties
     // if both of them like each other then match (remove each other from liked arrays
@@ -180,7 +180,7 @@ app.post('/matches/connect/:currentUser&:UserthatwasLiked', async (req, res) => 
     }
 });
 
-app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
+app.post('/api/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
     // When current user passes another user (liked) we update both of their arrays/ properties
     const currentUser = await User.findById({_id: req.params.currentUser}).exec()
     const passedUser = await User.findById({_id: req.params.UserthatwasPassed}).exec()
@@ -205,7 +205,7 @@ app.post('/matches/pass/:currentUser&:UserthatwasPassed', async (req, res) => {
 });
 
 
-app.get('/matches/:userId', auth, async (req, res) => {
+app.get('/api/matches/:userId', auth, async (req, res) => {
     try {
         const oid = mongoose.Types.ObjectId(req.params.userId);
         // get the user by id
@@ -231,7 +231,7 @@ app.get('/matches/:userId', auth, async (req, res) => {
 
 
 //match when somebody likes someone
-app.post('/match-by-like/:likedUserId/:userWhoLikedId', async (req, res) => {
+app.post('/api/match-by-like/:likedUserId/:userWhoLikedId', async (req, res) => {
     let {likedUserId, userWhoLikedId} = req.params;
     if((likedUserId.length === 12 || likedUserId.length === 24) && (userWhoLikedId.length === 12 || userWhoLikedId.length === 24 )) {
     try {
@@ -258,7 +258,7 @@ app.post('/match-by-like/:likedUserId/:userWhoLikedId', async (req, res) => {
 
 
 //match by location
-app.get('/match-by-location/:uid', async (req, res) => {
+app.get('/api/match-by-location/:uid', async (req, res) => {
     const {uid} = req.params;
     // const {location : {latitude, longitude}} = req.body;
     let radius = 30;
@@ -327,7 +327,7 @@ app.get('/match-by-location/:uid', async (req, res) => {
 });
 
 
-app.post('/admin', async (req, res) => {
+app.post('/api/admin', async (req, res) => {
     filterjson = {}
     if (req.body.genders){
         filterjson.gender = checkList(req.body.genders)
@@ -494,31 +494,4 @@ io.on('connection', socket => {
 
 });
 
-
-
-/*
-
-http://localhost:5000/match-by-location
-    req body : {
-    "radius" : 100,
-        "location": {
-        "city": "Toronto",
-            "region": "New South Wales",
-            "country": "Australia",
-            "latitude": -33.11357,
-            "longitude": 151.59373
-    }
-}
-*/
-
-/*
-* {
-*   headers: {
-*       Authorization: 'Bearer ' + this.props.token
-*   }
-*
-* }
-*
-*
-* */
 
