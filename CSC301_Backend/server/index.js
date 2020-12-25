@@ -400,7 +400,7 @@ const deg2rad = (degree) => {
 app.use(express.static(path.join(__dirname, "../../frontend/build")));
 app.get("*", (req, res) => { 
     // send index.html built by React frontend
-    console.log("serving react app")
+    // console.log("serving react app")
     res.sendFile(path.join(__dirname, "../../frontend/build/index.html"));
 });
 
