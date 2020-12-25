@@ -77,7 +77,7 @@ This page will simply show the user how their profile looks like to the other us
 6. Notifying the users of new medicines and treatments (Admin Access)
 
 For the admin purposes, as requested by our client, we made another route <route name> that will allow the admin to get the emails of all the users based on how he wants to filter the data in a CSV format. This feature will allow admin to email the users about any new and upcoming changes in their treatments or about new medicines in the market.
-![alt text](../images/admin.png)
+![alt text](/images/admin.png)
 Here you can easily filter on all the available options, click generate email list and then download it as a csv.
 
 ## Instructions
