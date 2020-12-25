@@ -1,6 +1,7 @@
 import React from "react";
 // import "./admin.css";
 
+import { CSVLink, CSVDownload } from "react-csv";
 import Slider from "@material-ui/core/Slider";
 import Select from "react-dropdown-select";
 import { getCancerData } from "../../actions/serverRequests";
@@ -13,6 +14,12 @@ class Admin extends React.Component {
     super(props);
     this.ageRangeMinAge = 0;
     this.ageRangeMaxAge = 120;
+    this.userModeOptions = [
+      // Note: values here correspond to properties isMentee, isMentor, is Date in the state
+      { value: "isMentee", label: "Looking for a mentor" },
+      { value: "isMentor", label: "Looking to be a mentor" },
+      { value: "isDate", label: "Looking for a date" },
+    ];
     this.state = {
       // Fields to send to the server
       ageRange: [30, this.ageRangeMaxAge], // [minAge, maxAge]
@@ -21,10 +28,10 @@ class Admin extends React.Component {
       cancerTypes: [],
       treatments: [],
       medications: [],
-      isMentor: false,
       isMentee: false,
+      isMentor: false,
       isDate: false,
-      // Fields for possible options to select
+      // Possible options to select for certain filters
       fieldPossibilities: {
         cancerTypes: [],
         sexualOrientationOptions: [],
@@ -32,8 +39,12 @@ class Admin extends React.Component {
         medications: [],
         treatmentTypes: [],
       },
+      // other state
+      showNumEntriesText: false,
+      numEntries: 0,
+      showCsvDownload: false,
+      csvData: null,
     };
-    this.checkBox = React.createRef(); // ref to the checkbox
   }
 
   componentDidMount = async () => {
@@ -49,20 +60,6 @@ class Admin extends React.Component {
       });
     }
     this.setState({ fieldPossibilities: fieldPossibilities });
-    this.checkBox.current.setCustomValidity(
-      "At least one checkbox must be checked"
-    );
-  };
-
-  validateCheckBoxes = () => {
-    let errorMessage = "";
-    // The unary operator '+' converts true to 1 and false to 0
-    const totalChecked =
-      +this.state.isMentor + +this.state.isMentee + +this.state.isDate;
-    if (totalChecked === 0) {
-      errorMessage = "At least one checkbox must be checked";
-    }
-    this.checkBox.current.setCustomValidity(errorMessage);
   };
 
   handleOnChangeAgeRange = (event, values) => {
@@ -114,28 +111,16 @@ class Admin extends React.Component {
     });
   };
 
-  handleOnChangeMentee = (checked) => {
+  handleOnChangeUserMode = (event) => {
     this.setState((state) => {
-      return {
-        isMentee: checked,
-      };
-    }, this.validateCheckBoxes);
-  };
-
-  handleOnChangeMentor = (checked) => {
-    this.setState((state) => {
-      return {
-        isMentor: checked,
-      };
-    }, this.validateCheckBoxes);
-  };
-
-  handleOnChangeDate = (checked) => {
-    this.setState((state) => {
-      return {
-        isDate: checked,
-      };
-    }, this.validateCheckBoxes);
+      // Set all selected entries to true, the rest to false
+      // This key names in booleans match those in this.state
+      const booleans = { isMentee: false, isMentor: false, isDate: false };
+      for (const entry of event) {
+        booleans[entry.value] = true;
+      }
+      return booleans;
+    });
   };
 
   handleSubmit = async (event) => {
@@ -147,13 +132,14 @@ class Admin extends React.Component {
       event.stopPropagation();
       return;
     }
-    const payload = {
-      ageRange: this.state.ageRange,
-      isMentor: this.state.isMentor,
-      isMentee: this.state.isMentee,
-      isPartner: this.state.isDate,
-    };
-    // Only send filters for which the user made selections
+    const payload = { ageRange: this.state.ageRange };
+    // Only send the filters for which the user made selections
+    for (const field of ["isMentee", "isMentor", "isDate"]) {
+      if (this.state[field]) {
+        // only include checkbox filters if they were selected
+        payload[field] = this.state[field];
+      }
+    }
     for (const field of [
       "genders",
       "sexualOrientations",
@@ -162,6 +148,7 @@ class Admin extends React.Component {
       "medications",
     ]) {
       if (this.state[field].length > 0) {
+        // only include dropdown filters if they had any selected elements
         payload[field] = this.state[field];
       }
     }
@@ -169,12 +156,26 @@ class Admin extends React.Component {
 
     try {
       const { responseData, errorMessage } = await requestEmails(payload);
-      console.log(responseData);
+      // console.log(responseData);
 
       if (!responseData) {
         alert(errorMessage);
-      } else {
-        // Success
+        return;
+      }
+      this.setState({
+        showNumEntriesText: true,
+        numEntries: responseData.length,
+      });
+      // Only generate download if there any users selected by the filters
+      if (responseData.length > 0) {
+        this.setState((state) => {
+          return {
+            showCsvDownload: true,
+            csvData: responseData.map((email) => {
+              return { email: email };
+            }),
+          };
+        });
       }
     } catch (error) {
       alert(
@@ -185,10 +186,6 @@ class Admin extends React.Component {
   };
 
   render() {
-    /* <CircularProgress
-            className="d-block mx-auto text-center"
-            style={{ maxWidth: "100%" }}
-          /> */
     return (
       <Container>
         <Row>
@@ -202,18 +199,19 @@ class Admin extends React.Component {
         </Row>
         <Row>
           <Col md={{ span: 8, offset: 2 }}>
-            <h5>
-              Select the types of users by using the filters below. Filters can
-              be left blank to avoid filtering based on those attributes.
-            </h5>
-            <Form className="mx-auto" onSubmit={this.handleSubmit}>
+            <p className="h5">
+              For the dropdown filters below, users matching at least one
+              category in each <i>nonempty</i> filter will be included in the
+              generated list (filters left blank will not affect the generated
+              list).
+            </p>
+            <Form className="mx-auto mb-5" onSubmit={this.handleSubmit}>
               <Form.Group id="registration-form">
                 <Form.Label className={"mt-5 h6 font-weight-normal"}>
                   Age Range
                 </Form.Label>
                 <Slider
                   id="ageFilter"
-                  // defaultValue={[30, this.ageRangeMaxAge]}
                   value={this.state.ageRange}
                   min={this.ageRangeMinAge}
                   max={this.ageRangeMaxAge}
@@ -226,7 +224,7 @@ class Admin extends React.Component {
                   getAriaLabel={(index) => {
                     return index === 0 ? "minimum age" : "maximum age";
                   }}
-                  onChangeCommitted={this.handleOnChangeAgeRange}
+                  onChange={this.handleOnChangeAgeRange}
                   // getAriaValueText={(value, index) => {
                   //   return (index === 0 ? "min age " : "max age ") + value + "years old";
                   // }}
@@ -283,58 +281,48 @@ class Admin extends React.Component {
                   clearable
                   separator
                 />
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
+                <Select
+                  id="userModeFilter"
+                  multi
                   className="my-3"
-                >
-                  <label htmlFor="mentee">Looking for a mentor</label>
-                  <input
-                    ref={this.checkBox}
-                    id="mentee"
-                    className="registration-mentee"
-                    type="checkbox"
-                    name="mentee"
-                    onChange={(e) =>
-                      this.handleOnChangeMentee(e.target.checked)
-                    }
-                  />
-                </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                  className="my-3"
-                >
-                  <label htmlFor="mentor">Looking to be a mentor</label>
-                  <input
-                    id="mentor"
-                    className="registration-mentor"
-                    type="checkbox"
-                    name="mentor"
-                    onChange={(e) =>
-                      this.handleOnChangeMentor(e.target.checked)
-                    }
-                  />
-                </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                  className="my-3"
-                >
-                  <label htmlFor="date">Looking for a date</label>
-                  <input
-                    id="date"
-                    className="registration-date"
-                    type="checkbox"
-                    name="date"
-                    onChange={(e) => this.handleOnChangeDate(e.target.checked)}
-                  />
-                </div>
+                  placeholder="Select user modes (dating, mentor, and/or mentee)"
+                  options={this.userModeOptions}
+                  onChange={this.handleOnChangeUserMode}
+                  clearable
+                  separator
+                />
               </Form.Group>
-              <Button
-                className="my-3 d-block mx-auto"
-                variant="customOrange"
-                type="submit"
-              >
-                Generate Email List
-              </Button>
+              <div className="d-flex justify-content-center mt-4 mx-auto">
+                <Button
+                  className="d-block mx-1"
+                  variant="customOrange"
+                  type="submit"
+                >
+                  Generate Email List
+                </Button>
+                {this.state.showCsvDownload && (
+                  <Button
+                    className="mx-2 d-block"
+                    onClick={() => {
+                      this.setState({ showCsvDownload: false });
+                    }}
+                  >
+                    <CSVLink
+                      className="text-light text-decoration-none"
+                      data={this.state.csvData}
+                      filename={"filtered_emails.csv"}
+                      target="_blank"
+                    >
+                      Download Email List File
+                    </CSVLink>
+                  </Button>
+                )}
+              </div>
+              {this.state.showNumEntriesText && (
+                <p className="mx-auto mt-3 text-center">
+                  {this.state.numEntries} users matched the given filters
+                </p>
+              )}
             </Form>
           </Col>
         </Row>

@@ -11,26 +11,37 @@ import "./App.scss";
 // https://react-bootstrap.github.io/getting-started/introduction/
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { CookiesProvider, withCookies } from "react-cookie";
 
 import Admin from "./components/Admin";
-import Chat from "./components/Chat";
-import Chats from "./components/Chats";
-import CheckLogin from "./components/CheckLogin";
 import HomePage from "./components/HomePage";
 import Landing from "./components/Landing";
-import LikesAndMessages from "./components/LikesAndMessages";
+import Chats from "./components/Chats";
+import Chat from "./components/Chat";
 import Login from "./components/Login";
-import Matching from "./components/Matching";
-import Menu from "./components/Menu";
 import Registration from "./components/Registration";
-import Requests from "./components/Requests";
+import PrivateRoute from "./components/PrivateRoute";
+import NotFound from "./components/NotFound";
+import Profile from "./components/Profile";
 import { CurUserContext } from "./curUserContext";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.userCookieName = "cancerchatUser";
+    let currentUser = null;
+    // If there was a previous login cookie, load currentUser from it
+    const userCookie = this.props.cookies.get(this.userCookieName);
+    // console.log("App.js constructor, userCookie:", userCookie);
+    if (userCookie && userCookie.userId && userCookie.accessToken) {
+      currentUser = {
+        userId: userCookie.userId,
+        accessToken: userCookie.accessToken,
+      };
+    }
     this.state = {
-      currentUser: null,
+      currentUser: currentUser,
       contextValue: {
         // Set the value of the context object to be used thoughout the app.
         // The context object is stored in the App component's state, and is
@@ -39,15 +50,24 @@ class App extends React.Component {
         getCurrentUser: () => {
           return this.state.currentUser;
         },
-        setCurrentUser: (user) => {
+        // 'user' must contain properties 'userId' and 'accessToken';
+        //'loginDuration' is in seconds
+        setCurrentUser: (user, loginDuration) => {
           this.setState({ currentUser: user });
+          // Create the cookie
+          this.props.cookies.set(
+            this.userCookieName,
+            { userId: user.userId, accessToken: user.accessToken },
+            { path: "/", maxAge: loginDuration }
+          );
         },
         isLoggedIn: () => {
           return this.state.currentUser !== null;
         },
         logout: () => {
           this.setState({ currentUser: null });
-          this.props.history.push("/login");
+          // Remove the cookie
+          this.props.cookies.remove(this.userCookieName);
         },
       },
     };
@@ -56,58 +76,39 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <CurUserContext.Provider value={this.state.contextValue}>
-          <BrowserRouter>
-            <Switch>
-              <Route exact path={["/", "/home"]}>
-                <HomePage />
-              </Route>
-              <Route exact path="/register">
-                <Registration />
-              </Route>
-              {/* The rest of the routes require login to access */}
-              <Route exact path="/landing">
-                <CheckLogin requestedComponent={Landing} />
-              </Route>
-
-              {/* TEMPORARY ROUTES BELOW FOR DEVELOPMENT TESTING */}
-              <Route exact path={["/login-test", "/login"]}>
-                <Login />
-              </Route>
-              <Route exact path="/registration-test">
-                <Registration />
-              </Route>
-              <Route exact path="/landing-test">
-                <Landing />
-              </Route>
-              <Route exact path="/matching-test">
-                <Matching />
-              </Route>
-              <Route exact path="/chats-test">
-                <Chats />
-              </Route>
-              <Route exact path="/contacts-test">
-                <Requests />
-              </Route>
-              <Route path="/chat/:id" component={Chat}></Route>
-              <Route exact path="/menu-test">
-                <Menu />
-              </Route>
-              <Route exact path="/likesAndMessages-test">
-                <LikesAndMessages />
-              </Route>
-              <Route exact path="/admin-test">
-                <Admin />
-              </Route>
-              <Route>
-                <div>404 Not found</div>
-              </Route>
-            </Switch>
-          </BrowserRouter>
-        </CurUserContext.Provider>
+        <CookiesProvider>
+          <CurUserContext.Provider value={this.state.contextValue}>
+            <BrowserRouter>
+              <Switch>
+                <Route exact path={["/", "/home"]}>
+                  <HomePage />
+                </Route>
+                <Route exact path="/register">
+                  <Registration />
+                </Route>
+                <Route exact path="/login">
+                  <Login />
+                </Route>
+                {/* The admin route should be behind a login eventually */}
+                <Route exact path="/admin">
+                  <Admin />
+                </Route>
+                {/* The rest of the routes require login to access */}
+                <PrivateRoute exact path="/landing" component={Landing} />
+                <PrivateRoute exact path="/chats" component={Chats} />
+                <PrivateRoute path="/chat/:id" component={Chat} />
+                <PrivateRoute exact path="/profile" component={Profile} />
+                {/* 404 page for if the link is not valid */}
+                <Route>
+                  <NotFound />
+                </Route>
+              </Switch>
+            </BrowserRouter>
+          </CurUserContext.Provider>
+        </CookiesProvider>
       </div>
     );
   }
 }
 
-export default App;
+export default withCookies(App);

@@ -17,7 +17,8 @@ import {
   matchRecommendationConnect,
 } from "../../actions/serverRequests";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT =
+  process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 let socket;
 class Matching extends React.Component {
   constructor(props) {
@@ -35,13 +36,14 @@ class Matching extends React.Component {
   getNewMatchRecomendations = async (mode) => {
     try {
       const { responseData /*, errorMessage*/ } = await getMatchRecommendations(
+        this.context.getCurrentUser().accessToken,
         mode,
         this.context.getCurrentUser().userId
       );
       if (!responseData) {
         return false;
       }
-      console.log(responseData);
+      console.log("get match recommendations: ", responseData);
       // Carousel supports multiple images, but we currently just have 1 profile image per user
       for (let user of responseData) {
         user.images = [user.profileImage];
@@ -70,9 +72,18 @@ class Matching extends React.Component {
     } else if (success) {
       // we got an empty array back from the server
       this.setState({
+        displayedMatch: undefined,
         showToast: true,
         toastText:
           "There are no more matches for now, please come back at a later time!",
+      });
+    } else {
+      // Error connecting to server
+      this.setState({
+        showToast: true,
+        toastText:
+          "We were unable to connect to the server," +
+          " please make sure you have a working internet connection.",
       });
     }
   };
@@ -105,6 +116,7 @@ class Matching extends React.Component {
   handleConnect = async () => {
     try {
       let { responseData, errorMessage } = await matchRecommendationConnect(
+        this.context.getCurrentUser().accessToken,
         this.state.mode,
         this.context.getCurrentUser().userId,
         this.state.displayedMatch._id
@@ -116,12 +128,17 @@ class Matching extends React.Component {
         });
         return;
       }
+      // console.log("matching 'connect' server call response: ", responseData);
       if ("conversation" in responseData) {
-        socket.emit("newConversation", {...responseData.conversation}, ({error}) => {
-          if(error) {
-            alert(error)
+        socket.emit(
+          "newConversation",
+          { ...responseData.conversation },
+          ({ error }) => {
+            if (error) {
+              alert(error);
+            }
           }
-        })
+        );
         if (!responseData) {
           this.setState({
             showToast: true,
@@ -147,6 +164,7 @@ class Matching extends React.Component {
   handlePass = async () => {
     try {
       const { responseData, errorMessage } = await matchRecommendationPass(
+        this.context.getCurrentUser().accessToken,
         this.state.mode,
         this.context.getCurrentUser().userId,
         this.state.displayedMatch._id
@@ -158,6 +176,7 @@ class Matching extends React.Component {
         });
         return;
       }
+      // console.log("matching 'pass' server call response: ", responseData);
       this.moveToNextMatch();
     } catch (error) {
       this.setState({
@@ -191,6 +210,7 @@ class Matching extends React.Component {
                 className="carousel"
                 interval={null}
                 controls={displayedMatch.images.length > 1}
+                indicators={displayedMatch.images.length > 1}
               >
                 {displayedMatch.images.map((imageLink, index) => {
                   return (
@@ -223,26 +243,25 @@ class Matching extends React.Component {
               </Carousel>
             </Col>
             <Col xs={12} lg={6} className="bioContainer">
-              <text className="name">
+              <span className="name">
                 {displayedMatch.firstname + " " + displayedMatch.lastname}
-              </text>
+              </span>
               <br></br>
-              <text className="ageAndLocation">25</text>
-              {/* TODO: update the line age (user age) based on server return */}
+              <span className="ageAndLocation">{displayedMatch.age}</span>
               <img className="middleDot" src={dotIcon} alt=""></img>
               <img className="locationIcon" src={locationIcon} alt=""></img>
-              <text className="ageAndLocation">
+              <span className="ageAndLocation">
                 {displayedMatch.location.city +
                   ", " +
                   displayedMatch.location.region}
-              </text>
+              </span>
               <br></br>
-              <text className="cancerType">
+              <span className="cancerType">
                 Cancer Type: {displayedMatch.cancer_types.join(", ")}
-              </text>
+              </span>
               <br></br>
               <br></br>
-              <text className="bio">{displayedMatch.bio}</text>
+              <span className="bio">{displayedMatch.bio}</span>
             </Col>
           </Row>
         )}

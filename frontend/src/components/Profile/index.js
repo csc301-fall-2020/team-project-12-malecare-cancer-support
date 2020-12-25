@@ -2,4 +2,4 @@
    conveniently import components in other locations. Might need to add to  the
    file later. */
 
-   export { default } from "./menu.js";
+export { default } from "./profile.js";
