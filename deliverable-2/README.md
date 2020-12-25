@@ -88,9 +88,9 @@ Here you can easily filter on all the available options, click generate email li
  
  #### Answer 
  
-Watch this demo to know about the app in detail. <link>
+Watch this demo to know about the app in detail. (https://play.library.utoronto.ca/b70571f42f95f757c89cdb984caa9a8d)
 
-1. Use this link <link> to open the website.
+1. Use this link to open the website. (https://cancerchat.herokuapp.com/)
 2. You will be taken to the homepage of the website where you can choose from the two options to login an old user or signup a new user.
 Login and Signup
 * Case 1. If you already have an account login using the email and the password that you set.
@@ -108,7 +108,7 @@ Fill out the registration details and press register to create a new user.
 * Item 5. The logout button for logging out of the account
 6. Once two users have successfully pressed connect on each other, they will show up on each other’s chatting page which can be selected from the navigation bar.
 Once you click on any of the users, it will open a chatting window where you can privately chat with the other user by typing your message and hitting send. If you want to go back just click the back button on top right.
-7. The last feature is for the admin, which can be accessed using this route <route>.
+7. The last feature is for the admin, which can be accessed using this route. (https://cancerchat.herokuapp.com/admin)
 On this page you can see a bunch of filters from which you can choose as the admin of the Male Care Organization and after selecting all the filters press generate an email list. It will show you how many users match your set filters and if they are more than zero, it will show a new option to download the CSV files of the emails of all the users passing your filters.
 These emails can be used to send important messages to the users about new and upcoming advances in cancer treatments.
 (this route was requested by the partner after our demo)
