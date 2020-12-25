@@ -1,9 +1,8 @@
-
 .registration-bio {
-    resize: none;
+  resize: none;
 }
 
 .matchingToast {
-    background-color: white;
-    border: 1px solid #e9a100;
-  }
+  background-color: white;
+  border: 1px solid #e9a100;
+}

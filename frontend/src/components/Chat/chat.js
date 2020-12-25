@@ -5,19 +5,19 @@ import { BiExit } from "react-icons/bi";
 import { withRouter } from "react-router-dom";
 import { CurUserContext } from "../../curUserContext";
 import InfiniteScroll from "react-infinite-scroll-component";
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {Container, Row, Col} from 'react-bootstrap';
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { Container, Row, Col } from "react-bootstrap";
 
-const ENDPOINT = process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
+const ENDPOINT =
+  process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 let socket;
-
 
 class Chat extends React.Component {
   static contextType = CurUserContext;
 
   constructor(props) {
     super(props);
-    this.messagesEnd = false
+    this.messagesEnd = false;
     this.loading = false;
     this.hasMore = false;
     this.state = {
@@ -35,17 +35,15 @@ class Chat extends React.Component {
     };
   }
 
-
   scrollToBottom = () => {
-    if(this.messagesEnd && !this.loading) {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    if (this.messagesEnd && !this.loading) {
+      this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }
-  }
-  
+  };
 
   setMessages = async (msgs, isNew) => {
     if (isNew) {
-     await this.setState((prev) => {
+      await this.setState((prev) => {
         const old_msgs = this.state.conversation.messages;
         return {
           ...prev,
@@ -69,8 +67,6 @@ class Chat extends React.Component {
       });
     }
   };
-
-
 
   componentDidMount = async () => {
     const conversationData = this.props.location.conversationData;
@@ -152,146 +148,153 @@ class Chat extends React.Component {
   };
 
   fetchMoreData = async () => {
-      this.loading = true;
-        await socket.emit(
-        "latestMessages",
-        this.state.conversation.messages[0]._id,
-        ({ error }) => {
-            if (error) {
-            alert("");
-            }
+    this.loading = true;
+    await socket.emit(
+      "latestMessages",
+      this.state.conversation.messages[0]._id,
+      ({ error }) => {
+        if (error) {
+          alert("");
+        }
       }
     );
-        this.loading = false;
+    this.loading = false;
   };
-
-
 
   getLoader = () => {
     if (this.isConversationDate) {
-        return <CircularProgress />
-    } else { 
-        return <CircularProgress color="secondary" />
+      return <CircularProgress />;
+    } else {
+      return <CircularProgress color="secondary" />;
     }
-  }
+  };
 
   isLastMessage = (length, i) => {
-    if(length - 1 == i) {
-        return (
-          <div style={{ float:"left", clear: "both" }}
-            ref={(el) => { this.messagesEnd = el; }}>
-          </div>
-        )
+    if (length - 1 == i) {
+      return (
+        <div
+          style={{ float: "left", clear: "both" }}
+          ref={(el) => {
+            this.messagesEnd = el;
+          }}
+        ></div>
+      );
     } else {
       return null;
     }
-  }
+  };
 
   render() {
-
     const loading = this.loading;
     let loader;
-    if(!loading) {
-        loader = null
+    if (!loading) {
+      loader = null;
     } else {
-        loader = 
-        ( <div style={{display: 'flex', justifyContent: 'center'}}>
-                {this.getLoader()}
+      loader = (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {this.getLoader()}
         </div>
-       )
-
+      );
     }
     return (
       <div className="outerContainer">
         <div className="chatContainer">
+          <Container
+            fluid
+            style={{
+              background: this.isConversationDate() ? "#fe3c72" : "#2979FF",
+            }}
+          >
+            <Row>
+              <Col xs={8}>
+                <div className="leftChatContainer">
+                  <img
+                    className="rounded-circle"
+                    style={{
+                      maxWidth: "25%",
+                      maxHeight: "40%",
+                      marginRight: "5%",
+                    }}
+                    src={this.state.conversation.profileImage}
+                    alt="profile icon"
+                  />
+                  <h4>{this.state.conversation.otherUserName}</h4>
+                </div>
+              </Col>
+              <Col xs={4}>
+                <div className="rightChatContainer">
+                  <a onClick={() => this.handleBackButton()}>
+                    <BiExit size={"3em"} color="white" />
+                  </a>
+                </div>
+              </Col>
+            </Row>
+          </Container>
 
-        <Container fluid style={{background: this.isConversationDate() ? "#fe3c72" : "#2979FF"}}>
-          <Row>
-            <Col xs={8}>
-              <div className="leftChatContainer">
-                <img
-                  className="rounded-circle"
-                  style={{maxWidth: "25%", maxHeight: "40%", marginRight: "5%"}}
-                  src={this.state.conversation.profileImage}
-                  alt="profile icon"
-                />
-                <h4>{this.state.conversation.otherUserName}</h4>
-              </div>
-            </Col>
-            <Col xs={4}>
-            <div className="rightChatContainer">
-              <a onClick={() => this.handleBackButton()}>
-                <BiExit size={"3em"} color="white" />
-              </a>
-            </div>
-            </Col>
-          </Row>
-        </Container>
-
-
-            <div
+          <div
             id="scrollableDiv"
             style={{
               height: "85vh",
-              overflow: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
+              overflow: "auto",
+              display: "flex",
+              flexDirection: "column",
             }}
+          >
+            <InfiniteScroll
+              dataLength={this.state.conversation.messages.length}
+              next={this.fetchMoreData}
+              style={{ display: "flex", flexDirection: "column" }}
+              inverse={true} //
+              hasMore={this.hasMore}
+              scrollableTarget="scrollableDiv"
+              scrollThreshold={0.95}
             >
-          <InfiniteScroll
-            dataLength={this.state.conversation.messages.length}
-            next={this.fetchMoreData}
-            style={{ display: 'flex', flexDirection: 'column' }} 
-            inverse={true} //
-            hasMore={this.hasMore}
-            scrollableTarget="scrollableDiv"
-            scrollThreshold={0.95}
-            >
-            {loader}
-                {this.state.conversation.messages.map((message, i) => {
-                  return (
-                    <div key={i}>
+              {loader}
+              {this.state.conversation.messages.map((message, i) => {
+                return (
+                  <div key={i}>
+                    <div
+                      className={`my-1 d-flex flex-column ${
+                        this.isMessageByMe(message)
+                          ? "align-self-end align-items-end"
+                          : "align-items-start"
+                      }`}
+                    >
                       <div
-                        className={`my-1 d-flex flex-column ${
-                          this.isMessageByMe(message)
-                            ? "align-self-end align-items-end"
-                            : "align-items-start"
+                        className={`messageContainer px-2 py-0 ${
+                          this.isMessageByMe(message) ? "text-white" : "border"
+                        }`}
+                        style={{
+                          backgroundColor:
+                            this.isMessageByMe(message) &&
+                            !this.isConversationDate()
+                              ? "#2979FF"
+                              : this.isMessageByMe(message)
+                              ? "#fe3c72"
+                              : "#F3F3F3",
+                        }}
+                      >
+                        <p className="messageText">{message.content}</p>
+                      </div>
+                      <div
+                        className={`text-muted small ${
+                          this.isMessageByMe(message) ? "text-right" : ""
                         }`}
                       >
-                        <div
-                          className={`messageContainer px-2 py-0 ${
-                            this.isMessageByMe(message)
-                              ? "text-white"
-                              : "border"
-                          }`}
-                          style={{
-                            backgroundColor:
-                              this.isMessageByMe(message) &&
-                              !this.isConversationDate()
-                                ? "#2979FF"
-                                : this.isMessageByMe(message)
-                                ? "#fe3c72"
-                                : "#F3F3F3",
-                          }}
-                        >
-                          <p className="messageText">{message.content}</p>
-                        </div>
-                        <div
-                          className={`text-muted small ${
-                            this.isMessageByMe(message) ? "text-right" : ""
-                          }`}
-                        >
-                          {this.isMessageByMe(message) ? "You" : message.author}
-                        </div>
+                        {this.isMessageByMe(message) ? "You" : message.author}
                       </div>
-                      {this.isLastMessage(this.state.conversation.messages.length, i)}
                     </div>
-                  );
-                })}
+                    {this.isLastMessage(
+                      this.state.conversation.messages.length,
+                      i
+                    )}
+                  </div>
+                );
+              })}
             </InfiniteScroll>
-            </div>
+          </div>
 
-          <form className="form">                
+          <form className="form">
             <input
               className="input"
               type="text"
@@ -302,9 +305,12 @@ class Chat extends React.Component {
                 e.key === "Enter" ? this.sendMessage(e) : null
               }
             />
-            <button className="sendButton" 
-            onClick={(e) => this.sendMessage(e)}
-            style={{background: this.isConversationDate() ? "#fe3c72" : "2979FF" }}
+            <button
+              className="sendButton"
+              onClick={(e) => this.sendMessage(e)}
+              style={{
+                background: this.isConversationDate() ? "#fe3c72" : "2979FF",
+              }}
             >
               Send
             </button>

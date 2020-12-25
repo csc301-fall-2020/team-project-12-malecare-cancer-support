@@ -1,1 +1,1 @@
-export { default } from "./geosearchbar.js"
+export { default } from "./geosearchbar.js";

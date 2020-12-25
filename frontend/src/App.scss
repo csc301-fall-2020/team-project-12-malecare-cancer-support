@@ -1,5 +1,6 @@
 $theme-colors: (
-  "customOrange": #e74b1a, // Custom color used for CancerChat
+  "customOrange": #e74b1a,
+  // Custom color used for CancerChat
 );
 // $primary:  #e95d31;
 
@@ -10,12 +11,12 @@ $theme-colors: (
   border-radius: 30px;
   border-width: 3px;
   background-color: white;
-  @include button-outline-variant(#e74b1a, #FFFFFF);
+  @include button-outline-variant(#e74b1a, #ffffff);
 }
 
 .btn-outline-rounded-customGray {
   border-radius: 30px;
   border-width: 3px;
   background-color: white;
-  @include button-outline-variant($gray-600, #FFFFFF);
+  @include button-outline-variant($gray-600, #ffffff);
 }

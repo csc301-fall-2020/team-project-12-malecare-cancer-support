@@ -28,8 +28,8 @@
 }
 
 .messageText {
-    overflow-wrap: break-word;
-    width: 45vw;
+  overflow-wrap: break-word;
+  width: 45vw;
 }
 
 .leftChatContainer {

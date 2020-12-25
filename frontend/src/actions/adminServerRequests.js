@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // The SERVER_BASE_URL environment variable should be defined when deploying
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
+axios.defaults.baseURL =
+  process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 
 /* Helper function (not exported) to make requests and return the result in a
  * uniform format. */

@@ -47,7 +47,7 @@ class Login extends React.Component {
           showAlert: true,
           loginErrorMessage: "An error occurred: " + errorMessage,
         });
-        return
+        return;
       }
       // Successfully logged in
       const secondsInDay = 86400;
@@ -57,12 +57,14 @@ class Login extends React.Component {
         // User wants to stay logged in: make login duration 21 days
         cookieDuration = secondsInDay * 21;
       }
-      this.context.setCurrentUser({
-        accessToken: responseData.accessToken,
-        userId: responseData.userId,
-      }, cookieDuration);
+      this.context.setCurrentUser(
+        {
+          accessToken: responseData.accessToken,
+          userId: responseData.userId,
+        },
+        cookieDuration
+      );
       this.props.history.push("/landing");
-      
     } catch (error) {
       this.setState({
         showToast: true,
