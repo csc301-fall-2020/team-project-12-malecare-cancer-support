@@ -39,12 +39,25 @@ app.use('/data', data);
 app.use('/conversations', conversations);
 app.use('/messages', messages);
 
+// Helper function that removes the password field and adds an age field when
+// a user's info needs to be sent to a client (modifying 'user' directly).
+// 'user' must be a Javascript object (eg from .lean()) instead of a Mongoose
+// document.
+processUser = (user) => {
+    user.password = undefined;
+    const diff = Date.now() - new Date(user.birthday);
+    const dt = new Date(diff);
+    user.age = Math.abs(dt.getUTCFullYear() - 1970);
+}
+
 app.get('/user/:userId', auth, async(req,res) => {
     // const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
     const oid = mongoose.Types.ObjectId(req.params.userId);
     try {
-        const user = await User.findById({_id: oid});
-        res.status(200).json({user: user});
+        // Use lean to return user as a Javascript object, to edit
+        const userLean = await User.findById({_id: oid}).lean();
+        processUser(userLean);
+        res.status(200).json({user: userLean});
 
     }
     catch (err) {
@@ -71,10 +84,10 @@ app.get('/users/:userId', auth, async(req, res) => {
 
 
 
-app.get('/all-users', async (req, res) => {
- const users = await User.find()
- res.json({users})
-});
+// app.get('/all-users', async (req, res) => {
+//  const users = await User.find()
+//  res.json({users})
+// });
 
 // suggestions of users
 app.get('/suggestions/:userId', async (req, res) => {
@@ -255,14 +268,14 @@ app.get('/match-by-location/:uid', async (req, res) => {
             //getting matched users
             const userLookingForMatch = await User.findOne({_id: uid})
             const {latitude, longitude} = userLookingForMatch.location.toJSON();
-            let allMatchedUsers = []
+            let allMatchedUsersLean = []
             if(userLookingForMatch) {
                 const allMatchedIds = userLookingForMatch.liked_by;
                 let allMatchedUsersCalls = []
-                allMatchedIds.map(id => allMatchedUsersCalls.push(User.findById(id)))
-                allMatchedUsers = await Promise.all(allMatchedUsersCalls)
+                allMatchedIds.map(id => allMatchedUsersCalls.push(User.findById(id).lean()))
+                allMatchedUsersLean = await Promise.all(allMatchedUsersCalls)
             }
-            let nearbyUsers = [];
+            let nearbyUsersLean = [];
             //getting all users
             let matched = []
             let passed = []
@@ -282,22 +295,29 @@ app.get('/match-by-location/:uid', async (req, res) => {
             }
             const dontinclude = []
                 .concat(passed, matched, [uid], likes, liked_by)
-            const users = await User.find({_id: {$nin : dontinclude}});
+            const usersLean = await User.find({_id: {$nin : dontinclude}}).lean();
             //filtering users on the basis of latitide and longitude
-            users.map(user => {
+            usersLean.map(user => {
                 //calculating the distance bw the given latitudes and longitudes
                 let distance = getDistanceFromLatLonInKm(
                     latitude,
                     longitude,
-                    user.location.toJSON().latitude,
-                    user.location.toJSON().longitude
+                    user.location.latitude,
+                    user.location.longitude
                 )
                 if (distance <= radius) {
                 //pushing to array if user has distance within the radius
-                    nearbyUsers.push(user)
+                    nearbyUsersLean.push(user)
                 }
             })
-            return res.json( [...allMatchedUsers, ...nearbyUsers] )
+            // Process returned user objects
+            for (let i = 0; i < allMatchedUsersLean.length; i++) {
+                processUser(allMatchedUsersLean[i])
+            }
+            for (let i = 0; i < nearbyUsersLean.length; i++) {
+                processUser(nearbyUsersLean[i])
+            }
+            return res.xjson( [...allMatchedUsersLean, ...nearbyUsersLean] )
         } catch (error) {
             return res.json({error})
         }
