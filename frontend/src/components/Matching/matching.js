@@ -244,8 +244,7 @@ class Matching extends React.Component {
                 {displayedMatch.firstname + " " + displayedMatch.lastname}
               </text>
               <br></br>
-              <text className="ageAndLocation">25</text>
-              {/* TODO: update the line age (user age) based on server return */}
+              <text className="ageAndLocation">{displayedMatch.age}</text>
               <img className="middleDot" src={dotIcon} alt=""></img>
               <img className="locationIcon" src={locationIcon} alt=""></img>
               <text className="ageAndLocation">
