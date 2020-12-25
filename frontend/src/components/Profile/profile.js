@@ -88,27 +88,27 @@ class Profile extends React.Component {
                   </Carousel>
                 </Col>
                 <Col xs={12} lg={6} className="profile-bioContainer">
-                  <text className="profile-name">
+                  <span className="profile-name">
                     {userData.firstname + " " + userData.lastname}
-                  </text>
+                  </span>
                   <br></br>
-                  <text className="profile-ageAndLocation">{userData.age}</text>
+                  <span className="profile-ageAndLocation">{userData.age}</span>
                   <img className="profile-middleDot" src={dotIcon} alt=""></img>
                   <img
                     className="profile-locationIcon"
                     src={locationIcon}
                     alt=""
                   ></img>
-                  <text className="profile-ageAndLocation">
+                  <span className="profile-ageAndLocation">
                     {userData.location.city + ", " + userData.location.region}
-                  </text>
+                  </span>
                   <br></br>
-                  <text className="profile-cancerType">
+                  <span className="profile-cancerType">
                     Cancer Type: {userData.cancer_types.join(", ")}
-                  </text>
+                  </span>
                   <br></br>
                   <br></br>
-                  <text className="profile-bio">{userData.bio}</text>
+                  <span className="profile-bio">{userData.bio}</span>
                 </Col>
               </Row>
             )}

@@ -243,25 +243,25 @@ class Matching extends React.Component {
               </Carousel>
             </Col>
             <Col xs={12} lg={6} className="bioContainer">
-              <text className="name">
+              <span className="name">
                 {displayedMatch.firstname + " " + displayedMatch.lastname}
-              </text>
+              </span>
               <br></br>
-              <text className="ageAndLocation">{displayedMatch.age}</text>
+              <span className="ageAndLocation">{displayedMatch.age}</span>
               <img className="middleDot" src={dotIcon} alt=""></img>
               <img className="locationIcon" src={locationIcon} alt=""></img>
-              <text className="ageAndLocation">
+              <span className="ageAndLocation">
                 {displayedMatch.location.city +
                   ", " +
                   displayedMatch.location.region}
-              </text>
+              </span>
               <br></br>
-              <text className="cancerType">
+              <span className="cancerType">
                 Cancer Type: {displayedMatch.cancer_types.join(", ")}
-              </text>
+              </span>
               <br></br>
               <br></br>
-              <text className="bio">{displayedMatch.bio}</text>
+              <span className="bio">{displayedMatch.bio}</span>
             </Col>
           </Row>
         )}
