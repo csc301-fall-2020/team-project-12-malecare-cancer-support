@@ -50,6 +50,9 @@ class Profile extends React.Component {
     return (
       <div className="profile-main no-gutters">
         <SideBar />
+        <div className="mx-auto mb-4 h4 text-center d-block">
+          Preview how your profile appears to other users:
+        </div>
         <Row className="no-gutters h-100">
           <Toast
             show={this.state.showToast}
@@ -59,60 +62,55 @@ class Profile extends React.Component {
             <Toast.Header className="profile-ToastHeader" />
             <Toast.Body>{this.state.toastText}</Toast.Body>
           </Toast>
-          <Col>
-            <Row className="mx-auto mb-3 h5 text-center d-block">
-              Preview how your profile appears to other users:
-            </Row>
-            {userData === undefined ? null : (
-              <Row className="no-gutters bioAndPhoto">
-                <Col xs={12} lg={6} className="flex">
-                  {/* React-bootstrap Carousel to display the other user's profile
+          {userData === undefined ? null : (
+            <Row className="no-gutters bioAndPhoto">
+              <Col xs={12} lg={6} className="flex">
+                {/* React-bootstrap Carousel to display the other user's profile
                   pictures */}
-                  <Carousel
-                    interval={null}
-                    controls={userData.images.length > 1}
-                    indicators={userData.images.length > 1}
-                  >
-                    {userData.images.map((imageLink, index) => {
-                      return (
-                        <Carousel.Item key={index}>
-                          <Image
-                            className="d-block w-100 profile-carouselImage"
-                            src={imageLink}
-                            alt={`Slide ${index + 1}`}
-                            fluid
-                          />
-                        </Carousel.Item>
-                      );
-                    })}
-                  </Carousel>
-                </Col>
-                <Col xs={12} lg={6} className="profile-bioContainer">
-                  <span className="profile-name">
-                    {userData.firstname + " " + userData.lastname}
-                  </span>
-                  <br></br>
-                  <span className="profile-ageAndLocation">{userData.age}</span>
-                  <img className="profile-middleDot" src={dotIcon} alt=""></img>
-                  <img
-                    className="profile-locationIcon"
-                    src={locationIcon}
-                    alt=""
-                  ></img>
-                  <span className="profile-ageAndLocation">
-                    {userData.location.city + ", " + userData.location.region}
-                  </span>
-                  <br></br>
-                  <span className="profile-cancerType">
-                    Cancer Type: {userData.cancer_types.join(", ")}
-                  </span>
-                  <br></br>
-                  <br></br>
-                  <span className="profile-bio">{userData.bio}</span>
-                </Col>
-              </Row>
-            )}
-          </Col>
+                <Carousel
+                  interval={null}
+                  controls={userData.images.length > 1}
+                  indicators={userData.images.length > 1}
+                >
+                  {userData.images.map((imageLink, index) => {
+                    return (
+                      <Carousel.Item key={index}>
+                        <Image
+                          className="d-block w-100 profile-carouselImage"
+                          src={imageLink}
+                          alt={`Slide ${index + 1}`}
+                          fluid
+                        />
+                      </Carousel.Item>
+                    );
+                  })}
+                </Carousel>
+              </Col>
+              <Col xs={12} lg={6} className="profile-bioContainer">
+                <span className="profile-name">
+                  {userData.firstname + " " + userData.lastname}
+                </span>
+                <br></br>
+                <span className="profile-ageAndLocation">{userData.age}</span>
+                <img className="profile-middleDot" src={dotIcon} alt=""></img>
+                <img
+                  className="profile-locationIcon"
+                  src={locationIcon}
+                  alt=""
+                ></img>
+                <span className="profile-ageAndLocation">
+                  {userData.location.city + ", " + userData.location.region}
+                </span>
+                <br></br>
+                <span className="profile-cancerType">
+                  Cancer Type: {userData.cancer_types.join(", ")}
+                </span>
+                <br></br>
+                <br></br>
+                <span className="profile-bio">{userData.bio}</span>
+              </Col>
+            </Row>
+          )}
         </Row>
       </div>
     );
