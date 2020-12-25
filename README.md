@@ -25,24 +25,24 @@ Our goal is to improve their mental health through which we can improve their tr
 1. Login and registration
 ###### LOGIN
 
-![alt text](../images/loginpage.png)
+![alt text](/images/loginpage.png)
 
 This is the login page that will allow a user with an account to login with the correct details. If a user uses incorrect details to login, this message will be prompted to advise the user.
 
-![alt text](../images/incorrect%20login.png)
+![alt text](/images/incorrect%20login.png)
 
 If the user doesn’t have an account with us, they can simply create one by clicking on the “Sign up now!” link below the login button.
 
 ###### REGISTRATION
 
-![alt text](../images/register1.png)
-![alt text](../images/register2.png)
+![alt text](/images/register1.png)
+![alt text](/images/register2.png)
 
 When the user clicks on sign up, they will be taken to a registration page where they have to fill out a form which asks them different personal questions and questions regarding their cancer. We use this information to match the users with each other and to provide them with necessary notification/guidance with their cancer treatment. Once the form is complete and the register button is clicked, a new user is stored in the database.
 
 2. Matching Algorithm
 
-![alt text](../images/matching.png)
+![alt text](/images/matching.png)
 
 Once a user performs a successful login, they are directed to this matching page. This page displays all the users that can be potential matches for the current user. Our matching algorithm displays these potential users by filtering them on two conditions - 
 * Filter by the users who liked you - so all the other users that pressed connect on the current user would show up first
@@ -54,7 +54,7 @@ On the profile displayed a user can click pass or connect based on if they are i
 
 After landing on the matching page, if a user clicks on the navigation button on the top left (which is indicated by three lines), they will see this.
 
-![alt text](../images/navigationbaropen.png)
+![alt text](/images/navigationbaropen.png)
 
 In this menu, you can see the current user with their name and profile picture, a home button which will take the user back to the matching page, a profile button which will take the user to the profile page, a chats button which will open a chatting page where the user can choose to chat with all the others users they connected with, and a logout button which they can use to logout of the application.
  
@@ -62,16 +62,16 @@ In this menu, you can see the current user with their name and profile picture, 
 
 Once the two users are matched (both of them press connect on each other), they will show up on each other’s respective chatting page which can be selected by pressing chat button under the navigation bar. Once you click on a user it will open a new window where two users who are connected can chat easily.
 
-![alt text](../images/chat.png)
+![alt text](/images/chat.png)
 
 	In this example, both Uttkarsh Berwal and gordon ramsay pressed connect on each other and they showed up on each other’s chat window under the navigation bar.
 Clicking on the users name would open a chat window with them.
-![alt text](../images/chatwindow.png)
+![alt text](/images/chatwindow.png)
 In the chat window you can privately have conversations with that user.
 
 5. The Profile Page
 
-![alt text](../images/profilepage.png)
+![alt text](/images/profilepage.png)
 This page will simply show the user how their profile looks like to the other users. (can be extended in the future to update profile as well)
 
 6. Notifying the users of new medicines and treatments (Admin Access)
@@ -128,12 +128,12 @@ These emails can be used to send important messages to the users about new and u
 3. Then after cloning the files go to the frontend folder in team-project-12-malecare-cancer-support (root) and open the terminal.
 (https://github.com/csc301-fall-2020/team-project-12-malecare-cancer-support.git) -> repository link
 
-![alt text](../images/frontenddevreq.png)
+![alt text](/images/frontenddevreq.png)
 
 4. Run the command npm install in the frontend folder
 5. Make sure all these dependencies are installed 
 
-![alt text](../images/frontenddepend.png)
+![alt text](/images/frontenddepend.png)
 
 If they are not installed, then manually install them by running npm install <dependency name> in the terminal
 	
@@ -147,17 +147,17 @@ If they are not installed, then manually install them by running npm install <de
 4. Then after cloning the files go to the CSC301_Backend folder in team-project-12-malecare-cancer-support (root) and open the terminal.
 (https://github.com/csc301-fall-2020/team-project-12-malecare-cancer-support.git) -> repository link
 
-![alt text](../images/backenddevreq.png)
+![alt text](/images/backenddevreq.png)
 
 4. Run the command npm install in the CSC301_Backend folder
 5. Make sure all the dependencies are installed
 
-	![alt text](../images/backenddepend.png)
+	![alt text](/images/backenddepend.png)
 	
   If they are not installed, then manually install them by running npm install <dependency name> in the terminal.
 	
 6. Run the command npm run-script start-server in the terminal in the CSC301_Backend folder. This will start the server on your local system at the port 5000.
-	![alt text](../images/start-server.png)
+	![alt text](/images/start-server.png)
 (you should get a message of “Success, Server is up and running!” if the server starts without an error and “connected to db” after that if you are connected to the mongoDB.)
 
  
