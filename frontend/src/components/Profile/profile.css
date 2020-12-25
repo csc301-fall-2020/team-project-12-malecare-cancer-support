@@ -1,0 +1,82 @@
+.profile-main {
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border-width: 1px;
+  padding: 0;
+  position: absolute;
+  overflow-x: hidden !important;
+  background-color: white;
+}
+.profile-name {
+  font-size: calc(2rem + 1vw);
+  word-wrap: break-word;
+}
+.profile-ageAndLocation {
+  color: #e74b1a;
+  font-size: calc(1rem + 0.5vw);
+}
+/* .matchPassButton {
+  margin-right: 10px;
+}
+.matchConnectButton {
+  margin-left: 10px;
+} */
+.profile-Toast {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background-color: white;
+  border: 4px solid #e9a100;
+}
+.profile-ToastHeader {
+  justify-content: flex-end;
+}
+.profile-carouselImage {
+  overflow: hidden;
+  height: 35rem;
+  object-fit: cover;
+}
+.profile-bioAndPhoto {
+  max-height: 35rem;
+  position: relative;
+  width: 100%;
+  padding-left: 8%;
+  padding-right: 8%;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+}
+.profile-bioContainer {
+  background-color: #c4c4c42b;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  height: 100%;
+  padding-left: 15px !important;
+  padding-right: 10px !important;
+}
+.profile-bio {
+  white-space: pre-wrap;
+  font-size: calc(0.8rem + 0.5vw);
+}
+.profile-cancerType {
+  font-size: calc(0.9rem + 0.5vw);
+}
+.profile-middleDot {
+  margin-bottom: calc(0.3rem + 0.2vw);
+  margin-left: 10px;
+  margin-right: 10px;
+  height: calc(0.2rem + 0.1vw);
+  width: calc(0.2rem + 0.1vw);
+}
+.profile-locationIcon {
+  margin-bottom: calc(0.3rem + 0.2vw);
+  margin-right: 10px;
+  height: calc(1rem + 0.5vw);
+  width: calc(1rem + 0.5vw);
+}

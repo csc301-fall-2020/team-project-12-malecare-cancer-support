@@ -208,6 +208,7 @@ class Matching extends React.Component {
                 className="carousel"
                 interval={null}
                 controls={displayedMatch.images.length > 1}
+                indicators={displayedMatch.images.length > 1}
               >
                 {displayedMatch.images.map((imageLink, index) => {
                   return (
