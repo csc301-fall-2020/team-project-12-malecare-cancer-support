@@ -17,7 +17,7 @@ Our team had decided to use Messenger as our communication platform since all of
 * A group for our backend team “CSC301 4.0 BackEnd Gang”
 * A group for our frontend team “CSC301 4.0 Frontend Gang”
 
-![Our group chats](../images/csc301.png)
+![Our group chats](./images/csc301.png)
 
 This decision turned out well because it helped us save a lot of time and made many complex discussions easier. We were then able to communicate more efficiently.
 
@@ -27,7 +27,7 @@ After assigning different tasks to different members, we were pretty sure that w
 
 To overcome this problem we decide that we should make separate task boards for the frontend and backend team, and work in unison on sorting that task board. Using these task boards gave us a clear idea of our progress in relation to other members, and helped us to prioritize our tasks accordingly.
 
-![Trello Agile Task Board](../images/task.png)
+![Trello Agile Task Board](./images/task.png)
 
 3. Always working in Pairs
 
@@ -37,7 +37,7 @@ This decision helped us save some time in decision making and we were able to wr
 
 4. Separating out the branches for the frontend team and the backend team
 
-![Github Branching](../images/gitflow.png)
+![Github Branching](./images/gitflow.png)
 
 In all our previous group coding assignments, the one thing that all of us never liked  were the merge conflicts. Therefore, before starting the work for this project, our team decided to have separate branches for the frontend and the backend. In the picture above the black branch is master (with least frequent and most important commits), the blue branch is frontend-develop (the branch for frontend team), the green branch is frontend-connect (the branch for the backend team). In addition to these branches, whenever it was possible we chose to work on a new branch (purple branches) for a new feature which made the workflow as smooth as possible. 
 
@@ -59,7 +59,7 @@ Almost everyone in our team was taking 6 courses, which made it difficult to all
 
 When we started the project we thought that it would be better for us to work together, instead of maintaining a hierarchical structure within our group. We decided that there should be no single person assuming the position of a manager/leader/spokesperson, instead we should all just directly communicate with each other all the time. 
 
-![Team No Hierarchy Diagram](../images/nohr.png)
+![Team No Hierarchy Diagram](./images/nohr.png)
 
 (imagine that each circle represents a member and wires represent communication links)
 This decision turned out to be way worse than expected because no one was able to keep up with all the details of the project and we faced multiple instances where we missed out on some major details/features. This led to confusion amongst the members and wasted a lot of time and effort.
@@ -87,7 +87,7 @@ As mentioned before, we were facing multiple problems due to the lack of structu
 
 These two members are also responsible for communicating with each other and share details that are required to integrate the backend and the frontend efficiently. We planned this change to improve our speed and save time.
 
-![Team Frontend and Backend Hierarchy](../images/hier.png)
+![Team Frontend and Backend Hierarchy](./images/hier.png)
 
 (circles are team members and wires are communication links)
 
