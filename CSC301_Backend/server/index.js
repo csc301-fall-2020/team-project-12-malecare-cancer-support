@@ -249,10 +249,10 @@ app.post('/match-by-like/:likedUserId/:userWhoLikedId', async (req, res) => {
             return res.json({match: false, updatedLikedUser, updatedUserWhoLiked})
         }
     } catch (error) {
-        return res.json({error});
+        return res.status(500).json({error});
     }
     } else {
-        return res.json("Invalid Id's. Only Mongo Object id is acceptable");
+        return res.status(400).json("Invalid Id's. Only Mongo Object id is acceptable");
     }
 });
 
@@ -317,12 +317,12 @@ app.get('/match-by-location/:uid', async (req, res) => {
             for (let i = 0; i < nearbyUsersLean.length; i++) {
                 processUser(nearbyUsersLean[i])
             }
-            return res.xjson( [...allMatchedUsersLean, ...nearbyUsersLean] )
+            return res.json( [...allMatchedUsersLean, ...nearbyUsersLean] )
         } catch (error) {
-            return res.json({error})
+            return res.status(500).json({error})
         }
     } else {
-        return res.json("Invalid Id's. Only Mongo Object id is acceptable")
+        return res.status(400).json("Invalid Id's. Only Mongo Object id is acceptable")
     }
 });
 
