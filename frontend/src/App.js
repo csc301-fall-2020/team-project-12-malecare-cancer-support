@@ -13,17 +13,14 @@ import "./App.scss";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Admin from "./components/Admin";
-import Chat from "./components/Chat";
-import Chats from "./components/Chats";
-import CheckLogin from "./components/CheckLogin";
 import HomePage from "./components/HomePage";
 import Landing from "./components/Landing";
-import LikesAndMessages from "./components/LikesAndMessages";
+import Chats from "./components/Chats";
+import Chat from "./components/Chat";
 import Login from "./components/Login";
-import Matching from "./components/Matching";
-import Menu from "./components/Menu";
 import Registration from "./components/Registration";
-import Requests from "./components/Requests";
+import PrivateRoute from "./components/PrivateRoute";
+import NotFound from "./components/NotFound";
 import { CurUserContext } from "./curUserContext";
 
 class App extends React.Component {
@@ -73,43 +70,12 @@ class App extends React.Component {
                 <Admin />
               </Route>
               {/* The rest of the routes require login to access */}
-              <Route exact path="/landing">
-                <CheckLogin requestedComponent={Landing} />
-              </Route>
-              
-
-              {/* TEMPORARY ROUTES BELOW FOR DEVELOPMENT TESTING */}
-              <Route exact path={"/login-test"}>
-                <Login />
-              </Route>
-              <Route exact path="/registration-test">
-                <Registration />
-              </Route>
-              <Route exact path="/landing-test">
-                <Landing />
-              </Route>
-              <Route exact path="/matching-test">
-                <Matching />
-              </Route>
-              <Route exact path="/chats-test">
-                <Chats />
-              </Route>
-              <Route exact path="/contacts-test">
-                <Requests />
-              </Route>
-              <Route path="/chat/:id" component={Chat}></Route>
-              <Route exact path="/menu-test">
-                <Menu />
-              </Route>
-              <Route exact path="/likesAndMessages-test">
-                <LikesAndMessages />
-              </Route>
-              <Route exact path="/admin-test">
-                <Admin />
-              </Route>
+              <PrivateRoute exact path="/landing" component={Landing}/>
+              <PrivateRoute exact path="/chats" component={Chats}/>
+              <PrivateRoute  path="/chat/:id" component={Chat}/>
 
               <Route>
-                <div className="mt-3 text-center">Error: There is no webpage at this link</div>
+                <NotFound/>
               </Route>
             </Switch>
           </BrowserRouter>

@@ -138,7 +138,7 @@ class Chat extends React.Component {
   };
 
   handleBackButton = () => {
-    const chatURI = "/landing";
+    const chatURI = "/chats";
     const { history } = this.props;
     history.push(chatURI);
   };
@@ -211,11 +211,11 @@ class Chat extends React.Component {
               <div className="leftChatContainer">
                 <img
                   className="rounded-circle"
-                  style={{maxWidth: "30%", maxHeight: "30%", marginRight: "5%"}}
+                  style={{maxWidth: "25%", maxHeight: "40%", marginRight: "5%"}}
                   src={this.state.conversation.profileImage}
                   alt="profile icon"
                 />
-                <h3>{this.state.conversation.otherUserName}</h3>
+                <h4>{this.state.conversation.otherUserName}</h4>
               </div>
             </Col>
             <Col xs={4}>

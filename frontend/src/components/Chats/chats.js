@@ -5,6 +5,7 @@ import {Container, Image, Row, Col} from 'react-bootstrap';
 import { CurUserContext } from "../../curUserContext";
 import { withRouter } from "react-router-dom";
 import { getConversations, getUser} from "../../actions/serverRequests";
+import SideBar from "../SideBar";
 
 const ENDPOINT = "http://localhost:5000";
 let socket;
@@ -13,7 +14,6 @@ class Chats extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isWide: true,
             conversations: []
         } 
     }
@@ -21,8 +21,6 @@ class Chats extends React.Component {
     componentDidMount = async () => {
         const userId = this.context.getCurrentUser().userId
         const { responseData } = await getConversations(userId);
-        this.updatePredicate();
-        window.addEventListener("resize", this.updatePredicate);
         let userConversations = [];
         for (let conversation of responseData) {
             const otherId = this.otherId(conversation);
@@ -53,18 +51,7 @@ class Chats extends React.Component {
         })
     }
 
-    updatePredicate = () => {
-        const isWide = window.innerWidth > 768; 
-        this.setState(prev => {
-            return {
-                ...prev,
-                isWide,
-            }
-        })
-    }
-
     componentWillUnmount = () => {
-        window.removeEventListener("resize", this.updatePredicate);
         socket.off();
     }
 
@@ -102,45 +89,35 @@ class Chats extends React.Component {
     }
 
     render () {
-        const isWide = this.state.isWide;
         return (
-            <Container fluid className="my-2"> 
-            {this.state.conversations.map((conservation) => {
-                return (
-                <Row className="my-1" >
-                    <Col xs={12}>
-                        {isWide ? (
+            <div>
+                <SideBar/>
+                <Container> 
+                {this.state.conversations.map((conservation) => {
+                    return (
+                    <Row className="my-1" >
+                        <Col xs={12}>
                             <Row 
                             className="chatEntry" 
-                            style={{backgroundColor: conservation.conversationType == 'date' ? "#fe3c72" : "#2979FF", color: 'white'}}
+                            style={{backgroundColor: conservation.conversationType == 'date' ? "#fce6df" : "#2979FF", color: '#e74b1a'}}
                             onClick={()=> this.handleClick(conservation)}
                             >
-                                <Col md={5}>
+                                <Col xs={5}>
                                 <Image src={conservation.profileImage} 
                                 className="imgFluid"
                                 roundedCircle
                                 />
                                 </Col>
-                                <Col md={7}>
+                                <Col xs={7}>
                                     <h3>{this.otherName(conservation)}</h3>
                                 </Col>
                             </Row>
-                            ) : (
-                                <Image src={conservation.profileImage} 
-                                className="imgFluid mx-auto"
-                                onClick={()=> this.handleClick(conservation)}
-                                roundedCircle
-                                style={{borderColor: conservation.conversationType == 'date' ? "#fe3c72" : "#2979FF", color: 'white', 
-                                borderWidth: 3,
-                                borderStyle: "solid"}}
-                                />
-                            )}
-
-                    </Col>
-                </Row>
-                )
-            })}
-            </Container>
+                        </Col>
+                    </Row>
+                    )
+                })}
+                </Container>
+            </div>
         );
     }
   }
