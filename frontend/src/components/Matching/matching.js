@@ -17,7 +17,8 @@ import {
   matchRecommendationConnect,
 } from "../../actions/serverRequests";
 
-const ENDPOINT = process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
+const ENDPOINT =
+  process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 let socket;
 class Matching extends React.Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class Matching extends React.Component {
     } else if (success) {
       // we got an empty array back from the server
       this.setState({
+        displayedMatch: undefined,
         showToast: true,
         toastText:
           "There are no more matches for now, please come back at a later time!",
