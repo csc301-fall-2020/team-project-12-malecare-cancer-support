@@ -1,6 +1,6 @@
 .homeContainer {
     background-image: url("./image.webp");
-    opacity: 70%;
+    /* opacity: 70%; */
     width: 100vw;
     height: 100vh;
     background-position: center;
