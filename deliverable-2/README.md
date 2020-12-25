@@ -103,8 +103,9 @@ Fill out the registration details and press register to create a new user.
 5. On the top left of the matching page where you see all the user profiles there is a navigation button (three stripes). If you click on that button it will show you 4 items -
 * Item 1. The name and profile picture of the current user, that is, you
 * Item 2. The home button which will take you to matching page
-* Item 3. The chat button which will take you to the chatting page where you can see all the users that you are connected with
-* Item 4. The logout button for logging out of the account
+* Item 3. The profile button which will take you to the profile page. Here the user can view their own profile.
+* Item 4. The chat button which will take you to the chatting page where you can see all the users that you are connected with
+* Item 5. The logout button for logging out of the account
 6. Once two users have successfully pressed connect on each other, they will show up on each other’s chatting page which can be selected from the navigation bar.
 Once you click on any of the users, it will open a chatting window where you can privately chat with the other user by typing your message and hitting send. If you want to go back just click the back button on top right.
 7. The last feature is for the admin, which can be accessed using this route <route>.
@@ -126,9 +127,16 @@ These emails can be used to send important messages to the users about new and u
 2. The Developer should also have a code editor/IDE 
 3. Then after cloning the files go to the frontend folder in team-project-12-malecare-cancer-support (root) and open the terminal.
 (https://github.com/csc301-fall-2020/team-project-12-malecare-cancer-support.git) -> repository link
+
+![alt text](../images/frontenddevreq.png)
+
 4. Run the command npm install in the frontend folder
 5. Make sure all these dependencies are installed 
+
+![alt text](../images/frontenddepend.png)
+
 If they are not installed, then manually install them by running npm install <dependency name> in the terminal
+	
 6. Run the command npm start in the terminal in the frontend folder. This will start the react app on the browser for testing.
  
 ###### Backend Development
@@ -139,11 +147,17 @@ If they are not installed, then manually install them by running npm install <de
 4. Then after cloning the files go to the CSC301_Backend folder in team-project-12-malecare-cancer-support (root) and open the terminal.
 (https://github.com/csc301-fall-2020/team-project-12-malecare-cancer-support.git) -> repository link
 
+![alt text](../images/backenddevreq.png)
+
 4. Run the command npm install in the CSC301_Backend folder
 5. Make sure all the dependencies are installed
 
-6. If they are not installed, then manually install them by running npm install <dependency name> in the terminal.
-7. Run the command npm run-script start-server in the terminal in the CSC301_Backend folder. This will start the server on your local system at the port 5000.
+	![alt text](../images/backenddepend.png)
+	
+  If they are not installed, then manually install them by running npm install <dependency name> in the terminal.
+	
+6. Run the command npm run-script start-server in the terminal in the CSC301_Backend folder. This will start the server on your local system at the port 5000.
+	![alt text](../images/start-server.png)
 (you should get a message of “Success, Server is up and running!” if the server starts without an error and “connected to db” after that if you are connected to the mongoDB.)
 
  
