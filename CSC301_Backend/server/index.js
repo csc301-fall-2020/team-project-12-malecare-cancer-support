@@ -55,6 +55,9 @@ processUser = (user) => {
   user.age = Math.abs(dt.getUTCFullYear() - 1970);
 };
 
+/**
+ * Gets specified User from database by filtering with userId
+ */
 app.get("/api/user/:userId", auth, async (req, res) => {
   // const o_id = mongoose.isValidObjectId(req.params.userId);//dont need this
   const oid = mongoose.Types.ObjectId(req.params.userId);
@@ -68,7 +71,9 @@ app.get("/api/user/:userId", auth, async (req, res) => {
   }
 });
 
-// suggestions of users
+/**
+ * Gets 10 suggested users based where current user is not one of the 10 users
+ */
 app.get("/api/suggestions/:userId", async (req, res) => {
   try {
     const oid = mongoose.Types.ObjectId(req.params.userId);
@@ -100,6 +105,16 @@ app.get("/api/suggestions/:userId", async (req, res) => {
   }
 });
 
+/**
+ * Called when current user likes another user in the matching page
+ * Two cases:
+ *  Other user has not liked current user:
+ *      Then current users' id is added to liked_by array for other user AND other users' id is added to current user's
+ *      likes list
+ *  Other user has liked the current user:
+ *      Since both users like eachother we add each others' ids to the matched array in both users, and remove them
+ *      from other arrays (liked_by, likes)
+ */
 app.post(
   "/api/matches/connect/:currentUser&:UserthatwasLiked",
   async (req, res) => {
@@ -166,6 +181,12 @@ app.post(
   }
 );
 
+
+/**
+ * When current user passes on another user
+ *  Add other users' Id to current users' passed array if not already passed
+ *  If the other user was liked before, remove from respsective arrays (likes, liked_by)
+ */
 app.post(
   "/api/matches/pass/:currentUser&:UserthatwasPassed",
   async (req, res) => {
@@ -179,6 +200,7 @@ app.post(
     let likesindex = currentUser.likes.indexOf(passedUser.id);
     let matchindex = currentUser.matched.indexOf(passedUser.id);
     let passedindex = currentUser.passed.indexOf(passedUser.id);
+    let liked_byIndex = passedUser.liked_by.indexOf(currentUser)
 
     if (matchindex <= -1) {
       if (passedindex <= -1) {
@@ -188,6 +210,10 @@ app.post(
       if (likesindex > -1) {
         // If user was previously liked, then pass on them now and remove them from the likes list
         currentUser.likes.splice(likesindex, 1);
+        if (liked_byIndex > -1){
+            passedUser.liked_by.splice(likesindex, 1)
+            passedUser.save()
+        }
       }
       currentUser.save();
       res.status(200).json({});
@@ -197,7 +223,11 @@ app.post(
   }
 );
 
-//match by location
+/**
+ * Find users that the current user can pass/connect on
+ * returns userIds in this order
+ * [Users that liked the current user, Users that are within 30km radius of currentUser]
+ */
 app.get("/api/match-by-location/:uid", async (req, res) => {
   const { uid } = req.params;
   // const {location : {latitude, longitude}} = req.body;
@@ -280,6 +310,11 @@ app.get("/api/match-by-location/:uid", async (req, res) => {
   }
 });
 
+/**
+ * Filters database and returns email ids of users that match the filters
+ * body is a json object of all the filters available on the admin page
+ * if not filtering by an item, do not include it in the body
+ */
 app.post("/api/admin", async (req, res) => {
   filterjson = {};
   if (req.body.genders) {
@@ -323,6 +358,9 @@ app.post("/api/admin", async (req, res) => {
   res.send(emails);
 });
 
+/**
+ * converts {"item" : value} to {"item" : ["value"]}
+ */
 function checkList(item) {
   if (typeof item == "object") {
     return { $in: item };
