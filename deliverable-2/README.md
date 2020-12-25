@@ -162,6 +162,8 @@ These emails can be used to send important messages to the users about new and u
 (you should get a message of “Success, Server is up and running!” if the server starts without an error and “connected to db” after that if you are connected to the MongoDB.)
 Any saved changes to the backend code files will trigger a restart of the app with the new changes.
 
+Note: the files `usersinfo.json` and `chatsinfo.json` in the `CSC301_Backend` directory can be used to initialize the Mongo database, as well as reset the database after changes are made in the app (eg pressing "connect" or "pass" on users)
+
  
 ## Deployment and Github Workflow
 
