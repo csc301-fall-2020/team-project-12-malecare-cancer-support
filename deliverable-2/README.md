@@ -99,7 +99,7 @@ Fill out the registration details and press register to create a new user.
 4. Successful login and signup will both take you to the matching page. On this page you will see the users who have pressed connect on you and the users that are close to you (distance in kms) in that order. Then as the current user, you can press connect or pass based on the profile.
 * Case 1. If you press pass the user will be removed from your matching carousel and you will be shown a new user.
 * Case 2. If you press connect it will put you in the top priority of the other user when they login and see their matching page.
-(for the purpose of this course we have created 10 fake users, so if you login from one ID and press connect or pass on the available users, it will display a message that the “you are out of matches and come back later”)
+(for the purpose of this course we have created 10 fake users, so if you login from one ID and press connect or pass on all the available users, it will display a message that the “you are out of matches and come back later”)
 5. On the top left of the matching page where you see all the user profiles there is a navigation button (three stripes). If you click on that button it will show you 4 items -
 * Item 1. The name and profile picture of the current user, that is, you
 * Item 2. The home button which will take you to matching page
