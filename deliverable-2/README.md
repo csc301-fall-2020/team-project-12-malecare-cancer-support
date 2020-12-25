@@ -53,25 +53,31 @@ On the profile displayed a user can click pass or connect based on if they are i
 3. Navigation Bar for accessibility
 
 After landing on the matching page, if a user clicks on the navigation button on the top left (which is indicated by three lines), they will see this.
+
+![alt text](../images/navigationbaropen.png)
+
 In this menu, you can see the current user with their name and profile picture, a home button which will take the user back to the matching page, a profile button which will take the user to the profile page, a chats button which will open a chatting page where the user can choose to chat with all the others users they connected with, and a logout button which they can use to logout of the application.
  
 4. In-app Chatting
 
 Once the two users are matched (both of them press connect on each other), they will show up on each other’s respective chatting page which can be selected by pressing chat button under the navigation bar. Once you click on a user it will open a new window where two users who are connected can chat easily.
 
+![alt text](../images/chat.png)
+
 	In this example, both Uttkarsh Berwal and gordon ramsay pressed connect on each other and they showed up on each other’s chat window under the navigation bar.
 Clicking on the users name would open a chat window with them.
-
+![alt text](../images/chatwindow.png)
 In the chat window you can privately have conversations with that user.
 
 5. The Profile Page
 
+![alt text](../images/profilepage.png)
 This page will simply show the user how their profile looks like to the other users. (can be extended in the future to update profile as well)
 
 6. Notifying the users of new medicines and treatments (Admin Access)
 
 For the admin purposes, as requested by our client, we made another route <route name> that will allow the admin to get the emails of all the users based on how he wants to filter the data in a CSV format. This feature will allow admin to email the users about any new and upcoming changes in their treatments or about new medicines in the market.
-
+![alt text](../images/admin.png)
 Here you can easily filter on all the available options, click generate email list and then download it as a csv.
 
 ## Instructions
