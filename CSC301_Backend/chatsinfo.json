@@ -1,0 +1,49 @@
+[{
+    "_id": {
+      "$oid": "5fe669bd1c348e3b545f0212"
+    },
+    "userIdOne": {
+      "$oid": "5fcf126e0cc8774dc4489597"
+    },
+    "userIdTwo": {
+      "$oid": "5fcf17f70cc8774dc44895a0"
+    },
+    "userNameOne": "Uttkarsh, Berwal",
+    "userNameTwo": "gordon, ramsay",
+    "conversationType": "date",
+    "messages": [
+      {
+        "_id": {
+          "$oid": "5fe669d21c348e3b545f0213"
+        },
+        "author": "gordon, ramsay",
+        "content": "Hello Uttkarsh!",
+        "createdAt": {
+          "$date": "2020-12-25T22:38:10.962Z"
+        },
+        "updatedAt": {
+          "$date": "2020-12-25T22:38:10.962Z"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "5fe669e21c348e3b545f0214"
+        },
+        "author": "Uttkarsh, Berwal",
+        "content": "Hello! ",
+        "createdAt": {
+          "$date": "2020-12-25T22:38:26.804Z"
+        },
+        "updatedAt": {
+          "$date": "2020-12-25T22:38:26.804Z"
+        }
+      }
+    ],
+    "createdAt": {
+      "$date": "2020-12-25T22:37:49.543Z"
+    },
+    "updatedAt": {
+      "$date": "2020-12-25T22:38:26.804Z"
+    },
+    "__v": 2
+  }]

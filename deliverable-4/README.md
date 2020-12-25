@@ -20,3 +20,5 @@ These are the 10 fake users we created:
 Password for all of them is 12345678
 
 Use them for testing or create new ones
+
+Users with emails jonathan.woods@gmail.com and gordon.ramsay@gmail.com are already matched, so those users can be used to test chatting feature.

@@ -25,7 +25,9 @@ const registerValidation = (data) => {
             .date()
             .required(),
         phone: joi
-            .number(),
+            .number()
+            .allow(null)
+            .optional(),
         gender: joi
             .string(),
         sexual_orientation: joi

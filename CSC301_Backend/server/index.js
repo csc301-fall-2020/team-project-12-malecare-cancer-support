@@ -12,7 +12,6 @@ const mongoose = require('mongoose');
 const user = require('../Routers/users');
 const data = require('../Routers/data');
 const conversations = require('../Routers/conversations');
-const messages = require('../Routers/messages');
 const auth = require('../middleware/is-auth');
 
 const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/cancer";
@@ -38,7 +37,6 @@ app.use(bodyParser.json());
 app.use('/api/auth', user);
 app.use('/api/data', data);
 app.use('/api/conversations', conversations);
-app.use('/api/messages', messages);
 
 // Helper function that removes the password field and adds an age field when
 // a user's info needs to be sent to a client (modifying 'user' directly).
