@@ -54,7 +54,7 @@ const axiosRequestProtectedRoute = (accessToken, method, url, data) => {
 /* Helper used to login a user; payload must contain fields "email" and
  * "password" */
 export const login = (payload) => {
-  const returnVal = axiosRequest("POST", "/auth/login", payload);
+  const returnVal = axiosRequest("POST", "/api/auth/login", payload);
   return returnVal;
 };
 
@@ -62,7 +62,7 @@ export const login = (payload) => {
  * registration (defined by the server) */
 export const signup = (payload) => {
   // For this function, assume the payload is properly formatted by the caller
-  const returnVal = axiosRequest("POST", "/auth/signup", payload);
+  const returnVal = axiosRequest("POST", "/api/auth/signup", payload);
   return returnVal;
 };
 
@@ -72,7 +72,7 @@ export const getUser = (accessToken, targetUserId) => {
   const returnVal = axiosRequestProtectedRoute(
     accessToken,
     "GET",
-    "/user/" + targetUserId
+    "/api/user/" + targetUserId
   );
   return returnVal; // this should be a user object
 };
@@ -83,7 +83,7 @@ export const getMatchRecommendations = (accessToken, mode, curUserId) => {
     accessToken,
     "GET",
     // "/matches/" + curUserId
-    "/match-by-location/" + curUserId
+    "/api/match-by-location/" + curUserId
   );
   return returnVal; // this should be an array of user objects
 };
@@ -100,7 +100,7 @@ export const matchRecommendationPass = (
   const returnVal = axiosRequestProtectedRoute(
     accessToken,
     "POST",
-    "/matches/pass/" + curUserId + "&" + targetUserId,
+    "/api/matches/pass/" + curUserId + "&" + targetUserId,
     payload
   );
   return returnVal;
@@ -119,20 +119,20 @@ export const matchRecommendationConnect = (
   const returnVal = axiosRequestProtectedRoute(
     accessToken,
     "POST",
-    "/matches/connect/" + curUserId + "&" + targetUserId,
+    "/api/matches/connect/" + curUserId + "&" + targetUserId,
     payload
   );
   return returnVal;
 };
 
 export const getConversations = (userId) => {
-  const returnVal = axiosRequest("GET", "/conversations/" + userId);
+  const returnVal = axiosRequest("GET", "/api/conversations/" + userId);
   return returnVal;
 };
 
 export const getCancerData = () => {
   const returnVal = axios
-    .get("/data/cancer-data")
+    .get("/api/data/cancer-data")
     .then((response) => {
       return response.data;
     })
@@ -144,7 +144,7 @@ export const getCancerData = () => {
 
 export const getInterestsData = () => {
   const returnVal = axios
-    .get("/data/interests")
+    .get("/api/data/interests")
     .then((response) => {
       return response.data;
     })
