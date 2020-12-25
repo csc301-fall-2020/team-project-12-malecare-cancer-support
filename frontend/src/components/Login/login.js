@@ -47,17 +47,22 @@ class Login extends React.Component {
           showAlert: true,
           loginErrorMessage: "An error occurred: " + errorMessage,
         });
-      } else {
-        // successfully logged in
-        this.context.setCurrentUser({
-          accessToken: responseData.accessToken,
-          userId: responseData.userId,
-        });
-        if (formData.inputStayLoggedIn.checked) {
-          // TODO: User wants to stay logged in
-        }
-        this.props.history.push("/landing");
+        return
       }
+      // Successfully logged in
+      const secondsInDay = 86400;
+      // Default login duration of 3 days
+      let cookieDuration = secondsInDay * 3;
+      if (formData.inputStayLoggedIn.checked) {
+        // User wants to stay logged in: make login duration 21 days
+        cookieDuration = secondsInDay * 21;
+      }
+      this.context.setCurrentUser({
+        accessToken: responseData.accessToken,
+        userId: responseData.userId,
+      }, cookieDuration);
+      this.props.history.push("/landing");
+      
     } catch (error) {
       this.setState({
         showToast: true,

@@ -9,7 +9,7 @@ class NotFound extends React.Component {
         const isLoggedIn = this.context.isLoggedIn();
         const linkBack = (
             <div className="mt-3 text-center">
-                <Link to={isLoggedIn ? "/matching" : "/login"}>
+                <Link to={isLoggedIn ? "/landing" : "/login"}>
                     <span className="mt-3 text-center">Go back</span>
                 </Link>
             </div>

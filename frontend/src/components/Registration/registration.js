@@ -41,7 +41,7 @@ class Registration extends React.Component {
       bio: null,
       location: null,
       showToast: false,
-      toastText: '',
+      toastText: "",
     };
     this.loading = false;
     this.cancerTypes = [];
@@ -53,7 +53,7 @@ class Registration extends React.Component {
     this.curr_location = null;
     this.search_results = [];
     this.showToast = false;
-    this.toastText = '';
+    this.toastText = "";
   }
 
   componentDidMount = async () => {
@@ -125,14 +125,14 @@ class Registration extends React.Component {
   validatePassword = (password, confirm_password) => {
     const passwordBox = document.querySelector("#confirm_password");
     let error_message;
-    if(password == confirm_password) {
+    if (password == confirm_password) {
       error_message = "";
     } else {
       error_message = "Passwords do not match";
     }
 
     passwordBox.setCustomValidity(error_message);
-  }
+  };
 
   handleOnChangeEmail = (new_email) => {
     this.setState((state) => {
@@ -361,7 +361,6 @@ class Registration extends React.Component {
       delete payload["interests"];
     }
 
-
     try {
       const { responseData, errorMessage } = await signup(payload);
       if (!responseData) {
@@ -370,13 +369,19 @@ class Registration extends React.Component {
             ...prev,
             showToast: true,
             toastText: errorMessage,
-          }
-        })
-      } else {
-        this.context.setCurrentUser({
-          accessToken: responseData.accessToken,
-          userId: responseData.userId,
+          };
         });
+      } else {
+        const secondsInDay = 86400;
+        // Default login duration of 3 days
+        const cookieDuration = secondsInDay * 3;
+        this.context.setCurrentUser(
+          {
+            accessToken: responseData.accessToken,
+            userId: responseData.userId,
+          },
+          cookieDuration
+        );
         this.props.history.push("/landing");
       }
     } catch (error) {
@@ -434,22 +439,26 @@ class Registration extends React.Component {
     return (
       <Container>
         <Row>
-          <Col xs={{span: 6, offset: 6}}>
-          <Toast
-            show={this.state.showToast}
-            style={{
-              backgroundColor: "white",
-              border: "1px solid #e9a100"
-            }}
-            onClose={() => this.setState(prev => {return {...prev, showToast: false}})}
-          >
-            <Toast.Header>
-              <strong className="mr-auto">Invalid</strong>
-            </Toast.Header>
-            <Toast.Body>{this.state.toastText}</Toast.Body>
-          </Toast>
+          <Col xs={{ span: 6, offset: 6 }}>
+            <Toast
+              show={this.state.showToast}
+              style={{
+                backgroundColor: "white",
+                border: "1px solid #e9a100",
+              }}
+              onClose={() =>
+                this.setState((prev) => {
+                  return { ...prev, showToast: false };
+                })
+              }
+            >
+              <Toast.Header>
+                <strong className="mr-auto">Invalid</strong>
+              </Toast.Header>
+              <Toast.Body>{this.state.toastText}</Toast.Body>
+            </Toast>
           </Col>
-        </Row> 
+        </Row>
         <Row>
           <Col
             xs={12}
