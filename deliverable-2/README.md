@@ -29,7 +29,7 @@ Our goal is to improve their mental health through which we can improve their tr
 
 This is the login page that will allow a user with an account to login with the correct details. If a user uses incorrect details to login, this message will be prompted to advise the user.
 
-![alt text](../images/incorrect%login.png)
+![alt text](../images/incorrect%20login.png)
 
 If the user doesn’t have an account with us, they can simply create one by clicking on the “Sign up now!” link below the login button.
 
