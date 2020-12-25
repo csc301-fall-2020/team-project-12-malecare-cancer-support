@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const bodyParser = require('body-parser');
 const User = require('../models/users');
 const socket = require("socket.io");
@@ -395,7 +396,16 @@ const deg2rad = (degree) => {
     return degree * (Math.PI / 180);
 }
 
-server = app.listen(5000, () => console.log('Success, Server is up and running!'));
+// Serve the React build
+app.use(express.static(path.join(__dirname, "../../frontend/build")));
+app.get("*", (req, res) => { 
+    // send index.html built by React frontend
+    console.log("serving react app")
+    res.sendFile(path.join(__dirname, "../../frontend/build/index.html"));
+});
+
+const port = process.env.PORT || 5000;
+server = app.listen(port, () => console.log(`Success, Server is up and running! Listening on port ${port}`));
 
 
 const io = socket(server, {
@@ -493,5 +503,3 @@ io.on('connection', socket => {
     })
 
 });
-
-
