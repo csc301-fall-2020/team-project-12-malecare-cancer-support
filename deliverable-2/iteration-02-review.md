@@ -10,14 +10,6 @@
 
 #### Q1. Decisions that turned out well
 
-List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, turned out to be successful.
-
-
- * 2 - 4 decisions.
- * Ordered from most to least important.
- * Explain why (i.e. give a supporting argument) you consider a decision to be successful.
- * Feel free to refer/link to process artifact(s).
- ##### Answer
  1. Having separate chats for frontend and backend
 
 Our team had decided to use Messenger as our communication platform since all of us check it regularly. During the early stages of development, we only had one group chat “CSC301 4.0 Gang”. Discussing all the different features and details of the web application was getting too clustered between the six of us; we found often discussions only involved part of the overall team, and sometimes multiple issues were being discussed at the same time. Therefore, we decided to separate out the work between three different chats:
@@ -57,14 +49,6 @@ This decision turned out well because it gave us fewer merge conflicts and allow
 
 #### Q2. Decisions that did not turn out as well as we hoped
 
-List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, were not as successful as you thought they would be.
-
- * 2 - 4 decisions.
- * Ordered from most to least important.
- * Explain why (i.e. give a supporting argument) you consider a decision to be unsuccessful
- * Feel free to refer/link to process artifact(s).
-
-##### Answer
 1. Meeting every week
 
 When we got paired with our partner, we were all excited to work on this project for both personal and professional reasons. We knew that communication is important for this project to be successful, but as the time passed we faced multiple challenges as a group and in our individual lives as well. Our decision of meeting every week on a zoom call did not turn out as well as we hoped because university life made it near impossible.
@@ -97,12 +81,6 @@ If we had used Github Issues to keep track of the tasks, enhancements, and bugs 
 
 #### Q3. Planned changes
 
-List any **process-related** (i.e. team organization and how you work) changes you are planning to make (if there are any)
-
- * Ordered from most to least important.
- * Explain why you are making a change.
- 
- ##### Answer
  1. Two members looking over backend and frontend
  
 As mentioned before, we were facing multiple problems due to the lack of structure within our group. To solve this problem, we came to a conclusion that we should have two members looking over the backend and frontend, one for the backend and one for the frontend. These two members would head the backend and frontend teams respectively, and keep the other members within their own teams posted about any details that are essential to maintain a fluid workflow.
@@ -157,7 +135,3 @@ We will ask these three questions:
  * What did you learn from the demo from either a process or product perspective?
  
  The key fact that we learned from the demo is that if we didn’t have this iteration in our product development then we might not have met the clients' needs to our best level. This demo served as a progress check with our partner and helped us to retrospect and change our methods of working. It is better to have iterations/demos like this so that we can improve efficiently to make the best product that meets our clients needs.
-
- 
- * *This section will be marked very leniently so keep it brief and just make sure the points are addressed*
-
