@@ -75,6 +75,14 @@ class Matching extends React.Component {
         toastText:
           "There are no more matches for now, please come back at a later time!",
       });
+    } else {
+      // Error connecting to server
+      this.setState({
+        showToast: true,
+        toastText:
+          "We were unable to connect to the server," +
+          " please make sure you have a working internet connection.",
+      });
     }
   };
 

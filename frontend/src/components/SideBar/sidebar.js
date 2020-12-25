@@ -33,11 +33,14 @@ class SideBar extends React.Component {
 
     componentDidMount = async () => {
         const {accessToken, userId} = this.context.getCurrentUser();
-        const response = await getUser(accessToken, userId);
-        const data = response.responseData;
-        console.log(response);
-        const profileImage = data.user.profileImage;
-        const userName = data.user.firstname + ", " + data.user.lastname;
+        const { responseData, errorMessage } = await getUser(accessToken, userId);
+        console.log(responseData, errorMessage);
+        if (!responseData) {
+           console.log("Error getting data from server: ", errorMessage)
+           return;
+        }
+        const profileImage = responseData.user.profileImage;
+        const userName = responseData.user.firstname + ", " + responseData.user.lastname;
         this.setState((prev) => {
             return {
                 ...prev,
