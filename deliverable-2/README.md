@@ -63,6 +63,7 @@ Once the two users are matched (both of them press connect on each other), they 
 Clicking on the users name would open a chat window with them.
 
 In the chat window you can privately have conversations with that user.
+
 5. The Profile Page
 
 This page will simply show the user how their profile looks like to the other users. (can be extended in the future to update profile as well)
