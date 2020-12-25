@@ -34,6 +34,6 @@ const axiosRequest = (method, url, data) => {
  * filter specified in payload; payload must contain the fields required for the
  * filter (defined by the server) */
 export const requestEmails = (payload) => {
-  const returnVal = axiosRequest("POST", "/admin", payload);
+  const returnVal = axiosRequest("POST", "/api/admin", payload);
   return returnVal;
 };
