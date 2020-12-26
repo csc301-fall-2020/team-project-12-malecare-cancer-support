@@ -166,15 +166,6 @@ Note: the files `usersinfo.json` and `chatsinfo.json` in the `CSC301_Backend` di
 
  
 ## Deployment and Github Workflow
-
-Describe your Git / GitHub workflow. Essentially, we want to understand how your team members shares a codebase, avoid conflicts and deploys the application.
-
- * Be concise, yet precise. For example, "we use pull-requests" is not a precise statement since it leaves too many open questions - Pull-requests from where to where? Who reviews the pull-requests? Who is responsible for merging them? etc.
- * If applicable, specify any naming conventions or standards you decide to adopt.
- * Describe your overall deployment process from writing code to viewing a live applicatioon
- * What deployment tool(s) are you using and how
- * Don't forget to **briefly explain why** you chose this workflow or particular aspects of it!
- 
  
 When we decided to split the team for the backend and the frontend, we also decided that we would separate out the branches for backend and frontend in order to avoid conflicts and have the backend and frontend somwhat independent while developing. We started by branching off the master into two separate branches, one for frontend and one for backend. The frontend branch is called “frontend-develop” and the backend branch is called “frontend-connect”. We always tried to keep the merges in one direction, from frontend-develop to frontend-connect. This is also the reason why we chose the above mentioned names because everytime frontend code was first developed on “frontend-develop” and then connected to the backend using “frontend-connect” where we could view a working application by running the code locally. At that point, we could choose to deploy the changes to Heroku; we usallly only manually deployed to Heroku after a team meeting, since most of us made small commits and were constantly making improvements and fixes to the code, and the Heroku deployment process for our app took quite a bit of time.
 In addition to these branches, whenever it was possible we chose to work on a new branch for a new feature which made the workflow as smooth as possible.
