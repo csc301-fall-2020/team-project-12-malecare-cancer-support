@@ -1,6 +1,6 @@
 # Frontend Documentation
 
-See our README file in the root of the repository for instructions for setting up a development environment for the frontend.
+See our README file in the root directory of the repository for instructions to set up a development environment for the frontend, along with more information about the functionality of the app.
 
 ## Code directory structure
 The frontend is a React app created using Create React App. All frontend code is located in the `frontend` directory (which can be found in the root directory of the Github repository)
@@ -19,7 +19,7 @@ Notes:
     - Files directly in the `src` folder that we used are `curUserContext.js` and the files starting with `App.*`. `App.js` is the entry point to the React app.
 - We do not have a favicon yet.
 
-##Dependencies
+## Dependencies
 
 The dependencies we used can be found in the `package.json` file. Noteworthy dependencies:
 - We used `bootstrap`, specifically `react-bootstrap`, for layout and styling elements
@@ -60,7 +60,7 @@ The dependencies we used can be found in the `package.json` file. Noteworthy dep
 
 
 ## Some useful links for reference
-- Intro to React bootstrap: [https://react-bootstrap.github.io/getting-started/introduction/
-](https://react-bootstrap.github.io/getting-started/introduction/)
+- Intro to React bootstrap: [https://react-bootstrap.github.io/getting-started/introduction/](https://react-bootstrap.github.io/getting-started/introduction/)
 - Intro to React context: [https://reactjs.org/docs/context.html](https://reactjs.org/docs/context.html)
 - Intro to react-cookie (library for cookies): [https://github.com/reactivestack/cookies/tree/master/packages/react-cookie](https://github.com/reactivestack/cookies/tree/master/packages/react-cookie)
+- Socket.io: [https://socket.io/](https://socket.io/)

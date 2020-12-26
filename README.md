@@ -2,7 +2,7 @@
 
 ## Description 
  
- We are planning to build a web application CancerChat that will help cancer patients/survivors connect with each other based on the personal data they provide. 
+We are building a web application CancerChat that will help cancer patients/survivors connect with each other based on the personal data they provide. 
 Cancer doesn’t only affect someone's physical health but also takes a toll mentally and emotionally. This life-changing diagnosis and the exhausting treatment that comes after it can induce feelings like anxiety, distress, depression, and loneliness.
 
 Therefore, to solve this problem we are making an app that will help cancer patients/survivors find a partner to date or a mentor to consult (maybe both!!). Cancer patients/survivors are in a unique position to understand and empathize well with other cancer patients/survivors, being able to fully understand how a cancer diagnosis and treatment thereafter can take a toll physically, mentally, and emotionally; currently, there is no widespread platform for cancer patients to meet and connect with each other in these capacities.
@@ -163,12 +163,11 @@ These emails can be used to send important messages to the users about new and u
 Any saved changes to the backend code files will trigger a restart of the app with the new changes.
 
 Note: the files `usersinfo.json` and `chatsinfo.json` in the `CSC301_Backend` directory can be used to initialize the Mongo database, as well as reset the database after changes are made in the app (eg pressing "connect" or "pass" on users)
- 
-## Deployment and Github Workflow
- 
-When we decided to split the team for the backend and the frontend, we also decided that we would separate out the branches for backend and frontend in order to avoid conflicts and have the backend and frontend somwhat independent while developing. We started by branching off the master into two separate branches, one for frontend and one for backend. The frontend branch is called “frontend-develop” and the backend branch is called “frontend-connect”. We always tried to keep the merges in one direction, from frontend-develop to frontend-connect. This is also the reason why we chose the above mentioned names because everytime frontend code was first developed on “frontend-develop” and then connected to the backend using “frontend-connect” where we could view a working application by running the code locally. At that point, we could choose to deploy the changes to Heroku; we usallly only manually deployed to Heroku after a team meeting, since most of us made small commits and were constantly making improvements and fixes to the code, and the Heroku deployment process for our app took quite a bit of time.
-In addition to these branches, whenever it was possible we chose to work on a new branch for a new feature which made the workflow as smooth as possible.
-Mostly of the pull requests were made by Rutav and Uttkarsh where they reviewed it together. The other merges were made on group meetings where everyone could review it. We chose this particular workflow to improve the efficiency, save time, and avoid conflicts when we all combine our code.
+
+## More technical documentation
+For additional technical documentation to supplement this README, see the following files in the root directory of this repository:
+- `frontend_documentation.md` (and its corresponding PDF `frontend_documentation.pdf`) for the frontend
+- `backend_documentation.docx` for the backend
 
 ## Licenses 
 
@@ -179,5 +178,3 @@ The MIT license falls under the permissive (or BSD-style) of FOSS licenses. BSD-
 
 Our partner did not have much information about the licenses, so we made the decision of choosing this license after informing him. We made this particular decision because this will allow any future CSC301 teams to work on our project and extend our code without any restrictions. 
 This license is also really flexible with other licenses, so if the client wants to switch to a more restrictive/proprietary license one day, they can easily apply that license on top of this one.
-
-
