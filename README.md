@@ -14,25 +14,25 @@ Our goal is to improve their mental health through which we can improve their tr
 **1. Login and registration**
 ###### LOGIN
 
-![Login page](../images/loginpage.png)
+![Login page](./images/loginpage.png)
 
 This is the login page that will allow a user with an account to login with the correct details. The text font size is larger than usual to make it easier for those undergoing treatments that affect their vision capacities to view. Users who successfully login are redirected to the landing page.
 If a user uses incorrect details to login (invalid email or invalid email and password combination), the following message will be prompted to advise the user:
 
-![Incorrect login alert message](../images/incorrect%20login.png)
+![Incorrect login alert message](./images/incorrect%20login.png)
 
 If the user doesn’t have an account on CancerChat, they can create one by clicking on the “Sign up now!” link below the login button.
 
 ###### REGISTRATION
 
-![Registration page part 1](../images/register1.png)
-![Registration page part 2](../images/register2.png)
+![Registration page part 1](./images/register1.png)
+![Registration page part 2](./images/register2.png)
 
 When the user clicks on sign up, they will be taken to a registration page where they have to fill out a form which asks them various questions regarding their personal information as well as questions regarding their cancer diagnosis and treatment. We use this information to match the users with each other and to provide them with necessary notification/guidance with their cancer treatment. Once the form is complete and the register button is clicked, the user is redirected to the landing page and a new user is stored in the database.
 
 **2. Matching Algorithm**
 
-![Matching page](../images/matching.png)
+![Matching page](./images/matching.png)
 
 Once a user performs a successful login, they are directed to this landing page: this page displays all the users that could be potential matches for the current user, one at a time. The potential match's profile information is displayed on the page, with some personal information, an picture, and a section where they can write about themself.
 Our matching algorithm returns these potential matches by filtering them on two conditions:
@@ -45,9 +45,9 @@ On each potential match's profile, a user can click on either the "pass" or "con
 
 On the matching page (as well as the Profile and Chats pages), if a user clicks on the navigation button on the top left (indicated by three lines), they can access the navigation bar.
 
-![Navigation bar icon](../images/navigationbaricon.png)
+![Navigation bar icon](./images/navigationbaricon.png)
 
-![Open navigation bar](../images/navigationbaropen.png)
+![Open navigation bar](./images/navigationbaropen.png)
 
 In this menu in the open navigation bar, you can see the current user with their name and profile picture, a Home button which will take the user back to the landing page (where potential matches are shown), a Profile button which will take the user to their own profile page, a Chats button which will open a chatting page where the user can see all the users they connected with and chat with them, and a Logout button which they can use to logout of the application.
 This navigation bar was designed so that it also can be easily used to navigate on mobile devices with smaller screens.
@@ -56,26 +56,26 @@ This navigation bar was designed so that it also can be easily used to navigate 
 
 Once two users are matched (both of them press "connect" on each other), they will show up on each other’s respective chatting page which can be accessed by pressing the Chat button in the navigation bar.
 
-![Sample chat page](../images/chat.png)
+![Sample chat page](./images/chat.png)
 
 	In this example, both Uttkarsh Berwal and gordon ramsay pressed "connect" on each other and they showed up on each other’s chat page.
 
 On the chatting page, clicking on a user displayed there will open an interface where the two users can chat easily. A user can exit this conversation interface by clicking on the "Exit" button in the top right corner.
 
-![Sample chat interface](../images/chatwindow.png)
+![Sample chat interface](./images/chatwindow.png)
 
 In the chat window you can privately have conversations with that user: you can view past messages in the middle portion of the screen, and send message by typing in a message and clicking the "Send" button in the bottom right corner.
 
 **5. The Profile Page**
 
-![Sample profile page](../images/profilepage.png)
+![Sample profile page](./images/profilepage.png)
 This page will show the current user how their profile will appear to other users when the current user appears in others' match recommendations. (This can be extended in the future to update the user's profile as well.)
 
 **6. Notifying the users of new medicines and treatments (Admin Access)**
 
 For the admin purposes, as requested by our client, we made an admin page that will allow the admin to get the emails of all the users matching critera based on filters, in a CSV format. This feature will allow admin to email relevant users about any upcoming or new changes in their treatments, about new trial treatments, or about new medicines in the market.
 
-![Admin page](../images/admin.png)
+![Admin page](./images/admin.png)
 Here one can easily filter users by dragging the age range slider or using the dropdown menus (the dropdown menus allow typing to quickly find items), and then click on "Generate email list." After a response from the server is received, text indicating how many users matched the filters appears, as well as a "Download Email List File" button which when clicked prompts the user to save the filtered users' emails as a CSV file.
 
 ## Instructions
@@ -134,11 +134,11 @@ These emails can be used to send important messages to the users about new and u
 
 3. Open a terminal and navigate to the `frontend` folder (in the root directory of the repository) and open the terminal.
 
-![alt text](../images/frontenddevreq.png)
+![alt text](./images/frontenddevreq.png)
 
 4. Run the command `npm install` in the `frontend` folder to ensure the following dependencies are installed:
 
-![alt text](../images/frontenddepend.png)
+![alt text](./images/frontenddepend.png)
 	
 5. Start the React development server with the command `npm run start` in the terminal in the `frontend` folder. The app will open up in a browser tab; any saved changes to the frontend code files will trigger a restart of the app with the new changes.
  
@@ -151,14 +151,14 @@ These emails can be used to send important messages to the users about new and u
 
 3. Then after cloning the files from the repository (https://github.com/csc301-fall-2020/team-project-12-malecare-cancer-support.git), open a terminal and navigate to the `CSC301_Backend` folder (in the root directory of the repository) and open the terminal.
 
-![alt text](../images/backenddevreq.png)
+![alt text](./images/backenddevreq.png)
 
 4. Run the command `yarn install` in the `CSC301_Backend` folder to install the following dependencies:
 
-	![alt text](../images/backenddepend.png)
+	![alt text](./images/backenddepend.png)
 	
 5. Run the command `yarn start-server` in the terminal in the CSC301_Backend folder. This will start the development server on your local system at the port 5000.
-	![alt text](../images/start-server.png)
+	![alt text](./images/start-server.png)
 (you should get a message of “Success, Server is up and running!” if the server starts without an error and “connected to db” after that if you are connected to the MongoDB.)
 Any saved changes to the backend code files will trigger a restart of the app with the new changes.
 
